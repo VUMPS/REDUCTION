@@ -36,14 +36,16 @@ end_check=end_check, skip=skip, $
 thar_soln=thar_soln, getthid=getthid, mode = mode, obsnm=obsnm, $
 flatsonly=flatsonly, tharonly=tharonly
 
-
 angstrom = '!6!sA!r!u!9 %!6!n'
 vmpsparfn = -1
 spawn, 'pwd', pwddir
 case pwddir of
-   '/Users/matt/projects/VUMPS/REDUCTION': vmpsparfn = '/Users/matt/projects/VUMPS/REDUCTION/vumps.par'
+   '/Users/matt/projects/VUMPS/REDUCTION/code': vmpsparfn = '/Users/matt/projects/VUMPS/REDUCTION/code/vumps.par'
 endcase
-if vmpsparfn eq -1 then begin
+
+;if the present working directory is not included in the above CASE
+;statement, and therefore `vmpsparfn` is not defined, alert the user:
+if size(vmpsparfn, /type) eq 2 then begin
   print, '******************************************************'
   print, 'You must be running things from a different directory.'
   print, 'Your current working directory is: '
@@ -54,12 +56,12 @@ if vmpsparfn eq -1 then begin
   print, '******************************************************'
   stop
 endif
-
+stop
 redpar = readpar(vmpsparfn)
 redpar.imdir = date+'/'  ; pass night into redpar
 redpar.date = date
 redpar.versiond=systime()
-
+stop
 print, 'SORTING_HAT: date '+date+' run: '+run
 
 ;   Modes keyword
