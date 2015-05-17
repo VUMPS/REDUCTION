@@ -58,23 +58,32 @@ lfn = '/tous/vumps/logsheets/20'+strmid(date, 0, 2)+'/'+strt(date)+'.log'
 ;This part gets the image prefix:
 spawn, 'ls -1 '+rawdir+date+'/', filearr
 nel = n_elements(filearr)
-nfa = strarr(nel)
-for i=0, nel-1 do nfa[i] = strmid(filearr[i], 0, strlen(filearr[i])-9)
-uniqprefs =  nfa(uniq(nfa))
-pref = 'junk'
-ii=-1
-repeat begin
-  ii++
-  pref = uniqprefs[ii]
-  print, 'pref is: ', uniqprefs[ii]
-  print, 'pref 1st 2 are: ', strmid(uniqprefs[ii], 0,2)
-endrep until ( ((strmid(uniqprefs[ii],0,2) eq 'qa') or $
-        (strmid(uniqprefs[ii],0,2) eq 'ch')) and $
-        (strmid(uniqprefs[ii], 0, 4) ne 'chir') and $
-        (strmid(uniqprefs[ii], 0, 1, /reverse) eq '.'))
 
-print, 'pref is: ', pref
-;stop, 'pref is: ', pref
+;make a string array that has the same number of elements
+;as the number of files for the night:
+nfa = strarr(nel)
+
+;chop off the individual image information in the filename and only
+; keep the prefixes:
+
+;first, find the position of the 'sequence number.fit' in each filename:
+sqpos = stregex(filearr, '[0-9]+.fit')
+
+;now extract everything UP TO the sequence number:
+for i=0, nel-1 do nfa[i] = strmid(filearr[i], 0, sqpos[i])
+
+;now determine how many unique image prefixes are in the 
+;data directory for the night:
+uniqprefs =  nfa(uniq(nfa))
+if n_elements(uniqprefs) gt 1 then begin
+	print, 'ERROR! There was more than one image prefix in the'
+	print, 'raw data directory. Please ammend the image prefixes'
+	print, 'to have one consistent name before proceeding.'
+	return
+endif;
+
+pref = uniqprefs
+print, 'The prefix is: ', pref
 
 modearr = [$
 'low', $ 
