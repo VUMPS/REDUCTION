@@ -41,7 +41,7 @@ slicerflat:  1,                      ; set this to 1 to use the narrow slit + sh
 pkcoefs: [26.4117,34.9785,0.114412,0.00182212],  ;yt=2 poly coefs of peak maxima @center y(iord), unbinned pixels
 pkcoefs1: [26.4517d,35.0451d,0.112029d,0.00188384d], ;use this for data between 120302 - 120501 (torrent logic problem)
 nords:  62,                    ; number of orders to extract
-modes: ['narrow','slicer','slit','fiber','narrow'],  ; observing modes 
+modes: ['low','med','hgh'],  ; observing modes 
 xwids: [8,12,8,5,18],             ; extraction width, binned pixels 
 dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels 
 binnings: ['3x1','3x1','3x1','4x4', '1x1'], ; binning in each mode, row x column
