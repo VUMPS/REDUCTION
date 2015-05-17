@@ -45,7 +45,7 @@ modes: ['low','med','hgh'],  ; observing modes
 xwids: [8,12,8,5,18],             ; extraction width, binned pixels 
 dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels 
 binnings: ['3x1','3x1','3x1','4x4', '1x1'], ; binning in each mode, row x column
-debug: 0}                      ; 1 in debug mode, with plots and stops
+debug: 4}                      ; 1 in debug mode, with plots and stops
 
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES1
@@ -53,5 +53,5 @@ debug: 0}                      ; 1 in debug mode, with plots and stops
 ;1. No stops. Prints a little more. Poscript and PNG Plots for quality control.
 ;2. Stops in debugging locations. PS and PNG plots. Prints a lot. 
 ;3. Stops in debugging locations. Plots to screen. Prints a lot. 
-;4. Everything. Run this when CHIRON has been modified to determine new order locations. 
+;4. Everything. Run this when VUMPS has been modified to determine new order locations. 
 ;	 Once finished, copy the new best fit order locations to the "pkcoefs" tag above.
