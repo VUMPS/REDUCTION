@@ -52,7 +52,7 @@ if ~keyword_set (order_ind) then begin
    print, 'REDUCE_VUMPS: ORDER definition is not given at input, use flat instead'
    order_ind = -1
 endif 
-stop
+
 ; Try to read from the disk previously saved flats
 if ~keyword_set (flatset) then begin
      name = redpar.rootdir+redpar.flatdir+prefix+mode+'.flat'
@@ -68,9 +68,9 @@ if ~keyword_set (flatset) then begin
     endelse 
  endif else begin ; flats are given
     nrecf = n_elements(flatset)
-    recnums = strtrim(string(flatset,format='(I4.4)'),2)  ;convert to strings
-    flatfnums = prefix + recnums        
-    flatfnames = indir + prefix + recnums + '.fits'  ;array of flat-field files 
+    recnums = strt(flatset,f='(I)')  ;convert to strings
+    flatfnums = prefix + recnums
+    flatfnames = indir + prefix + recnums + redpar.suffix  ;array of flat-field files 
  endelse 
 stop
 ;7.  Record number of Stellar spectra here:
@@ -81,7 +81,8 @@ stop
    ; string array of spectrum file names
     outprefix = redpar.prefix_tag +  prefix
     outfnames= outdir + outprefix  + recnums 
-    
+stop    
+
 ; Order-Finding Exposure: strong exposure, such as iodine or bright star(B star)
       if order_ind ge 0 then begin
 	recint = order_ind
@@ -89,6 +90,7 @@ stop
 	ordfname = indir + prefix + recnums + '.fits'   
      endif else ordframe='FLAT'
 
+stop
 ;THORIUMS:  Insert record numbers to reduce  here:
 ;3. Record numbers for thar and iodine (don-t need sky subtraVUMPSn)
       if keyword_set(thar) then threc = thar else threc = -1 
@@ -98,6 +100,7 @@ stop
 	thspfnames = indir + prefix + threcnums + '.fits'
 	thoutfnames = outdir + outprefix  + threcnums  
       endif else threcnums = 'none'
+stop
   
 	print,''
 	print,'    ****ECHOING PARAMETER VALUES FROM REDUCE_VUMPS****'
@@ -117,22 +120,23 @@ stop
 if redpar.debug ge 2 then print, 'REDUCE_VUMPS: press .C to continue' 
 if redpar.debug ge 2 then stop
 ; CRUNCH  FLATS
-       name = redpar.rootdir+redpar.flatdir+prefix+mode+'.sum'          
-       if keyword_set(flatset) then begin
-;          if redpar.debug then stop, 'REDUCE_VUMPS: debug stop before flats, .c to continue'
-          ADDFLAT, flatfnames,sum, redpar, im_arr  ; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
-          if (size(sum))[0] lt 2 then stop ; no data!
+name = redpar.rootdir+redpar.flatdir+prefix+mode+'.sum'          
+if keyword_set(flatset) then begin
+	;if redpar.debug then stop, 'REDUCE_VUMPS: debug stop before flats, .c to continue'
+	ADDFLAT, flatfnames,sum, redpar, im_arr  ; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
+	if (size(sum))[0] lt 2 then stop ; no data!
 
-          wdsk, sum, name, /new
-          print, 'REDUCE_VUMPS: summed flat is written to '+name  
-;          if redpar.debug then stop, 'Debug stop after flats, .c to continue'
-       endif else begin
-         print, 'Using previously saved flat '+name 
-         rdsk, sum, name, 1  ; get existing flat from disk
-         bin = redpar.binnings[modeidx] ; set correct binning for order definition
-         redpar.binning = [fix(strmid(bin,0,1)), fix(strmid(bin,2,1))]
-         print, 'The binning is ', redpar.binning
-       endelse
+	wdsk, sum, name, /new
+	print, 'REDUCE_VUMPS: summed flat is written to '+name  
+	;if redpar.debug then stop, 'Debug stop after flats, .c to continue'
+endif else begin
+	print, 'Using previously saved flat '+name 
+	rdsk, sum, name, 1  ; get existing flat from disk
+	bin = redpar.binnings[modeidx] ; set correct binning for order definition
+	redpar.binning = [fix(strmid(bin,0,1)), fix(strmid(bin,2,1))]
+	print, 'The binning is ', redpar.binning
+endelse
+stop
 
 ;FIND DEFAULT ORDER LOCATIONS.  
 ;SLICERFLAT=1 means use narrow slit to define slicer order locations
