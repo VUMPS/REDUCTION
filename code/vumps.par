@@ -7,7 +7,7 @@ plotsdir: '/Users/matt/Sites/vumps/red/plots/', ; directory to put encapsulated 
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
 thiddir:    'tous/vumps/thid/wavfile/',   ; wav saved in in *.dat files, not used
 thidfiledir: 'tous/vumps/thid/thidfile/', ; thid saved in *.thid files
-rawdir: 'raw/mir7/',                ; raw files
+rawdir: 'raw/vumps/',                ; raw files
 imdir:   'yymmdd/',            ; yymmdd/ image directory with raw night data (*)
 date:   'yymmdd',            ; yymmdd/ image directory with raw night data (*)
 seqnum:   'flat',            ; the image sequence number (*)
@@ -15,11 +15,14 @@ versiond:   'date',            ; systime when this file was created (*)
 versionn:   '3.0',            ; version of the reduction code
 red_prefix: 'r',               ; prepend reduced files with this additional prefix
 prefix:  'chiyymmdd.',         ; file prefix (*)
+suffix: '.fit',                ; the file suffix (e.g., .fit, .fits, .FITS, .FITZ)
 flatdir:  'tous/vumps/flats/',            ; summed flat fields
 biasdir:  'tous/vumps/medbias/',            ; median bias frames
 biasmode: 0,            ; 0: use median bias frame, 1: use median overscan row
 orderdir: 'tous/vumps/orders/',           ; order locations
 barydir:  'tous/VUMPS/bary/',             ; code for barycentric correction? 
+xdim: 4200,                  ;number of pixels in x dimension
+ydim: 4112,                  ;number of pixels in y dimension
 xtrim: [0,3150],             ; trim along line (cross-dispersion direction), UNBINNED pixels
 ytrim: [601,3800],             ; vertical trim (along disp.), UNBINNED pixels yt=2
 readmodes:  ['fast','medium', 'slow'], ; readout modes
