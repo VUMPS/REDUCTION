@@ -25,16 +25,23 @@
 ;             reduced (iodspec), fits (fitspec), thar_soln
 ;
 ;	EXAMPLES: 
-;		sorting_hat, '150516', run='vumps150516', /low, /reduce
+;		sorting_hat, '150516', image_prefix='vumps150516', /low, /reduce
 ;  
 ; MODIFICATION HISTORY:
 ;		-created 2015.05.17 Matt Giguere, based on CHIRON reduction code
 ;-
 ;
-pro sorting_hat, date, run=run, iod2fits=iod2fits, reduce=reduce, $
-end_check=end_check, skip=skip, $
-thar_soln=thar_soln, getthid=getthid, mode = mode, obsnm=obsnm, $
-flatsonly=flatsonly, tharonly=tharonly
+pro sorting_hat, date, $
+image_prefix=image_prefix, $
+iod2fits=iod2fits, $
+reduce=reduce, $
+end_check=end_check, $
+thar_soln=thar_soln, $
+getthid=getthid, $
+mode = mode, $
+obsnm=obsnm, $
+flatsonly=flatsonly, $
+tharonly=tharonly
 
 angstrom = '!6!sA!r!u!9 %!6!n'
 vmpsparfn = -1
@@ -60,8 +67,9 @@ redpar = readpar(vmpsparfn)
 redpar.imdir = date+'/'  ; pass night into redpar
 redpar.date = date
 redpar.versiond=systime()
+redpar.prefix = image_prefix
 
-print, 'SORTING_HAT: date '+date+' run: '+run
+print, 'SORTING_HAT: date '+date+' run: '+image_prefix
 
 ;   Modes keyword
 if ~keyword_set(mode) then begin 
@@ -112,55 +120,54 @@ if keyword_set(reduce) then begin
 	obnm1=obnm[xsl]
 	objnm1=objnm[xsl]
 
-	stop
+	;CREATE MEDIAN BIAS FRAME
 	;only create the median bias if option is set in vumps.par:
 	if redpar.biasmode eq 0 then begin
 		;create the median bias frames if need be:
 		fname = redpar.rootdir+redpar.biasdir+$
-		redpar.date+'_bin11_normal_medbias.dat'
+		redpar.date+'_bin11_medium_medbias.dat'
 		print, 'Now testing median bias frame filename: ', fname 
 		if ~file_test(fname) then begin
-			print, '1x1 normal...'
-			vumps_medianbias, redpar = redpar, framearr = obnm[where(objnm eq 'bias')], /normal
+			print, '1x1 binning with medium read speed...'
+			vumps_medianbias, redpar = redpar, framearr = obnm[where(objnm eq 'bias')], /medium, /bin11
 		endif;~file_test(fname)
 	endif
 
+	;IDENTIFY FLAT FRAMES
 	flatindx=where(objnm1 eq 'quartz',num_flat)
-
-	if num_flat gt 0 then begin ; process dash in the logfile flat numbers
-		tmp=[0]
-		for ii=0,num_flat-1 do begin  ; fabricate flat fields
-			dum=obnm1[flatindx[ii]]
-			if strlen(dum) gt 5 then begin
-				gf=fix(strmid(dum,0,4))  &  gl=fix(strmid(dum,5,4))
-				diff=gl-gf+1
-				tmp=[tmp,gf+indgen(diff)]
-			endif else tmp=[tmp,dum]
-		endfor
-		flatset=tmp[1:*]  ; throw out the dummy
+	if num_flat gt 0 then begin
+		flatset = obnm1[flatindx]
+		print, 'flat frames are: ', flatset
 	endif else begin
 		print, 'Sorting-hat: no flat files found. Returning.'
 		return
 	endelse
+	stop
 
+	;IDENTIFY THAR AND I2 FRAMES
 	thariodindx=where(objnm1 eq 'thar' or objnm1 eq 'iodine',num_thariod)
+	stop
 	print, '******************************'
 	print, 'THORIUM ARGON AND IODINE OBSERVATIONS TO BE PROCESSED: '
 	print, obnm1[thariodindx]
 	thar = fix(obnm1[thariodindx])
+	stop
 
 	starindx=where(objnm1 ne 'iodine' and objnm1 ne 'thar' $
 	and objnm1 ne 'focus' and objnm1 ne 'junk' and objnm1 ne 'dark' $
 	and objnm1 ne 'bias', num_star)
+	stop
 	if keyword_set(flatsonly) then starindx = where(objnm1 eq 'quartz')                               
 	if keyword_set(flatsonly) then thar = 0
 	star = fix(obnm1[starindx]) ; file numbers
 	if keyword_set(obsnm) then star = obsnm
 	if keyword_set(tharonly) then star = 0
+	stop
 
 
-	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_ctio'
-	reduce_ctio, redpar, mode, flatset=flatset, star=star, thar=thar, date=date
+	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_vumps'
+	;REDUCE ALL FRAMES
+	reduce_vumps, redpar, mode, flatset=flatset, star=star, thar=thar, date=date
 	endif ;n_modes > 0
 endif  ;reduce
 
