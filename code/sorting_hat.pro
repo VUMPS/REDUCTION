@@ -169,6 +169,8 @@ if keyword_set(reduce) then begin
 	endif ;n_exps > 0
 endif  ;reduce
 
+stop
+
 ;**************************************************************
 ; ******* ThAr processing *******************	
 ;**************************************************************
@@ -182,6 +184,7 @@ endif  ;reduce
 	   print, 'THORIUM ARGON TO BE PROCESSED: '
 	   print, obnm1[tharindx]
 	   thar = obnm1[tharindx] ; string array
+	   stop
 
 	   if keyword_set(thar_soln) then thidfile =  thid_path2+thar_soln+'.thid' else begin 
 		  if strmid(run,0,2) eq 'qa' then begin 
