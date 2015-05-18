@@ -35,32 +35,29 @@ pro reduce_vumps, redpar, mode, flatset=flatset, thar=thar, $
    order_ind=order_ind,  star=star, date=date
 
 
-;2. Prefix added to FITS headers:  
-	prefix=redpar.prefix   ; e.g. 'ImageName'   
+;Prefix added to FITS headers:  
+prefix=redpar.prefix   ; e.g. 'ImageName'   
 
-	; append dot if need be
-	if strpos(prefix,'.') lt 0 then prefix=prefix+'.' 
+;Identify the mode (e.g. low, med, hgh):
+modeidx = redpar.mode
 
-; First check if all relevant input parameters are specified
+;Raw image path, e.g. /raw/vumps/150516/
+indir=redpar.rootdir+redpar.rawdir+redpar.imdir 
 
-   if ~keyword_set (order_ind) then begin
-       print, 'REDUCE_VUMPS: ORDER definition is not given at input, use flat instead'
-       order_ind = -1
-    endif 
+;Output reduced file path
+outdir= redpar.rootdir + redpar.iodspecdir + date + '/'
+if ~file_test(outdir) then spawn, 'mkdir '+outdir
 
-; Identify the mode
-   modeidx = redpar.mode
-
-;1. CCD-Image Input Directory Path, where raw images are stored.
-    indir=redpar.rootdir+redpar.rawdir+redpar.imdir ;e.g. /mir7/raw/090102/
-;6. OUTPUT Directory Path and Output Prefix (ie, tapename for run)
-    outdir= redpar.rootdir + redpar.iodspecdir + date + '/'
-    if ~file_test(outdir) then spawn, 'mkdir '+outdir
-
+if ~keyword_set (order_ind) then begin
+   print, 'REDUCE_VUMPS: ORDER definition is not given at input, use flat instead'
+   order_ind = -1
+endif 
+stop
 ; Try to read from the disk previously saved flats
 if ~keyword_set (flatset) then begin
      name = redpar.rootdir+redpar.flatdir+prefix+mode+'.flat'
      tmp = file_search(name, count=flatcount)
+     stop
      if flatcount eq 0 then begin
        print, 'REDUCE_VUMPS: FLATS are not given at input, not found on disk, returning.'
        return
@@ -75,7 +72,7 @@ if ~keyword_set (flatset) then begin
     flatfnums = prefix + recnums        
     flatfnames = indir + prefix + recnums + '.fits'  ;array of flat-field files 
  endelse 
-
+stop
 ;7.  Record number of Stellar spectra here:
     nrec = n_elements(star)
     recnums = strt(star, f='(I4.4)')  ; convert to string with leading zeros    
