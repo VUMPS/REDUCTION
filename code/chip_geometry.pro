@@ -40,7 +40,10 @@ function biasTrim, inBias
 	]
 end;biasTrim subroutine
 
-function chip_geometry, file_name, redpar=redpar
+function chip_geometry, $
+file_name, $
+redpar=redpar, $
+hdr = hdr
 
 ;create the boiler-plate structure to return:
 results = { 				$
@@ -99,20 +102,22 @@ results.image_full.upright = [2156, 4199, 2056, 4111]
 results.image_full.botleft = [0, 2043, 0, 2055]
 results.image_full.botright = [2156, 4199, 0, 2055]
 
-results.ccd_full.upleft = []
-results.ccd_full.upright = []
-results.ccd_full.botleft = []
-results.ccd_full.botright = []
+results.ccd_full.upleft = [0, 2099, 2056, 4111]
+results.ccd_full.upright = [2100, 4199, 2056, 4111]
+results.ccd_full.botleft = [0, 2099, 0, 2055]
+results.ccd_full.botright = [2100, 4199, 0, 2055]
 
 results.gain.upleft = 2.06
 results.gain.upright = 2.03
 results.gain.botleft = 1.99
 results.gain.botright = 2.00
 
-medium_rn = {'upleft':   4.0,  $
-	         'botleft':  3.7, $
-	         'upright':  4.1, $
-	         'botright': 3.9}
+medium_rn = { $
+	upleft:   4.0,  $
+	botleft:  3.7, $
+	upright:  4.1, $
+	botright: 3.9 $
+}
 	      
 results.read_noise.upleft = medium_rn.upleft
 results.read_noise.upright = medium_rn.upright
@@ -120,6 +125,5 @@ results.read_noise.botleft = medium_rn.botleft
 results.read_noise.botright = medium_rn.botright
 
 results.status = 'OK'
-stop
 return, results
 end;chip_geometry.pro
