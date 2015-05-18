@@ -99,16 +99,16 @@ readcol,logsheet, skip=9, obnm, objnm, mdpt, exptm, slit, f='(a,a,a,a,a,)'
 
 print, 'obnm after is: ', obnm
 ut = gettime(mdpt) ; floating-point hours, >24h in the morning
-stop
 
 ;**************************************************************
 ;REDUCING THE DATA:	
 ;**************************************************************
 if keyword_set(reduce) then begin
-	xsl=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx],n_modes)
-	stop
+	;only grab images in the current slit mode (low, med, or hgh):
+	xsl=where(slit eq redpar.modes[modeidx],n_modes)
 	if n_modes gt 0 then begin
 
+	;reduce the object number and name arrs to the subset in the current mode:
 	obnm1=obnm[xsl]
 	objnm1=objnm[xsl]
 
@@ -121,7 +121,7 @@ if keyword_set(reduce) then begin
 		print, 'Now testing median bias frame filename: ', fname 
 		if ~file_test(fname) then begin
 			print, '1x1 normal...'
-			vumps_medianbias, redpar = redpar, framearr = framearr/bin31, /normal
+			vumps_medianbias, redpar = redpar, framearr = obnm[where(objnm eq 'bias')], /normal
 		endif;~file_test(fname)
 	endif
 
