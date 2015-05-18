@@ -56,12 +56,11 @@ if size(vmpsparfn, /type) eq 2 then begin
   print, '******************************************************'
   stop
 endif
-stop
 redpar = readpar(vmpsparfn)
 redpar.imdir = date+'/'  ; pass night into redpar
 redpar.date = date
 redpar.versiond=systime()
-stop
+
 print, 'SORTING_HAT: date '+date+' run: '+run
 
 ;   Modes keyword
@@ -71,7 +70,9 @@ if ~keyword_set(mode) then begin
 endif
 
 modeidx = (where(mode eq redpar.modes))[0] ; which mode?
-redpar.mode = modeidx  ; pass current mode to other programs
+
+;update the parameter structure with the current mode:
+redpar.mode = modeidx
 if modeidx lt 0 then begin
     print, 'Error: unrecognized mode. Returning from sorting_hat'
     return
@@ -83,61 +84,22 @@ logsheet = redpar.rootdir+logpath+date+'.log'
 
 iodspec_path = redpar.rootdir+redpar.iodspecdir+redpar.imdir
 fits_path = redpar.rootdir+redpar.fitsdir+redpar.imdir
+
+; if the nightly fitspec directory does not exist, create it:
 if ~file_test(fits_path) then spawn, 'mkdir '+fits_path
+
 thid_path = redpar.rootdir+redpar.thiddir
 thid_path2 = redpar.rootdir+redpar.thidfiledir
-pretag = redpar.prefix_tag
 
-readcol,logsheet, skip=9, obnm, objnm, i2, mdpt, exptm, bin, slit, f='(a5, a13, a4, a14, a8, a3, a6)'
-stop
-;now to expand the quartz items in the logsheet:
-   print, 'obnm before is: ', obnm
-qcombs = where(strlen(obnm) gt 4)
-for qi=0, n_elements(qcombs)-1 do begin
-	qinit = strmid(obnm[qcombs[qi]], 0,4)
-	qfini = strmid(obnm[qcombs[qi]], 5,4)
-	ncombs = long(qfini) - long(qinit) + 1
-	nobnm = lindgen(ncombs) + long(qinit)
-	nobjnm = strarr(ncombs)+objnm[qcombs[qi]]
-	ni2 = strarr(ncombs)+i2[qcombs[qi]]
-	nmdpt = strarr(ncombs)+mdpt[qcombs[qi]]
-	nexptm = strarr(ncombs)+exptm[qcombs[qi]]
-	nbin = strarr(ncombs)+bin[qcombs[qi]]
-	nslit = strarr(ncombs)+slit[qcombs[qi]]
+;prepend output reduced files with this additional prefix:
+redpre = redpar.red_prefix
 
-	if qcombs[qi] eq 0 then begin
-	  obnm = [strt(nobnm, f='(I04)'), obnm[(qcombs[qi]+1):*]]
-	  objnm = [nobjnm, objnm[(qcombs[qi]+1):*]]
-	  i2 = [ni2, i2[(qcombs[qi]+1):*]]
-	  mdpt = [nmdpt, mdpt[(qcombs[qi]+1):*]]
-	  exptm = [nexptm, exptm[(qcombs[qi]+1):*]]
-	  bin = [nbin, bin[(qcombs[qi]+1):*]]
-	  slit = [nslit, slit[(qcombs[qi]+1):*]]
-	endif
-	if qcombs[qi] ne n_elements(obnm)-1 and qcombs[qi] ne 0 then begin
-	  obnm = [obnm[0:(qcombs[qi]-1)], strt(nobnm, f='(I04)'), obnm[(qcombs[qi]+1):*]]
-	  objnm = [objnm[0:(qcombs[qi]-1)], nobjnm, objnm[(qcombs[qi]+1):*]]
-	  i2 = [i2[0:(qcombs[qi]-1)], ni2, i2[(qcombs[qi]+1):*]]
-	  mdpt = [mdpt[0:(qcombs[qi]-1)], nmdpt, mdpt[(qcombs[qi]+1):*]]
-	  exptm = [exptm[0:(qcombs[qi]-1)], nexptm, exptm[(qcombs[qi]+1):*]]
-	  bin = [bin[0:(qcombs[qi]-1)], nbin, bin[(qcombs[qi]+1):*]]
-	  slit = [slit[0:(qcombs[qi]-1)], nslit, slit[(qcombs[qi]+1):*]]
-	endif
-	if qcombs[qi] eq n_elements(obnm)-1 then begin
-	  obnm = [obnm[0:(qcombs[qi]-1)], strt(nobnm, f='(I04)')]
-	  objnm = [objnm[0:(qcombs[qi]-1)], nobjnm]
-	  i2 = [i2[0:(qcombs[qi]-1)], ni2]
-	  mdpt = [mdpt[0:(qcombs[qi]-1)], nmdpt]
-	  exptm = [exptm[0:(qcombs[qi]-1)], nexptm]
-	  bin = [bin[0:(qcombs[qi]-1)], nbin]
-	  slit = [slit[0:(qcombs[qi]-1)], nslit]
-	endif
-	
-	qcombs[qi:*] += (ncombs - 1)
-endfor
-   print, 'obnm after is: ', obnm
+;read in the logsheet for the night:
+readcol,logsheet, skip=9, obnm, objnm, mdpt, exptm, slit, f='(a,a,a,a,a,)'
+
+print, 'obnm after is: ', obnm
 ut = gettime(mdpt) ; floating-point hours, >24h in the morning
-;stop
+stop
 
 ;**************************************************************
 ;REDUCING THE DATA:	
@@ -248,7 +210,7 @@ endif  ;reduce
 	   print, 'Ready to go into AUTOTHID'   
 	   !p.multi=[0,1,1]
 	   for i=0,num_thar-1 do begin 
-		  isfn = iodspec_path+pretag+run+thar[i]
+		  isfn = iodspec_path+redpre+run+thar[i]
 		  print, 'ThAr file to fit: ', isfn
 		  rdsk, t, isfn,1
 		  ;NEW, AUTOMATED WAY OF DOING THINGS:
@@ -277,7 +239,7 @@ endif  ;reduce
 			   stop
 			 endif
 			 
-			 fnm = thid_path2+pretag+run+thar[i]
+			 fnm = thid_path2+redpre+run+thar[i]
 			 fsuf = '.thid'
 			 if file_test(fnm+fsuf) then spawn, $
 			 'mv '+fnm+'.thid '+nextname(fnm,fsuf)
@@ -285,7 +247,7 @@ endif  ;reduce
 
 			 mkwave, w, thid.wvc
 			 w = reverse(w,2) ; increase with increasing order numver
-			 fnm = thid_path+'ctio_'+pretag+run+thar[i]
+			 fnm = thid_path+'ctio_'+redpre+run+thar[i]
 			 fsuf = '.dat'
 			 if file_test(fnm+fsuf) then spawn, $
 			 'mv '+fnm+'.dat '+nextname(fnm,fsuf)
@@ -319,7 +281,7 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
        endif else begin             
 ; get all wavelength solutions for this date and this mode,e UT of ThAr exposures 
 ;       wavfiles = thid_path+'ctio_'+run+obnm[tharindx]+'.dat' ; string array of wavelength solution file names  
-         thidfiles = thid_path2+pretag+run+obnm[tharindx]+'.thid' ; string array of wavelength solution file names  
+         thidfiles = thid_path2+redpre+run+obnm[tharindx]+'.thid' ; string array of wavelength solution file names  
          ;stop
          wavut = ut[tharindx] ; time of ThAr exposures
 ; check existence of wavelength solutions, stop if not found
@@ -346,8 +308,8 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 			nxck=0
 			if keyword_set(skip) then xck=where(obnmx1[[i]] eq skip,nxck) 
 			if nxck eq 0 then begin
-				rdsk,sp,iodspec_path+pretag+run+obnm[x1[i]],1   
-				rdsk,hd,iodspec_path+pretag+run+obnm[x1[i]],2   
+				rdsk,sp,iodspec_path+redpre+run+obnm[x1[i]],1   
+				rdsk,hd,iodspec_path+redpre+run+obnm[x1[i]],2   
 				sz=size(sp)  &   ncol=sz[1]    &    nord=sz[2]
 				spec=fltarr(2,ncol,nord)
             if ~keyword_set(thar_soln) then begin ; find closest ThAr
@@ -363,7 +325,7 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 				spec[0,*,*]=w
 				;the first dimension of spec is the actual spectrum:
 				spec[1,*,*]=sp
-				outfile=pretag+run+obnm[i]+'.fits'
+				outfile=redpre+run+obnm[i]+'.fits'
 				;*******************************************************
 				;now to add reduction code info to fits headers:
 				;*******************************************************
