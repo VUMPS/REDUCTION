@@ -78,7 +78,7 @@ keys = { $
 	read_noise: 'RON',		$
 	bin: 'CCDSUM'			$
 }
-results.readout_speed = 'normal'
+results.readout_speed = 'medium'
 amps = { upleft: '21', upright: '22' , botleft: '11', botright: '12' }
 validAmpList = '11 12 21 22' ; we could be off if we use a different arrangement of amps
 
