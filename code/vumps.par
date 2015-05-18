@@ -22,7 +22,7 @@ orderdir: 'tous/vumps/orders/',           ; order locations
 barydir:  'tous/VUMPS/bary/',             ; code for barycentric correction? 
 xtrim: [0,3150],             ; trim along line (cross-dispersion direction), UNBINNED pixels
 ytrim: [601,3800],             ; vertical trim (along disp.), UNBINNED pixels yt=2
-readmodes:  ['fast','normal'], ; readout modes
+readmodes:  ['fast','medium', 'slow'], ; readout modes
 nlc: [[0, 0],[0, 0]], ;non-linearity coefs. [left,right] in fast and normal
 gains: [[5.00,5.17,4.73,5.40], [1.309,1.283,1.266,1.259]], ; gain  [ [4*]fast, [4*]norm], el/ADU  corrected
 ron:   7.,                     ; RON estimate [ADU], to be calculated from bias (*)
