@@ -195,8 +195,6 @@ ENDIF;DEBUG>3 => REDO ORDER LOCATIONS FROM SCRATCH
       return
   endif
 
-stop
-
   ords = fltarr(nswa,nord)		;peak locations for swaths
 ;Loop through the swaths, determining exact positions of peaks by fitting
 ;  quadratic polynomials in vicinity of previous peaks. Store new peaks, as
