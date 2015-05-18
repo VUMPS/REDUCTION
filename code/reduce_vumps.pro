@@ -150,8 +150,8 @@ writefits, orcname, orc
 
 stop
 
-print, 'REDUCE_VUMPS: order location is written to '+name  
-;         if redpar.debug then stop, 'Debug stop after order location, .c to continue'
+print, 'REDUCE_VUMPS: order location is written to '+orcname  
+if redpar.debug then stop, 'Debug stop after order location, .c to continue'
 
 ; GET FLAT FIELD
         xwid = redpar.xwids[resolutionidx]
