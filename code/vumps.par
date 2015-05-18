@@ -13,7 +13,7 @@ date:   'yymmdd',            ; yymmdd/ image directory with raw night data (*)
 seqnum:   'flat',            ; the image sequence number (*)
 versiond:   'date',            ; systime when this file was created (*)
 versionn:   '3.0',            ; version of the reduction code
-prefix_tag: 'a',               ; for output filenames 
+red_prefix: 'r',               ; prepend reduced files with this additional prefix
 prefix:  'chiyymmdd.',         ; file prefix (*)
 flatdir:  'tous/vumps/flats/',            ; summed flat fields
 biasdir:  'tous/vumps/medbias/',            ; median bias frames
