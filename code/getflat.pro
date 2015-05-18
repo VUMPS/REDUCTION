@@ -5,6 +5,7 @@
 ; Oct 24, 2011 AT
 ;added redpar and plotting options. 20120412~MJG
 ;incorporated weighting to get a better smoothed order 20120510~MJG
+;20150518 adapted to VUMPS
 ;
 function getflat, im, orc, xwid, redpar, im_arr=im_arr
  
