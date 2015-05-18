@@ -106,56 +106,41 @@ stop
 ;**************************************************************
 if keyword_set(reduce) then begin
 	xsl=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx],n_modes)
+	stop
 	if n_modes gt 0 then begin
 
 	obnm1=obnm[xsl]
 	objnm1=objnm[xsl]
 
-	;only create the median bias from if set in ctio.par:
+	stop
+	;only create the median bias if option is set in vumps.par:
 	if redpar.biasmode eq 0 then begin
-	;restore the log structure:
-	restore, redpar.rootdir+redpar.logstdir+'20'+strmid(redpar.date, 0, 2)+'/'+redpar.date+'log.dat'
-	;now create the median bias frames if need be:
-	if redpar.modes[modeidx] ne 'fiber' then begin
-	fname = redpar.rootdir+redpar.biasdir+$
-	redpar.date+'_bin31_normal_medbias.dat'
-	print, 'Now testing median bias frame filename: ', fname 
-	;if ~file_test(fname) then begin
-	print, '3x1 normal...'
-	chi_medianbias, redpar = redpar, log = log, /bin31, /normal
-	print, '4x4 normal...'
-	chi_medianbias, redpar = redpar, log = log, /bin44, /normal
-	print, '1x1 normal...'
-	chi_medianbias, redpar = redpar, log = log, /bin11, /normal
-	print, '3x1 fast...'
-	chi_medianbias, redpar = redpar, log = log, /bin31, /fast
-	print, '1x1 fast...'
-	chi_medianbias, redpar = redpar, log = log, /bin11, /fast
-	;endif
-	endif;nonfiber median bias frame check/make
-	fnamef = redpar.rootdir+redpar.biasdir+$
-	redpar.date+'_bin44_normal_medbias.dat'
-	if ~file_test(fnamef) then begin
-	chi_medianbias, redpar = redpar, log = log, /bin44, /normal
-	endif;fiber median bias frame check/make
+		;create the median bias frames if need be:
+		fname = redpar.rootdir+redpar.biasdir+$
+		redpar.date+'_bin11_normal_medbias.dat'
+		print, 'Now testing median bias frame filename: ', fname 
+		if ~file_test(fname) then begin
+			print, '1x1 normal...'
+			vumps_medianbias, redpar = redpar, framearr = framearr/bin31, /normal
+		endif;~file_test(fname)
 	endif
 
 	flatindx=where(objnm1 eq 'quartz',num_flat)
 
 	if num_flat gt 0 then begin ; process dash in the logfile flat numbers
-	tmp=[0]
-	for ii=0,num_flat-1 do begin  ; fabricate flat fields
-	dum=obnm1[flatindx[ii]]
-	if strlen(dum) gt 5 then begin
-	gf=fix(strmid(dum,0,4))  &  gl=fix(strmid(dum,5,4))
-	diff=gl-gf+1
-	tmp=[tmp,gf+indgen(diff)]
-	endif else tmp=[tmp,dum]
-	endfor
-	flatset=tmp[1:*]  ; throw out the dummy
+		tmp=[0]
+		for ii=0,num_flat-1 do begin  ; fabricate flat fields
+			dum=obnm1[flatindx[ii]]
+			if strlen(dum) gt 5 then begin
+				gf=fix(strmid(dum,0,4))  &  gl=fix(strmid(dum,5,4))
+				diff=gl-gf+1
+				tmp=[tmp,gf+indgen(diff)]
+			endif else tmp=[tmp,dum]
+		endfor
+		flatset=tmp[1:*]  ; throw out the dummy
 	endif else begin
-	print, 'Sorting-hat: no flat files found. Returning.'
-	return
+		print, 'Sorting-hat: no flat files found. Returning.'
+		return
 	endelse
 
 	thariodindx=where(objnm1 eq 'thar' or objnm1 eq 'iodine',num_thariod)
