@@ -94,7 +94,7 @@ for i=0, 3 do begin
   print, '*************************************************'
   print, ' NOW ON TO THE ', MODEARR[I], ' MODE...'
   print, '*************************************************'
-  sorting_hat,date,run=pref,mode=modearr[i],/reduce,/getthid,/iod2fits
+  sorting_hat,date,image_prefix=pref,mode=modearr[i],/reduce,/getthid,/iod2fits
 endfor
 
 print, 'Finished @: ', systime()
