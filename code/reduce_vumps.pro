@@ -139,25 +139,14 @@ endelse
 stop
 
 ;FIND DEFAULT ORDER LOCATIONS.  
-;SLICERFLAT=1 means use narrow slit to define slicer order locations
-if redpar.slicerflat eq 0 or mode ne 'slicer' then begin
-	if order_ind ge 0 then begin
-	  VUMPS_dord, ordfname, redpar, orc, ome 
-	endif else VUMPS_dord, ordfname, redpar, orc, ome, image=sum
-	
-	name = redpar.rootdir+redpar.orderdir+prefix+mode+'.orc'
-	wdsk, orc, name, /new
-	print, 'REDUCE_VUMPS: order location is written to '+name  
-	;         if redpar.debug then stop, 'Debug stop after order location, .c to continue'
-endif else begin
-	name = redpar.rootdir+redpar.orderdir+prefix+'narrow.orc'
-	rdsk, orc, name, 1
-	orc[0,*] += redpar.dpks[modeidx]
-	;now subtract 2 outer orders since the slicer is larger than the slits:
-	redpar.nords -= 2
-	orc = orc[*,1:(redpar.nords - 1)]
-	;stop
-endelse
+if order_ind ge 0 then begin
+	vumps_dord, ordfname, redpar, orc, ome 
+endif else vumps_dord, ordfname, redpar, orc, ome, image=sum
+
+name = redpar.rootdir+redpar.orderdir+prefix+mode+'.orc'
+wdsk, orc, name, /new
+print, 'REDUCE_VUMPS: order location is written to '+name  
+;         if redpar.debug then stop, 'Debug stop after order location, .c to continue'
 
 ; GET FLAT FIELD
         xwid = redpar.xwids[modeidx]
