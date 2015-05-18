@@ -72,55 +72,55 @@ if ~keyword_set (flatset) then begin
     flatfnums = prefix + recnums
     flatfnames = indir + prefix + recnums + redpar.suffix  ;array of flat-field files 
  endelse 
-stop
+
 ;7.  Record number of Stellar spectra here:
-    nrec = n_elements(star)
-    recnums = strt(star, f='(I4.4)')  ; convert to string with leading zeros    
-    spnums = prefix + recnums
-    spfnames = indir + prefix + recnums +'.fits'
-   ; string array of spectrum file names
-    outprefix = redpar.prefix_tag +  prefix
-    outfnames= outdir + outprefix  + recnums 
-stop    
+nrec = n_elements(star)
+recnums = strt(star, f='(I4.4)')  ; convert to string with leading zeros    
+spnums = prefix + recnums
+spfnames = indir + prefix + recnums +'.fits'
+; string array of spectrum file names
+outprefix = redpar.red_prefix +  prefix
+outfnames= outdir + outprefix  + recnums 
 
 ; Order-Finding Exposure: strong exposure, such as iodine or bright star(B star)
-      if order_ind ge 0 then begin
+if order_ind ge 0 then begin
 	recint = order_ind
-	recnums = strtrim(string(recint,format='(I4.4)'),2) ;convert to strings with leading zeros   
-	ordfname = indir + prefix + recnums + '.fits'   
-     endif else ordframe='FLAT'
+	recnums = strt(recint,f='(I)')
+	ordfname = indir + prefix + recnums + redpar.suffix
+endif else ordframe='FLAT'
 
-stop
 ;THORIUMS:  Insert record numbers to reduce  here:
 ;3. Record numbers for thar and iodine (don-t need sky subtraVUMPSn)
-      if keyword_set(thar) then threc = thar else threc = -1 
-      if threc[0] ge 0 then begin
+if keyword_set(thar) then threc = thar else threc = -1 
+if threc[0] ge 0 then begin
 	thnrec = n_elements(threc)
 	threcnums = strtrim(string(threc,format='(I4.4)'),2) ;convert to strings 
 	thspfnames = indir + prefix + threcnums + '.fits'
 	thoutfnames = outdir + outprefix  + threcnums  
-      endif else threcnums = 'none'
-stop
+endif else threcnums = 'none'
   
-	print,''
-	print,'    ****ECHOING PARAMETER VALUES FROM REDUCE_VUMPS****'
-	print,'If values are incorrect stop the program'
-	print,' '
-	print,'SPECTRA:'
-	print,spnums
-	print,' '
-	print,'FLATS:'
-	print,flatfnums
-	print,' '
-	print,'DEFAULT ORDER FILE:'
-	print, order_ind
-	print,' '
-	print, 'THORIUM/IODINE: '
-	print, prefix + threcnums
-if redpar.debug ge 2 then print, 'REDUCE_VUMPS: press .C to continue' 
+print,''
+print,'    ****ECHOING PARAMETER VALUES FROM REDUCE_VUMPS****'
+print,'If values are incorrect stop the program'
+print,' '
+print,'SPECTRA:'
+print,spnums
+print,' '
+print,'FLATS:'
+print,flatfnums
+print,' '
+print,'DEFAULT ORDER FILE:'
+print, order_ind
+print,' '
+print, 'THORIUM/IODINE: '
+print, prefix + threcnums
+
+if redpar.debug ge 2 then print, 'REDUCE_VUMPS: type ".c" to continue' 
 if redpar.debug ge 2 then stop
+
 ; CRUNCH  FLATS
-name = redpar.rootdir+redpar.flatdir+prefix+mode+'.sum'          
+name = redpar.rootdir+redpar.flatdir+prefix+mode+'.sum'
+
 if keyword_set(flatset) then begin
 	;if redpar.debug then stop, 'REDUCE_VUMPS: debug stop before flats, .c to continue'
 	ADDFLAT, flatfnames,sum, redpar, im_arr  ; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
