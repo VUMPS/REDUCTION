@@ -165,7 +165,6 @@ if keyword_set(reduce) then begin
 	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_vumps'
 	;REDUCE ALL FRAMES
 	reduce_vumps, redpar, resolution, flatset=flatset, star=star, thar=thar, date=date
-	stop
 	endif ;n_exps > 0
 endif  ;reduce
 
