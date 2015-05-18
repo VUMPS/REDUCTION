@@ -52,7 +52,7 @@
 ;
 ;  MODIFICATION HISTORY:
 ;        c. Matt Giguere 2015-05-18T16:15:43
-;		adapted from CHIRON reduVUMPSn code
+;		adapted from CHIRON reduction code
 ;
 ;-
 pro vumps_spec, $
@@ -73,26 +73,26 @@ if n_params() lt 5 then begin
   retall
 endif
 
-	print,''
-	print,'VUMPS_SPEC: Entering routine.'
+print,''
+print,'VUMPS_SPEC: Entering routine.'
 ; cancel previous erros 
-	CATCH, /CANCEL
+CATCH, /CANCEL
 
-	print,'spfname=',spfname
+print,'spfname=',spfname
 
 ; Read the image file
-   im = getimage(spfname, redpar, header=head)  
-   if (size(im))[0] lt 2 then begin
-     print, 'Image is not found. Returning from VUMPS_SPEC.'
-     stop
-   endif
+im = getimage(spfname, redpar, header=head)  
+if (size(im))[0] lt 2 then begin
+print, 'Image is not found. Returning from VUMPS_SPEC.'
+stop
+endif
 
-   sz = size(im)		
-   ncol = sz[1]				;# columns in image
-   nrow = sz[2]				;# rows in image
-   szf = size(flat)		
-   ncolf = szf[1]				;# columns in image
-   nrowf = szf[2]				;# rows in image
+sz = size(im)		
+ncol = sz[1]				;# columns in image
+nrow = sz[2]				;# rows in image
+szf = size(flat)		
+ncolf = szf[1]				;# columns in image
+nrowf = szf[2]				;# rows in image
 
 if ncol ne ncolf  then begin
   print, 'VUMPS_SPEC: HALT! Your image is not the same size as your flat!'
@@ -101,8 +101,6 @@ endif
 
 ;OLD SCHOOL WAY OF FLAT FIELDING:
   if keyword_set(flat) and redpar.flatnorm eq 2 then spec = im/flat 
-
-stop
 
 ;EXTRACT SPECTRUM
 if not keyword_set(thar) then begin
@@ -116,12 +114,8 @@ endif else begin
 	redpar = redpar
 endelse
 
-stop
-
 ;save the original spec
 spec_o = spec
-
-stop
 
 if redpar.debug ge 1 then begin
 print, '***********************************************'
@@ -130,14 +124,14 @@ print, '***********************************************'
 endif
 
 if redpar.debug ge 2 then stop
-; flat-field correVUMPSn
-  if keyword_set(flat) and redpar.flatnorm le 1 then spec = double(spec)/flat else print, 'VUMPS_SPEC: WARNING: no flat-field correVUMPSn!'
+; flat-field correction
+  if keyword_set(flat) and redpar.flatnorm le 1 then spec = double(spec)/flat else print, 'VUMPS_SPEC: WARNING: no flat-field correction!'
 i=0
 specsz = size(spec)
 nords = specsz[2]
 
+!p.multi=[0, 1, 3]
 if redpar.debug ge 1 and redpar.debug le 2 then begin
-  !p.multi=[0, 1, 3]
   fdir = redpar.plotsdir + 'extracts/'
   spawn, 'mkdir '+fdir
   fdir = redpar.plotsdir + 'extracts/' + redpar.imdir
@@ -145,8 +139,6 @@ if redpar.debug ge 1 and redpar.debug le 2 then begin
   fdir = redpar.plotsdir + 'extracts/' + redpar.imdir + redpar.seqnum
   spawn, 'mkdir '+fdir
 endif;debug plots
-
-stop
 
 for i=0, nords-1 do begin
   if redpar.debug ge 1 and redpar.debug le 2 then begin
@@ -157,10 +149,9 @@ for i=0, nords-1 do begin
   
   if redpar.debug ge 1 then begin
 	plot, spec_o[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Extracted', /xsty, /ysty, ytitle='Flux'
-	plot, flat[*,i], title=redpar.date+' '+redpar.modes[redpar.mode]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
+	plot, flat[*,i], title=redpar.date+' '+redpar.resolutionarr[redpar.resolutionidx]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
 	plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
-	xtitle='Dispersion DireVUMPSn [pix]', ytitle='Flux'
-	stop
+	xtitle='Dispersion Direction [pix]', ytitle='Flux'
   endif
   
   if redpar.debug ge 1 and redpar.debug le 2 then begin
@@ -169,20 +160,19 @@ for i=0, nords-1 do begin
   endif
 endfor
 
-stop
-;stop
- ;YOU'RE GOING TO WANT TO INCLUDE THESE PLOTS!!
-	print,'VUMPS_SPEC: Saving extracted spectrum to ' + outfname
-    spec=rotate(spec,2)
-    
-    wdsk,spec,outfname,1,/new			;write image to disk
-    wdsk,head,outfname,2
-    
+;YOU'RE GOING TO WANT TO INCLUDE THESE PLOTS!!
+print,'VUMPS_SPEC: Saving extracted spectrum to ' + outfname
+spec=rotate(spec,2)
+
+writefits, outfname, spec, head
+;wdsk,spec,outfname,1,/new			;write image to disk
+;wdsk,head,outfname,2
+
 
 ; DEBUG
 ;   plot, intspec[*,0]
 ;   tvscl, congrid(intspec,n_elements(intspec[*,0], 8*n_elements(intspec[0,*]))
 ;   stop, 'VUMPS-SPEC DEBUG: spectrum plot'
-		
-	return
-end
+
+return
+end;vumps_spec.pro
