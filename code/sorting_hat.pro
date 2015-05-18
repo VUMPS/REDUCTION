@@ -142,32 +142,29 @@ if keyword_set(reduce) then begin
 		print, 'Sorting-hat: no flat files found. Returning.'
 		return
 	endelse
-	stop
 
 	;IDENTIFY THAR AND I2 FRAMES
 	thariodindx=where(objnm1 eq 'thar' or objnm1 eq 'iodine',num_thariod)
-	stop
+
 	print, '******************************'
 	print, 'THORIUM ARGON AND IODINE OBSERVATIONS TO BE PROCESSED: '
 	print, obnm1[thariodindx]
 	thar = fix(obnm1[thariodindx])
-	stop
 
 	starindx=where(objnm1 ne 'iodine' and objnm1 ne 'thar' $
 	and objnm1 ne 'focus' and objnm1 ne 'junk' and objnm1 ne 'dark' $
 	and objnm1 ne 'bias', num_star)
-	stop
+
 	if keyword_set(flatsonly) then starindx = where(objnm1 eq 'quartz')                               
 	if keyword_set(flatsonly) then thar = 0
 	star = fix(obnm1[starindx]) ; file numbers
 	if keyword_set(obsnm) then star = obsnm
 	if keyword_set(tharonly) then star = 0
-	stop
-
 
 	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_vumps'
 	;REDUCE ALL FRAMES
 	reduce_vumps, redpar, mode, flatset=flatset, star=star, thar=thar, date=date
+	stop
 	endif ;n_modes > 0
 endif  ;reduce
 
