@@ -119,19 +119,21 @@ if redpar.debug ge 2 then print, 'REDUCE_VUMPS: type ".c" to continue'
 if redpar.debug ge 2 then stop
 
 ; CRUNCH  FLATS
-name = redpar.rootdir+redpar.flatdir+prefix+mode+'.sum'
+sumname = redpar.rootdir+redpar.flatdir+prefix+mode+'_sum.fits'
 
 if keyword_set(flatset) then begin
 	;if redpar.debug then stop, 'REDUCE_VUMPS: debug stop before flats, .c to continue'
 	ADDFLAT, flatfnames,sum, redpar, im_arr  ; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
 	if (size(sum))[0] lt 2 then stop ; no data!
 
-	wdsk, sum, name, /new
-	print, 'REDUCE_VUMPS: summed flat is written to '+name  
+	;wdsk, sum, name, /new
+	writefits, sumname, sum
+	print, 'REDUCE_VUMPS: summed flat is written to '+sumname  
 	;if redpar.debug then stop, 'Debug stop after flats, .c to continue'
 endif else begin
 	print, 'Using previously saved flat '+name 
-	rdsk, sum, name, 1  ; get existing flat from disk
+	;rdsk, sum, name, 1  ; get existing flat from disk
+	sum = readfits(sumname)
 	bin = redpar.binnings[modeidx] ; set correct binning for order definition
 	redpar.binning = [fix(strmid(bin,0,1)), fix(strmid(bin,2,1))]
 	print, 'The binning is ', redpar.binning
@@ -155,7 +157,8 @@ print, 'REDUCE_VUMPS: order location is written to '+name
         name = redpar.rootdir+redpar.flatdir+prefix+mode+'.flat'
         fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
 
-        wdsk, flat, name, /new
+        ;wdsk, flat, name, /new
+        writefits, name, flat
         rdsk2fits, filename=fitsname, data = flat
         print, 'REDUCE_VUMPS: extracted flat field is written to '+name  
         FF = flat[*,*,0] ; the actual flat
