@@ -30,7 +30,7 @@ if redpar.debug ge 1 and redpar.debug le 2 then begin
   spawn, 'mkdir '+fdir
   fdir = redpar.plotsdir + 'flats/' + redpar.date
   spawn, 'mkdir '+fdir
-  fdir = redpar.plotsdir + 'flats/' + redpar.date +'/'+redpar.modes[redpar.mode]
+  fdir = redpar.plotsdir + 'flats/' + redpar.date +'/'+redpar.resolutionarr[redpar.resolutionidx]
   spawn, 'mkdir '+fdir
   fname = nextnameeps(fdir+'/'+'flats')
   ps_open, fname, /encaps, /color
