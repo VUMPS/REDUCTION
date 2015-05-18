@@ -75,12 +75,12 @@ if ~keyword_set (flatset) then begin
 
 ;7.  Record number of Stellar spectra here:
 nrec = n_elements(star)
-recnums = strt(star, f='(I4.4)')  ; convert to string with leading zeros    
+recnums = strt(star, f='(I)')  ; convert to string with leading zeros    
 spnums = prefix + recnums
-spfnames = indir + prefix + recnums +'.fits'
+spfnames = indir + prefix + recnums + redpar.suffix
 ; string array of spectrum file names
 outprefix = redpar.red_prefix +  prefix
-outfnames= outdir + outprefix  + recnums 
+outfnames= outdir + outprefix  + recnums  + '.fits'
 
 ; Order-Finding Exposure: strong exposure, such as iodine or bright star(B star)
 if order_ind ge 0 then begin
@@ -94,9 +94,9 @@ endif else ordframe='FLAT'
 if keyword_set(thar) then threc = thar else threc = -1 
 if threc[0] ge 0 then begin
 	thnrec = n_elements(threc)
-	threcnums = strtrim(string(threc,format='(I4.4)'),2) ;convert to strings 
-	thspfnames = indir + prefix + threcnums + '.fits'
-	thoutfnames = outdir + outprefix  + threcnums  
+	threcnums = strtrim(string(threc,format='(I)'),2) ;convert to strings 
+	thspfnames = indir + prefix + threcnums + redpar.suffix
+	thoutfnames = outdir + outprefix  + threcnums + '.fits'
 endif else threcnums = 'none'
   
 print,''
@@ -104,16 +104,16 @@ print,'    ****ECHOING PARAMETER VALUES FROM REDUCE_VUMPS****'
 print,'If values are incorrect stop the program'
 print,' '
 print,'SPECTRA:'
-print,spnums
+print,spfnames
 print,' '
 print,'FLATS:'
-print,flatfnums
+print,flatfnames
 print,' '
 print,'DEFAULT ORDER FILE:'
 print, order_ind
 print,' '
 print, 'THORIUM/IODINE: '
-print, prefix + threcnums
+print, thspfnames
 
 if redpar.debug ge 2 then print, 'REDUCE_VUMPS: type ".c" to continue' 
 if redpar.debug ge 2 then stop
@@ -137,7 +137,6 @@ endif else begin
 	redpar.binning = [fix(strmid(bin,0,1)), fix(strmid(bin,2,1))]
 	print, 'The binning is ', redpar.binning
 endelse
-stop
 
 ;FIND DEFAULT ORDER LOCATIONS.  
 if order_ind ge 0 then begin
@@ -147,8 +146,6 @@ endif else vumps_dord, ordfname, redpar, orc, ome, image=sum
 ;write the order locations to file:
 orcname = redpar.rootdir+redpar.orderdir+prefix+resolution+'.orc'
 writefits, orcname, orc
-
-stop
 
 print, 'REDUCE_VUMPS: order location is written to '+orcname  
 if redpar.debug then stop, 'Debug stop after order location, .c to continue'
@@ -176,7 +173,7 @@ if redpar.debug then stop, 'Debug stop after order location, .c to continue'
 	 	ENDFOR
 	 	CATCH, /CANCEL ; clear the catch block in case we bailed on the last one
 	endif
-stop
+
 PRINT, 'RIGHT BEFORE STELLAR CALL TO VUMPS_SPEC'
 if redpar.debug gt 1 then STOP
 ;STELLAR SPECTRA REDUVUMPSN (RED)
