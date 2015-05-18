@@ -5,12 +5,9 @@ compile_opt idl2
 numwf=n_elements(flatfiles) & owidefiles = flatfiles
 print, "Entering ADDFLAT routine Nflats= ",numwf
 
-stop
-
 sum = 0
 im = getimage(flatfiles[0], redpar, header=header) ; read the first image
 
-stop
 if (size(im))[0] lt 2 then return ; file not found
 
 geom = chip_geometry(flatfiles[0], hdr=header, redpar=redpar) ; returns CCD geometry in a structure 
@@ -27,8 +24,11 @@ normvalarr = 0d
 ctwf=0   
 fspot = 0 ;index the im array data cube
 for j = 0, numwf-1 do begin
-	im = getimage(flatfiles[j], redpar, header=header, geom=geom) ; read  image, correct for bias and non-linearity        
+	;read in image, trim out overscan, correct for bias:
+	im = getimage(flatfiles[j], redpar, header=header, geom=geom)
 	if redpar.flatnorm eq 1 then begin
+		;now find the median number of counts over a region of the chip
+		;to make sure that flat has a high SNR:
 		imswath = im[(sz[2]/2d - swidth):(sz[2]/2d + swidth),*]
 		imswmed = median(imswath, dimen=1, /double)
 		normval = max(imswmed)
@@ -43,9 +43,7 @@ for j = 0, numwf-1 do begin
    if normval ge redpar.minflatval then fspot++
 endfor
 
-stop
-
-;now to remove the spots for images that had too few counts:
+;now to remove flat exposures that had too few counts:
 if ctwf lt numwf then begin
   print, 'WARNING! You had flats that had too few counts! Now excluding them!'
   print, strt(ctwf)+' out of '+strt(numwf)+' are being used.'
@@ -56,6 +54,8 @@ if ctwf lt numwf then begin
   stop
   im_arr = im_arr1[*,*,0:(ctwf-1)]
 endif else im_arr = im_arr1
+
+;"un-normalize" the flats:
 if redpar.flatnorm eq 1 then im_arr *= mean(normvalarr[1:*])
 
 print, 'ADDFLAT: calculating median flat...'
@@ -66,8 +66,10 @@ for ncol=0,nc-1 do begin
   endfor
 endfor
 
+;find pixels le 0, and count them
+badp = where(sum le 0, nbadp)
+;and set these to 1 (the mean) to make them less influential
+if nbadp gt 0 then sum[badp] = 1.0
 
-badp = where(sum le 0, nbadp)   ;find pixels le 0, and counts them
-if nbadp gt 0 then     sum[badp] = 1.0           ;and fix them ?? is this a fix?
 print, 'ADDFLAT: Now leaving routine.'
 end
