@@ -4,7 +4,7 @@
 ;	PURPOSE: To sort files according to binning and slit pair with ThAr
 ;				to run reduction code for extraction
 ;
-; Modes for the sorting hat: 
+; Resolutions for the sorting hat: 
 ; 	hgh: high resolution mode
 ;	med:  medium resolution mode
 ;	low: low resolution mode
@@ -38,7 +38,7 @@ reduce=reduce, $
 end_check=end_check, $
 thar_soln=thar_soln, $
 getthid=getthid, $
-mode = mode, $
+resolution = resolution, $
 obsnm=obsnm, $
 flatsonly=flatsonly, $
 tharonly=tharonly
@@ -72,17 +72,18 @@ redpar.prefix = image_prefix
 print, 'SORTING_HAT: date '+date+' run: '+image_prefix
 
 ;   Modes keyword
-if ~keyword_set(mode) then begin 
-    print, 'MODE is not defined. Returning from sorting_hat'
+if ~keyword_set(resolution) then begin 
+    print, 'Image resolution is not defined. Returning from sorting_hat'
     return
 endif
 
-modeidx = (where(mode eq redpar.modes))[0] ; which mode?
+resolutionidx = (where(resolution eq redpar.resolutionarr))[0]
 
-;update the parameter structure with the current mode:
-redpar.mode = modeidx
-if modeidx lt 0 then begin
-    print, 'Error: unrecognized mode. Returning from sorting_hat'
+;update the parameter structure with the current resolution:
+redpar.resolutionidx = resolutionidx
+
+if resolutionidx lt 0 then begin
+    print, 'Error: unrecognized resolution. Returning from sorting_hat'
     return
  endif
 
@@ -113,10 +114,10 @@ ut = gettime(mdpt) ; floating-point hours, >24h in the morning
 ;**************************************************************
 if keyword_set(reduce) then begin
 	;only grab images in the current slit mode (low, med, or hgh):
-	xsl=where(slit eq redpar.modes[modeidx],n_modes)
-	if n_modes gt 0 then begin
+	xsl=where(slit eq redpar.resolutionarr[resolutionidx],n_exps)
+	if n_exps gt 0 then begin
 
-	;reduce the object number and name arrs to the subset in the current mode:
+	;reduce the object number and name arrs to the subset in the current resolution:
 	obnm1=obnm[xsl]
 	objnm1=objnm[xsl]
 
@@ -163,18 +164,18 @@ if keyword_set(reduce) then begin
 
 	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_vumps'
 	;REDUCE ALL FRAMES
-	reduce_vumps, redpar, mode, flatset=flatset, star=star, thar=thar, date=date
+	reduce_vumps, redpar, resolution, flatset=flatset, star=star, thar=thar, date=date
 	stop
-	endif ;n_modes > 0
+	endif ;n_exps > 0
 endif  ;reduce
 
 ;**************************************************************
 ; ******* ThAr processing *******************	
 ;**************************************************************
  if keyword_set(getthid) then begin
-		xsl=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx],n_modes)
+		xsl=where(bin eq redpar.binnings[resolutionidx] and slit eq redpar.resolutionarr[resolutionidx],n_exps)
 
-   if n_modes gt 0 then begin
+   if n_exps gt 0 then begin
 	   obnm1=obnm[xsl]  &   objnm1=objnm[xsl]  
 	   tharindx=where(objnm1 eq 'thar',num_thar)
 	   print, '******************************'
@@ -243,7 +244,7 @@ endif  ;reduce
 			 save, w, file=fnm+fsuf
 		  endelse
 	   endfor
-	endif;n_modes > 0
+	endif;n_exps > 0
 endif ; getthid
 
 ;**************************************************************
@@ -251,15 +252,15 @@ endif ; getthid
 ; from the input logsheet, find all observations matching the selected mode
 ;**************************************************************
 if keyword_set(iod2fits) then begin
-     x1=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx] $
+     x1=where(bin eq redpar.binnings[resolutionidx] and slit eq redpar.modes[resolutionidx] $
 	     and objnm ne 'junk' and objnm ne 'dark' $
             and objnm ne 'focus' and objnm ne 'bias',n_found)
  
-     tharindx=where((objnm eq 'thar') and (bin eq redpar.binnings[modeidx]) and (slit eq redpar.modes[modeidx]),  num_thar)
+     tharindx=where((objnm eq 'thar') and (bin eq redpar.binnings[resolutionidx]) and (slit eq redpar.resolutionarr[resolutionidx]),  num_thar)
 ;     if x1[0] lt 0 or num_thar eq 0 then stop, 'Sorting_hat: no matching observations or ThAr for iod2fits. Stop'
 if ( (n_found gt 0) and (num_thar gt 0)) then begin
 
-      print,'Number of '+mode+' observations: ',n_found
+      print,'Number of '+resolutionidx+' observations: ',n_found
       print, 'ThAr files: ', obnm[tharindx]
  
 ;  thar file is defined on input?
@@ -382,7 +383,7 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 ;THE END CHECK TO MAKE SURE EVERYTHING HAS BEEN PROCESSED:
 ;**************************************************************
  if keyword_set(end_check) then  begin
-	x1=where(bin eq redpar.binnings[modeidx] and slit eq redpar.modes[modeidx] and objnm ne 'quartz',n_check)
+	x1=where(bin eq redpar.binnings[resolutionidx] and slit eq redpar.resolutionarr[resolutionidx] and objnm ne 'quartz',n_check)
         if x1[0] lt 0 then begin
           print, 'Sorting_hat: no files found! returning'
           return
@@ -401,5 +402,4 @@ if ( (n_found gt 0) and (num_thar gt 0)) then begin
 			endelse 
 		endfor       
       endif ; end_check
-
 end ;sorting_hat.pro

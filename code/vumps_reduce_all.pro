@@ -85,16 +85,16 @@ endif;
 pref = uniqprefs
 print, 'The prefix is: ', pref
 
-modearr = [$
+resolutionarr = [$
 'low', $ 
 'med', $
 'hgh']
 
-for i=0, 3 do begin
+for i=0, 2 do begin
   print, '*************************************************'
-  print, ' NOW ON TO THE ', MODEARR[I], ' MODE...'
+  print, ' NOW ON TO THE ', resolutionarr[i], ' MODE...'
   print, '*************************************************'
-  sorting_hat,date,image_prefix=pref,mode=modearr[i],/reduce,/getthid,/iod2fits
+  sorting_hat,date,image_prefix=pref,resolution=resolutionarr[i],/reduce,/getthid,/iod2fits
 endfor
 
 print, 'Finished @: ', systime()
