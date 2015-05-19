@@ -152,7 +152,7 @@ if redpar.debug then stop, 'Debug stop after order location, .c to continue'
 
 ; GET FLAT FIELD
         xwid = redpar.xwids[resolutionidx]
-;       if redpar.debug then stop, 'REDUCE_VUMPS: debug stop before getting flat' 
+        if redpar.debug ge 1 then stop, 'REDUCE_VUMPS: debug stop before getting flat' 
         flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
         flatname = redpar.rootdir+redpar.flatdir+prefix+resolution+'_flat.fits'
         ;fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
