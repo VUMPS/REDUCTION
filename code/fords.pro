@@ -216,6 +216,7 @@ FOR direction = -1, 1, 2 DO BEGIN
    FOR isw1=imin,nswa/2-1 do begin			;loop through swaths
 	  isw = isw1*direction + nswa/2
 	  swa = aswa(*,isw)				;recover swath
+	  stop
 	  if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
 
 	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
@@ -272,29 +273,29 @@ FOR direction = -1, 1, 2 DO BEGIN
 
 		 if peak ge opk-poff and $
 		 peak le opk+poff then begin 		;only keep peaks near pixel max
-			ords(isw,ior) = peak			;valid peak, save in array
+			ords[isw,ior] = peak			;valid peak, save in array
 			pk(ior) = long(peak+0.5)		;search near peak in next swath
 		 endif else begin				;else: maybe last peak off
 			if isw ge 3 then begin			;true: can do median
 			   mdpk = median(ords(isw-3:isw-1,ior))	;median of last three peaks
 			   if peak ge mdpk-poff and $
 				  peak le mdpk+poff then begin 	;only keep peaks near pixel max
-				  ords(isw,ior) = peak		;valid peak, save in array
+				  ords[isw,ior] = peak		;valid peak, save in array
 				  pk(ior) = long(peak+0.5)		;search near peak in next swath
 			   endif
 			endif
 		 endelse
 
 		 edge:                     ;jump here to skip a swath
-		 ;if debug ge 3 then stop
+		 ;if redpar.debug ge 3 then stop
 	  endfor		;end order loop
 
 	  ; AT Oct 7 2011: diagnostic of swath peaks
 	  if debug gt 1 then begin 
 		 yy = [0,max(swa)]
-		 plot, swa
+		 plot, log(swa)
 		 for kk=0,nord-1 do oplot, ords[isw,kk]*[1,1], yy, li=1 
-		 ;  stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
+		 if redpar.debug ge 11 then stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
 	  endif
 
 	  if (isw1 eq 0) then pk0 = pk ; remember peaks in the central swath 
@@ -318,15 +319,16 @@ FOR direction = -1, 1, 2 DO BEGIN
 ENDFOR          ; end direction loop
 
 ; AT Oct 4 2011: find and print quadratic approximation for central swath
-if debug gt 0 then begin 
-;  plot, ords[*,0], yr=[0,nrow], psym=1
-;  for j=1,nord-1 do oplot, ords[*,j], psym=1
+if redpar.debug ge 4 then begin 
+  plot, ords[*,0], yr=[0,nrow], psym=1
+  for j=1,nord-1 do oplot, ords[*,j], psym=1
 
   ix = findgen(nord)
   y = redpar.binning[0]*reform(ords(nswa/2,*), nord)
   sel = where(y gt 0)
   res = poly_fit(ix[sel], y[sel],3)
   print, 'Central swath polynomial: ',res
+  stop
 endif
 
 ;Loop through orders, fitting polynomials to order locations determined above.
@@ -344,7 +346,7 @@ endif
 
     iwhr = where(ords[*,ior] gt 0,nwhr)		;find valid peaks
     nmiss = nswa - nwhr				;number of missing peaks
-;   print,'Order:',ior,'  # misses:',nmiss
+   if redpar.debug ge 11 then print,'Order:',ior,'  # misses:',nmiss
     if float(nmiss)/nswa gt mmfrac then begin	;sufficient peaks to fit?
 		if ior le 4 or ior ge nord-4 then $       ;test
 			goto,jump1				;ignore problems near edges
@@ -368,6 +370,7 @@ endif
 
     if ome(ior) gt maxome then begin		;orc mean error too large?
       print, 'FORDS: Excessive scatter in peaks - returning without orcs.'
+      if redpar.bebug ge 11 then stop
       orc = 0					;scalar zero flags error
       return
     endif
