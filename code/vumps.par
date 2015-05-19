@@ -23,7 +23,7 @@ orderdir: 'tous/vumps/orders/',           ; order locations
 barydir:  'tous/VUMPS/bary/',             ; code for barycentric correction? 
 xdim: 4200,                  ;number of pixels in x dimension
 ydim: 4112,                  ;number of pixels in y dimension
-xtrim: [0,4087],             ; trim along dispersion direction, UNBINNED pixels
+xtrim: [50,4087],             ; trim along dispersion direction, UNBINNED pixels
 ytrim: [0,4111],             ; vertical trim in cross-disp., UNBINNED pixels
 readmodes:  ['fast','medium', 'slow'], ; readout modes
 nlc: [[0, 0],[0, 0]], ;non-linearity coefs. [left,right] in fast and normal
@@ -42,13 +42,14 @@ resolutionidx:  0,      ; index of the resolution (low, med, hgh)
 flatnorm:  1,                      
 minflatval: 1d4,       ; minimum acceptable value for flats 
 slicerflat:  1,                      ; set this to 1 to use the narrow slit + shift & width change for order finding
-pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;yt=2 poly coefs of peak maxima @center y(iord), unbinned pixels
-nords:  59,                    ; number of orders to extract
+pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;kb15 flats (85 orders extracted)
+;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;bg7 flats (only 59 orders extracted)
+nords:  83,                    ; number of orders to extract
 resolutionarr: ['low','med','hgh'],  ; observing modes 
 xwids: [8,8,8,5,18],             ; extraction width, binned pixels 
 dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels 
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
-debug: 1}                      ; 1 in debug mode, with plots and stops
+debug: 11}                      ; 1 in debug mode, with plots and stops
 
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES1
@@ -58,3 +59,4 @@ debug: 1}                      ; 1 in debug mode, with plots and stops
 ;3. Stops in debugging locations. Plots to screen. Prints a lot. 
 ;4. Everything. Run this when VUMPS has been modified to determine new order locations. 
 ;	 Once finished, copy the new best fit order locations to the "pkcoefs" tag above.
+;11. Whoa.
