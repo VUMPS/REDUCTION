@@ -69,7 +69,7 @@ if redpar.resolutionidx ge 0  then begin ; known mode
    dpks = redpar.dpks[redpar.resolutionidx]
 endif else begin
    smbox = 9/redpar.binning[0]		;initial swath smoothing window size
-   poff = 9/redpar.binning[0]		;offset to edge of peak poly fit window
+   poff = redpar.poff[redpar.resolutionidx		;offset to edge of peak poly fit window
    dpks = 0 
 endelse
 if debug ge 1 then print, 'FORDS: smoothing length, half-width, offset: ', smbox, poff, dpks
@@ -203,7 +203,7 @@ ENDIF;DEBUG>3 => REDO ORDER LOCATIONS FROM SCRATCH
   if debug then print,'FORDS: Mapping entire image.  Be patient....'
   pk = long(pk+0.5)				;make sure pk is integral
 
-  pk0 = pk ; remember the peaks in the central swatn
+  pk0 = pk ; remember the peaks in the central swath
 
 ;Find  peaks in each swath.
   xfine = findgen(20*poff+1)/10 - poff		;abscissa for fine resmapling
@@ -216,16 +216,36 @@ FOR direction = -1, 1, 2 DO BEGIN
    FOR isw1=imin,nswa/2-1 do begin			;loop through swaths
 	  isw = isw1*direction + nswa/2
 	  swa = aswa(*,isw)				;recover swath
-	  stop
 	  if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
 
+		if redpar.debug ge 4 then begin
+		;plot initial guess of peaks in each 
+		;order of the current swath
+		;a "swath" is a cut in the cross-dispersion direction
+		;GREEN: initial guess
+		;BLUE: maximum offset (poff) to find peak over in the blue direction
+		;RED: maximum offset to find peak over in the red direction
+		loadct, 39, /silent
+		plot, alog10(swa - min(swa)+1), /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts'
+		for ordidx=0, nord-1 do begin
+			oplot, [pk[ordidx], pk[ordidx]], [0, max(swa)], col=120
+			oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
+			oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
+		endfor
+		stop
+		endfor;plot initial guess and poff
+
 	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
-		 opk = pk(ior)				;old peak location
+		 opk = pk[ior]				;initial peak location
+
+		 ;ensure the approximate peak position is not within
+		 ;poff pixels from the edge of the chip:
 		 if opk lt poff or opk gt nrow-poff-1 then begin
-			pk(ior) = 0				;flag peak off edge
+			pk[ior] = 0				;flag peak off edge
 			;stop
 			goto,edge				;peak too near edge,next order
 		 endif
+		 
 		 z = swa[opk-poff:opk+poff]		;region where peak is expected
 		 dummy = max(z,mx)				;get location of maximum
 		 mx = opk - poff + mx(0)			;local max pixel OR edge
