@@ -69,7 +69,7 @@ if redpar.resolutionidx ge 0  then begin ; known mode
    dpks = redpar.dpks[redpar.resolutionidx]
 endif else begin
    smbox = 9/redpar.binning[0]		;initial swath smoothing window size
-   poff = redpar.poff[redpar.resolutionidx		;offset to edge of peak poly fit window
+   poff = redpar.poff[redpar.resolutionidx]		;offset to edge of peak poly fit window
    dpks = 0 
 endelse
 if debug ge 1 then print, 'FORDS: smoothing length, half-width, offset: ', smbox, poff, dpks
@@ -233,7 +233,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 			oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
 		endfor
 		stop
-		endfor;plot initial guess and poff
+		endif;plot initial guess and poff
 
 	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
 		 opk = pk[ior]				;initial peak location
@@ -313,7 +313,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 	  ; AT Oct 7 2011: diagnostic of swath peaks
 	  if debug gt 1 then begin 
 		 yy = [0,max(swa)]
-		 plot, log(swa)
+		 plot, swa
 		 for kk=0,nord-1 do oplot, ords[isw,kk]*[1,1], yy, li=1 
 		 if redpar.debug ge 11 then stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
 	  endif
@@ -390,7 +390,7 @@ endif
 
     if ome(ior) gt maxome then begin		;orc mean error too large?
       print, 'FORDS: Excessive scatter in peaks - returning without orcs.'
-      if redpar.bebug ge 11 then stop
+      if redpar.debug ge 11 then stop
       orc = 0					;scalar zero flags error
       return
     endif

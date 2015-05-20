@@ -57,7 +57,7 @@ if ~keyword_set(image) then begin
 	endif
 endif
 
-swid = 32
+swid = redpar.swid
 
 ;find order location coeffs
 fords,image,swid,orc, ome, redpar
