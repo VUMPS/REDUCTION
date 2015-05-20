@@ -86,9 +86,9 @@ pref = uniqprefs
 print, 'The prefix is: ', pref
 
 resolutionarr = [$
-'low', $ 
+'hgh', $ 
 'med', $
-'hgh']
+'low']
 
 for i=0, 2 do begin
   print, '*************************************************'
