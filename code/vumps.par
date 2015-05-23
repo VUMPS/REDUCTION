@@ -23,7 +23,7 @@ orderdir: 'tous/vumps/orders/',           ; order locations
 barydir:  'tous/VUMPS/bary/',             ; code for barycentric correction? 
 xdim: 4200,                  ;number of pixels in x dimension
 ydim: 4112,                  ;number of pixels in y dimension
-xtrim: [50,4087],             ; trim along dispersion direction, UNBINNED pixels
+xtrim: [500,3800],             ; trim along dispersion direction, UNBINNED pixels
 ytrim: [0,4111],             ; vertical trim in cross-disp., UNBINNED pixels
 readmodes:  ['fast','medium', 'slow'], ; readout modes
 nlc: [[0, 0],[0, 0]], ;non-linearity coefs. [left,right] in fast and normal
@@ -42,8 +42,9 @@ resolutionidx:  0,      ; index of the resolution (low, med, hgh)
 flatnorm:  1,                      
 minflatval: 1d4,       ; minimum acceptable value for flats 
 slicerflat:  1,                      ; set this to 1 to use the narrow slit + shift & width change for order finding
-pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;kb15 flats (85 orders extracted)
-;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;bg7 flats (only 59 orders extracted)
+pkcoefs: [243.07574,79.002059,-0.54537681,0.0018460401],  ;150522 kb15 flats (85 orders extracted)
+;pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;150519 kb15 flats (83 orders extracted)
+;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;150516 bg7 flats (only 59 orders extracted)
 nords:  83,                    ; number of orders to extract
 resolutionarr: ['low','med','hgh'],  ; observing modes 
 xwids: [18,18,18],             ; extraction width, binned pixels 
@@ -51,7 +52,7 @@ dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels
 swid: 32,        ;the "swath" width used in fords. This is the number of chunks to break the order into (in the dispersion direction) when finding peaks to fit a polynomial to for order locations.
 poff: [10, 10, 10, 10], ;cross-disp half width for order findings (see fords.pro)
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
-debug: 1}                      ; 1 in debug mode, with plots and stops
+debug: 0}                      ; 1 in debug mode, with plots and stops
 
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES1
