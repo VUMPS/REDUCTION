@@ -126,6 +126,7 @@ if keyword_set(flatset) then begin
 	ADDFLAT, flatfnames,sum, redpar, im_arr  ; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
 	if (size(sum))[0] lt 2 then stop ; no data!
 
+	;write a trimmed flat to file: SUM DOUBLE Array[4038,4112]
 	writefits, sumname, sum
 	print, 'REDUCE_VUMPS: summed flat is written to '+sumname  
 	;if redpar.debug then stop, 'Debug stop after flats, .c to continue'
@@ -151,18 +152,19 @@ print, 'REDUCE_VUMPS: order location is written to '+orcname
 if redpar.debug then stop, 'Debug stop after order location, .c to continue'
 
 ; GET FLAT FIELD
-        xwid = redpar.xwids[resolutionidx]
-        if redpar.debug ge 1 then stop, 'REDUCE_VUMPS: debug stop before getting flat' 
-        flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
-        flatname = redpar.rootdir+redpar.flatdir+prefix+resolution+'_flat.fits'
-        ;fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
+xwid = redpar.xwids[resolutionidx]
+if redpar.debug gt 1 then stop, 'REDUCE_VUMPS: debug stop before getting flat' 
+flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
 
-        ;wdsk, flat, name, /new
-        writefits, flatname, flat
-        ;rdsk2fits, filename=fitsname, data = flat
-        print, 'REDUCE_VUMPS: extracted flat field is written to '+flatname  
-        FF = flat[*,*,0] ; the actual flat
-        if redpar.debug ge 2 then stop, 'Debug stop after flat field, .c to continue'
+flatname = redpar.rootdir+redpar.flatdir+prefix+resolution+'_flat.fits'
+;fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
+
+;wdsk, flat, name, /new
+writefits, flatname, flat
+;rdsk2fits, filename=fitsname, data = flat
+print, 'REDUCE_VUMPS: extracted flat field is written to '+flatname  
+FF = flat[*,*,0] ; the actual flat
+if redpar.debug ge 2 then stop, 'Debug stop after flat field, .c to continue'
 
 ;REDUCE ThAr,Iodines (RED)
     if keyword_set(thar) then begin
