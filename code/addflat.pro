@@ -40,7 +40,7 @@ for j = 0, numwf-1 do begin
 	if redpar.flatnorm eq 0 then normval = 1d
 	print, 'fspot is: ', fspot
 	if redpar.flatnorm le 1 then im_arr1[*,*,fspot] = im/normval
-   if normval ge redpar.minflatval then fspot++
+    if normval ge redpar.minflatval then fspot++
 endfor
 
 ;now to remove flat exposures that had too few counts:
