@@ -8,7 +8,9 @@
 ;20150518 adapted to VUMPS
 ;
 function getflat, im, orc, xwid, redpar, im_arr=im_arr
- 
+
+!p.multi=[0, 1, 1]
+
 order = 6 ; polynomial order
 threshold = 0.1 ; min. signal relative to max in each order
 ;getsky,im,orc,sky = sky   ; subtract scattered light  
@@ -63,10 +65,11 @@ for j = 0, nord-1 do begin      ;row by row polynomial
   ;contf, s, ssc, nord=6, frac=0.5, sbin=30
 ;stop
 if redpar.debug ge 1 then begin
-  plot, s, li=1, color=50, title='Order '+strt(j), /xsty
-  oplot, ss
+  plot, ix, s, li=1, title='Order '+strt(j), /xsty, /nodata
+  oplot, ix, s, li=1, color=50
+  oplot, ix, ss
   loadct, 39, /silent
-  oplot, yfit, color=250
+  oplot, ix[stronger], yfit, color=250
   print, j
   x1 = 0.2*n_elements(s)
   x2 = 0.7*n_elements(s)
@@ -74,6 +77,7 @@ if redpar.debug ge 1 then begin
   y2 = y1
   xyouts, x1, y1, '(N!dADU!n)!u1/2!n: '+strt(sqrt(max(ss)), f='(F8.1)')
   xyouts, x2, y2, greek('mu')+'/'+greek('sigma')+': '+strt(mean(s/ss)/stddev(s/ss), f='(F8.1)')
+  if redpar.debug ge 4 then stop
 endif;debug plots
 if redpar.debug ge 1 and redpar.debug le 2 then begin
   if j mod 6 eq 5 then begin
