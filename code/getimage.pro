@@ -68,23 +68,24 @@ if redpar.biasmode eq 0 then begin
    ; quadrant from the FULL upper left quadrant:
    idx = geom.ccd_full.upleft
    bidx = geom.bias_trim.upleft
-   im[idx[0]:idx[1], idx[2]:idx[3]] -= median(im[bidx[0]:bidx[1], bidx[2]:bidx[3]])
+   for i=idx[2], idx[3] do im[idx[0]:idx[1], i] -= median(im[bidx[0]:bidx[1], i])
    
    ;2. now do the same for the upper right quadrant:
    idx = geom.ccd_full.upright
    bidx = geom.bias_trim.upright
-   im[idx[0]:idx[1], idx[2]:idx[3]] -= median(im[bidx[0]:bidx[1], bidx[2]:bidx[3]])
+   for i=idx[2], idx[3] do im[idx[0]:idx[1], i] -= median(im[bidx[0]:bidx[1], i])
    
    ;3. and the bottom left quadrant:
    idx = geom.ccd_full.botleft
    bidx = geom.bias_trim.botleft
-   im[idx[0]:idx[1], idx[2]:idx[3]] -= median(im[bidx[0]:bidx[1], bidx[2]:bidx[3]])
+   for i=idx[2], idx[3] do im[idx[0]:idx[1], i] -= median(im[bidx[0]:bidx[1], i])
    
    ;4. now the bottom right:
    idx = geom.ccd_full.botright
    bidx = geom.bias_trim.botright
-   im[idx[0]:idx[1], idx[2]:idx[3]] -= median(im[bidx[0]:bidx[1], bidx[2]:bidx[3]])
+   for i=idx[2], idx[3] do im[idx[0]:idx[1], i] -= median(im[bidx[0]:bidx[1], i])
    ;now subtract the median bias frame:
+
    im = im - bobsmed
    print, 'GETIMAGE: SUBTRACTED MEDIAN BIAS FRAME:'
    print, fname
