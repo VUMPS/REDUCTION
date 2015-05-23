@@ -218,7 +218,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 	  swa = aswa(*,isw)				;recover swath
 	  if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
 
-		if redpar.debug ge 4 then begin
+		if redpar.debug gt 4 then begin
 		;plot initial guess of peaks in each 
 		;order of the current swath
 		;a "swath" is a cut in the cross-dispersion direction
