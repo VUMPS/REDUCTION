@@ -28,7 +28,8 @@ date = date, $
 doppler = doppler, $
 skipbary = skipbary, $
 skipdistrib = skipdistrib, $
-skipqc = skipqc
+skipqc = skipqc, $
+resolution=resolution
 
 
 if keyword_set(help) then begin
@@ -85,12 +86,16 @@ endif;
 pref = uniqprefs
 print, 'The prefix is: ', pref
 
+if keyword_set(resolution) then begin
+resolutionarr = resolution
+endif else begin
 resolutionarr = [$
 'hgh', $ 
 'med', $
 'low']
+endelse
 
-for i=0, 2 do begin
+for i=0, n_elements(resolutionarr)-1 do begin
   print, '*************************************************'
   print, ' NOW ON TO THE ', resolutionarr[i], ' MODE...'
   print, '*************************************************'
