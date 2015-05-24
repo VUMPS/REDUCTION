@@ -77,7 +77,7 @@ if redpar.debug ge 1 then begin
   y2 = y1
   xyouts, x1, y1, '(N!dADU!n)!u1/2!n: '+strt(sqrt(max(ss)), f='(F8.1)')
   xyouts, x2, y2, greek('mu')+'/'+greek('sigma')+': '+strt(mean(s/ss)/stddev(s/ss), f='(F8.1)')
-  if redpar.debug ge 4 then stop
+  if redpar.debug ge 10 then stop
 endif;debug plots
 if redpar.debug ge 1 and redpar.debug le 2 then begin
   if j mod 6 eq 5 then begin
