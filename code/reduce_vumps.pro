@@ -171,7 +171,7 @@ if redpar.debug ge 2 then stop, 'Debug stop after flat field, .c to continue'
 		numthar=n_elements(threc)
 	 	FOR i=0,numthar-1 do begin
 	   		redpar.seqnum = strt(threcnums[i])
-			VUMPS_SPEC,prefix,thspfnames[i], thoutfnames[i],redpar, orc,xwid=xwid, flat=ff,/nosky
+			VUMPS_SPEC,prefix,thspfnames[i], thoutfnames[i],redpar, orc,xwid=xwid,/nosky
 	 	ENDFOR
 	 	CATCH, /CANCEL ; clear the catch block in case we bailed on the last one
 	endif
