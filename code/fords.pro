@@ -74,7 +74,7 @@ endif else begin
 endelse
 if debug ge 1 then print, 'FORDS: smoothing length, half-width, offset: ', smbox, poff, dpks
 
-orcdeg = 4				;degree of poly for order location fits
+orcdeg = 6				;degree of poly for order location fits
 mmfrac = 0.25				;maximum fraction missing peaks allowed
 maxome = 2.				;max allowable mean pixel error in orcs
 if debug ge 1 then print,'FORDS: Degree of polynomial fit to order locations = '+ strtrim(string(orcdeg),2)
