@@ -91,13 +91,15 @@ sz = size(im)
 ncol = sz[1]				;# columns in image
 nrow = sz[2]				;# rows in image
 szf = size(flat)		
+
+if keyword_set(flat) then begin
 ncolf = szf[1]				;# columns in image
 nrowf = szf[2]				;# rows in image
-
 if ncol ne ncolf  then begin
   print, 'VUMPS_SPEC: HALT! Your image is not the same size as your flat!'
   stop
-endif
+endif;im and flat not equal dimensions
+endif;KW(flat)
 
 ;OLD SCHOOL WAY OF FLAT FIELDING:
   if keyword_set(flat) and redpar.flatnorm eq 2 then spec = im/flat 
@@ -121,6 +123,7 @@ if redpar.debug ge 1 then begin
 print, '***********************************************'
 print, 'RIGHT BEFORE FLAT-FIELDING...'
 print, '***********************************************'
+if redpar.debug gt 1 then stop
 endif
 
 if redpar.debug ge 2 then stop
@@ -149,7 +152,11 @@ for i=0, nords-1 do begin
   
   if redpar.debug ge 1 then begin
 	plot, spec_o[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Extracted', /xsty, /ysty, ytitle='Flux'
-	plot, flat[*,i], title=redpar.date+' '+redpar.resolutionarr[redpar.resolutionidx]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
+	if keyword_set(flat) then begin
+		plot, flat[*,i], title=redpar.date+' '+redpar.resolutionarr[redpar.resolutionidx]+' Mode Order '+strt(i)+' Flat', /xsty, /ysty, ytitle='Flux'
+	endif else begin
+		plot, spec_o[*,i], /nodata
+	endelse
 	plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
 	xtitle='Dispersion Direction [pix]', ytitle='Flux'
   endif
@@ -163,6 +170,12 @@ endfor
 ;YOU'RE GOING TO WANT TO INCLUDE THESE PLOTS!!
 print,'VUMPS_SPEC: Saving extracted spectrum to ' + outfname
 spec=rotate(spec,2)
+spec[where(spec lt 0)] = 0d
+sxaddpar, head, 'BSCALE', 1.
+sxaddpar, head, 'BZERO', 0.
+sxaddpar, head, 'BITPIX', -64
+
+
 
 writefits, outfname, spec, head
 ;wdsk,spec,outfname,1,/new			;write image to disk
