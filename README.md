@@ -14,3 +14,9 @@ This code is written in IDL and makes use of the following libraries:
 This repository contains a convenience routine that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
 
     ./vumpsr.sh
+    Now setting the path to +/projects/VUMPS/REDUCTION/code:+/idl/mpfit:+projects/idlutils:+/idl:+/projects/IDLAstro/pro:+/projects/coyote:+/Applications/exelis/idl/lib
+    Now changing the directory to: /projects/VUMPS/REDUCTION/code
+    IDL Version 8.2.2, Mac OS X (darwin x86_64 m64). (c) 2012, Exelis Visual Information Solutions, Inc.
+    Installation number: 2.
+    Licensed for use by: VUMPS1
+    IDL> 
