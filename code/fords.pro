@@ -140,49 +140,61 @@ if debug gt 0  then begin
 endif
 if redpar.debug ge 1 and redpar.debug le 2 then ps_close
 IF debug gt 3 THEN BEGIN
-   ;20120219 ~MJG
-   ;USE MPFIT_POLY AND THE CURSOR PROCEDURE TO FIND THE PEAKS
-   ;BY HAVING THE USER PROVIDE THE INITIAL GUESS TO PEAK
-   ;LOCATIONS
-   
-   click_ords = ''
-   READ, 'WOULD YOU LIKE TO IDENTIFY ORDER LOCATIONS MANUALLY (y/n)?', click_ords
-   if click_ords ne 'n' then begin
-   PRINT, '***********************************************'
-   PRINT, 'NOW IDENTIFYING ORDER LOCATIONS....'
-   PRINT, 'CLICK IN THE CENTER OF EACH ORDER.'
-   PRINT, "(Y VALUE DOESN'T MATTER)"
-   PRINT, '***********************************************'
-   yy = [0,max(swa)]
-   usersymbol, 'circle', /fill
-   plot, swa, /xsty, /ysty, $
-   xtitle='Cross Dispersion Direction', $
-   ytitle='Counts in Central Swath'
-   xeye = dblarr(n_elements(iord))
-   for eyeord = 0, n_elements(xeye)-1 do begin
-	  cursor, xcur, ycur, /down
-	  xeye[eyeord] = xcur
-	  print, eyeord, xcur, ycur
-	  oplot, [xcur,xcur], [ycur, ycur], ps=8, color=230
-   endfor
-   loadct, 39, /silent
-   res = mpfit_poly(iord, xeye, order=3, init=[38., 76., -0.04, -0.003, 0d], fixed=[0,0,0,0,1], yfit = yfit)
-   plot, iord, xeye, ps=8
-   oplot, iord, yfit, ps=8, color=230
-   pkcoefs = res[0:3] * redpar.binning[0]
-   pk = poly(iord,pkcoefs)/redpar.binning[0] ; default peaks in binned pixels, central swath
-   plot, swa, /xsty, /ysty, $
-   xtitle='Cross Dispersion Direction', $
-   ytitle='Counts in Central Swath'
-   for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
-   PRINT, '***********************************************'
-   PRINT, 'IF IT LOOKS GOOD ENTER THESE FOR PKCOEFS IN YOUR .PAR FILE'
-   PRINT, 'pkcoefs: [', strt(pkcoefs[0]), ',', $
-						 strt(pkcoefs[1]), ',', $
-						 strt(pkcoefs[2]), ',', $
-						 strt(pkcoefs[3]), ']'
-   PRINT, '***********************************************'
-   endif;click_ords was true
+	;20120219 ~MJG
+	;USE MPFIT_POLY AND THE CURSOR PROCEDURE TO FIND THE PEAKS
+	;BY HAVING THE USER PROVIDE THE INITIAL GUESS TO PEAK
+	;LOCATIONS
+
+	click_ords = ''
+	READ, 'WOULD YOU LIKE TO IDENTIFY ORDER LOCATIONS MANUALLY (y/n)?', click_ords
+	if click_ords ne 'n' then begin
+	PRINT, '***********************************************'
+	PRINT, 'NOW IDENTIFYING ORDER LOCATIONS....'
+	PRINT, 'CLICK IN THE CENTER OF EACH ORDER.'
+	PRINT, "(Y VALUE DOESN'T MATTER)"
+	PRINT, '***********************************************'
+	yy = [0,max(swa)]
+	usersymbol, 'circle', /fill
+	plot, swa, /xsty, /ysty, $
+	xtitle='Cross Dispersion Direction', $
+	ytitle='Counts in Central Swath'
+	xeye = dblarr(n_elements(iord))
+	for eyeord = 0, n_elements(xeye)-1 do begin
+		cursor, xcur, ycur, /down
+		xeye[eyeord] = xcur
+		print, eyeord, xcur, ycur
+		oplot, [xcur,xcur], [ycur, ycur], ps=8, color=230
+	endfor
+	loadct, 39, /silent
+
+	case orcdeg of
+		3: polyinit = [38., 76., -0.04, -0.003, 0d]
+		6: polyinit = [0., 1., 1e-3, 1e-3, 0d]
+	endcase
+
+	;create an array of fixed parameters to pass into MPFIT:
+	polyfixed = dblarr(orcdeg)
+	; now set the x offset to be fixed (this means the order numbers
+	; should not change):
+	polyfixed[-1] = 1
+
+	res = mpfit_poly(iord, xeye, order=3, init=polyinit, fixed=polyfixed, yfit = yfit)
+	plot, iord, xeye, ps=8
+	oplot, iord, yfit, ps=8, color=230
+	pkcoefs = res[0:3] * redpar.binning[0]
+	pk = poly(iord,pkcoefs)/redpar.binning[0] ; default peaks in binned pixels, central swath
+	plot, swa, /xsty, /ysty, $
+	xtitle='Cross Dispersion Direction', $
+	ytitle='Counts in Central Swath'
+	for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
+	PRINT, '***********************************************'
+	PRINT, 'IF IT LOOKS GOOD ENTER THESE FOR PKCOEFS IN YOUR .PAR FILE'
+	PRINT, 'pkcoefs: [', strt(pkcoefs[0]), ',', $
+					 strt(pkcoefs[1]), ',', $
+					 strt(pkcoefs[2]), ',', $
+					 strt(pkcoefs[3]), ']'
+	PRINT, '***********************************************'
+	endif;click_ords was true
 ENDIF;DEBUG>3 => REDO ORDER LOCATIONS FROM SCRATCH
 
 ;  nord = n_elements(pk)				;number of orders
