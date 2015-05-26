@@ -1,9 +1,12 @@
-#Reduction Code Quality Checks
+=============================
+Reduction Code Quality Checks
+=============================
 
 This document describes the analysis and quality checks
 of the VUMPS commissioning data taken on 150523 and 150524.
 
-##Additional flats
+Additional flats
+================
 
 High SNR flats were not taken on 150524, but *were* taken on 150523. Unfortunately, many changes were made to the
 Spectrometer during commissioning, and one cannot to certain
