@@ -145,6 +145,17 @@ if keyword_set(reduce) then begin
 		print, 'Sorting-hat: no flat files found. Returning.'
 		return
 	endelse
+	
+	;IDENTIFY BLUE FRAMES:
+	if redpar.blues ge 1 then begin
+		blueidx = where(objnm1 eq 'blues', num_blues)
+		if num_blues then begin
+			blueset = obnm1[blueidx]
+		endif else begin
+			print, 'Sorting-hat: no blues files found. Returning.'
+			return
+		endelse
+	endif;use blues
 
 	;IDENTIFY THAR AND I2 FRAMES
 	thariodindx=where(objnm1 eq 'thar' or objnm1 eq 'iodine',num_thariod)
@@ -166,7 +177,9 @@ if keyword_set(reduce) then begin
 
 	if redpar.debug ge 2 then print, 'Sorting-HAT: before calling reduce_vumps'
 	;REDUCE ALL FRAMES
-	reduce_vumps, redpar, resolution, flatset=flatset, star=star, thar=thar, date=date
+	reduce_vumps, redpar, resolution, flatset=flatset, $
+		star=star, thar=thar, date=date, $
+		blueset=blueset
 	endif ;n_exps > 0
 endif  ;reduce
 
