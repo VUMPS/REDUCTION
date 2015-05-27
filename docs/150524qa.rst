@@ -3,22 +3,21 @@ Reduction Code Quality Checks
 =============================
 
 This document describes the analysis and quality checks
-of the VUMPS commissioning data taken on 150523 and 150524.
+of the VUMPS reduction code. Data used for the analysis
+were taken on 150523 and 150524, which were the last two
+days of the initial commissioning period at Yale.
 
 Additional flats
 ================
 
-High SNR flats were not taken on 150524, but *were* taken on 150523. Unfortunately, many changes were made to the
-Spectrometer during commissioning, and one cannot to certain
-that flats taken on the 23rd will line up with spectra taken
-on the 24th.
+High SNR flats were not taken on 150524, but *were* taken on 150523. Many changes were made to the spectrometer during commissioning, and one cannot be certain that spectra taken on the 23rd will line up with spectra taken on the 24th.
 
-To ensure the flats line up, I wrote the routine ```compare_flats.pro`` to restore and project three separate exposures in the cross-dispersion direction: a flat taken on the 23rd, a flat taken on the 24th, and a solar spectrum taken with the lens on the fiber head on the 24th. Below is the result:
+The routine ```compare_flats.pro`` restores and projects in the cross-dispersion direction three separate exposures: a flat taken on the 23rd, a flat taken on the 24th, and a solar spectrum taken with the lens on the fiber head that was taken on the 24th. Below is the result:
 
 .. image:: figures/compare_flats.png
   :width: 90%
 
-This plot shows that orders in the flats from the 23rd and 24th, and solar spectra from the 24th all line up well. I then copied the flats from the 23rd to the data directory for the 24th and renamed them so that they can be used by the reduction code:
+This shows that orders in the flats from the 23rd and 24th, and solar spectra from the 24th all line up well. Now that consistent order positions have been established, flats taken on the 23rd can be copied to the data directory for the 24th and renamed to be used for reducing data taken on 150524:
 
 ::
 
@@ -26,10 +25,23 @@ This plot shows that orders in the flats from the 23rd and 24th, and solar spect
     cp /raw/vumps/150523/vumps150523.10[4-6]*
     rename -v 's/vumps150523.10(\d+).fit/vumps150524.11$1.fit/' vumps150523.1*
 
-These files were then added as new lines to the logsheet for 150524.
+Lastly, the 150523 flats copied and renamed in the 150524 directory were added to the logsheet before reducing the 150524 data.
+
+Extracting the Blue
+===================
+
+The tungsten-halogen lamp used for flat-fielding emits very little light in the blue. The lack of counts in this regime makes tracing the orders difficult.
+
+.. image:: https://www.thorlabs.com/images/TabImages/QTH10_Spectrum_400.gif
+  :width: 90%
+
+Attempts to filter the quartz light were made with several filters; to date the KB15 filter provided the best results. Nonetheless, there are still too few counts in the blue for optimal order tracing.
+
+This was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get a high, yet unsaturated counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by exponentially attenuating the counts in the red for the saturated exposures in software. This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
+The resulting combined image is shown in the figure below.
 
 
 It goes to 11
 =============
 
-The 
+The
