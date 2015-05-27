@@ -32,7 +32,7 @@
 ;
 ;-
 pro reduce_vumps, redpar, resolution, flatset=flatset, thar=thar, $                   
-   order_ind=order_ind,  star=star, date=date
+   order_ind=order_ind,  star=star, date=date, blueset=blueset
 
 
 ;Prefix added to FITS headers:  
