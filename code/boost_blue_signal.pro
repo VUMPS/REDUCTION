@@ -34,6 +34,11 @@
 ;
 ;-
 pro boost_blue_signal, $
+blue_files = blue_files, $
+redpar = redpar, $
+red_files = red_files, $
+red_flat = red_flat, $
+output_image = output_image, $
 postplot = postplot
 
 angstrom = '!6!sA!r!u!9 %!6!n'
@@ -43,6 +48,16 @@ loadct, 39, /silent
 usersymbol, 'circle', /fill, size_of_sym = 0.5
 spawn, 'echo $home', mdir
 mdir = mdir+'/'
+
+if keyword_set(red_files) then begin
+	red_sum = getimage(red_files[0], redpar, geom=geom)
+	for idx=1, n_elements(red_files)-1 do begin
+		red_sum += getimage(red_files[idx], redpar, geom=geom)
+	endfor
+	if redpar.debug ge 5 then begin
+		
+	endif;debug ge 5
+endif;KW(red_files)
 
 stop
 if keyword_set(postplot) then begin
