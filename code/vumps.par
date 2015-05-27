@@ -53,7 +53,7 @@ dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels
 swid: 32,        ;the "swath" width used in fords. This is the number of chunks to break the order into (in the dispersion direction) when finding peaks to fit a polynomial to for order locations.
 poff: [10, 10, 10, 10], ;cross-disp half width for order findings (see fords.pro)
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
-debug: 9}                      ; 1 in debug mode, with plots and stops
+debug: 1}                      ; 1 in debug mode, with plots and stops
 
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES1
