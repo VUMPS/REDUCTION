@@ -44,4 +44,15 @@ The resulting combined image is shown in the figure below.
 It goes to 11
 =============
 
-The
+Depending on the level of quality assurance and user interaction desired, the VUMPS reduction code has a number of "debug" levels:
+
+0. Production mode: no figures are created and there are no stops
+1. Semi-production mode: there are no stops, but several plots are saved to disk.
+2. Several stops and plots are displayed on screen
+3. More stops, more plots
+4. More stops and prompts to optionally manually define the echelle order peaks.
+
+10. More stops to check the identified peaks in every cross-dispersion swath
+11. Even more stops and plots.
+
+Like all options, this is set in the vumps.par file.
