@@ -149,6 +149,7 @@ endif else begin
 	redpar.binning = [fix(strmid(bin,0,1)), fix(strmid(bin,2,1))]
 	print, 'The binning is ', redpar.binning
 endelse
+order_image = sum
 
 ;COMBINE BLUES WITH FLAT FOR ORDER FINDING AND/OR FLAT-FIELDING
 if redpar.debug ge 11 then stop
@@ -160,6 +161,7 @@ if redpar.blues then begin
 		red_files = flatfnames, $
 		red_flat = red_flat, $
 		output_image = output_image
+	order_image = output_image
 	stop
 endif
 if redpar.debug ge 11 then stop
@@ -167,7 +169,7 @@ if redpar.debug ge 11 then stop
 ;FIND DEFAULT ORDER LOCATIONS.  
 if order_ind ge 0 then begin
 	vumps_dord, ordfname, redpar, orc, ome 
-endif else vumps_dord, ordfname, redpar, orc, ome, image=sum
+endif else vumps_dord, ordfname, redpar, orc, ome, image=order_image
 
 ;write the order locations to file:
 orcname = redpar.rootdir+redpar.orderdir+prefix+resolution+'.orc'
