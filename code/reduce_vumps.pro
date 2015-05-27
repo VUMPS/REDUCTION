@@ -55,23 +55,30 @@ endif
 
 ; Try to read from the disk previously saved flats
 if ~keyword_set (flatset) then begin
-     name = redpar.rootdir+redpar.flatdir+prefix+resolution+'.flat'
-     tmp = file_search(name, count=flatcount)
-     stop
-     if flatcount eq 0 then begin
-       print, 'REDUCE_VUMPS: FLATS are not given at input, not found on disk, returning.'
-       return
-     endif else begin
-       print, 'REDUCE_VUMPS: reading previously saved flat from disk' 
-       rdsk, sum, name, 1 ; restore saved flat
-       flatfnums='SUM'        
-    endelse 
- endif else begin ; flats are given
-    nrecf = n_elements(flatset)
-    recnums = strt(flatset,f='(I)')  ;convert to strings
-    flatfnums = prefix + recnums
-    flatfnames = indir + prefix + recnums + redpar.suffix  ;array of flat-field files 
- endelse 
+	name = redpar.rootdir+redpar.flatdir+prefix+resolution+'.flat'
+	tmp = file_search(name, count=flatcount)
+	stop
+	if flatcount eq 0 then begin
+		print, 'REDUCE_VUMPS: FLATS are not given at input, not found on disk, returning.'
+		return
+	endif else begin
+		print, 'REDUCE_VUMPS: reading previously saved flat from disk' 
+		rdsk, sum, name, 1 ; restore saved flat
+		flatfnums='SUM'        
+	endelse 
+endif else begin ; flats are given
+	nrecf = n_elements(flatset)
+	;convert sequence numbers to strings
+	recnums = strt(flatset,f='(I)')
+	flatfnums = prefix + recnums
+	flatfnames = indir + prefix + recnums + redpar.suffix
+endelse 
+
+;create blues file names if specified:
+if redpar.blues ge 1 then begin
+	bluenums = strt(flatset,f='(I)')  ;convert to strings
+	bluefnames = indir + prefix + bluenums + redpar.suffix
+endif
 
 ;7.  Record number of Stellar spectra here:
 nrec = n_elements(star)
@@ -144,9 +151,9 @@ if redpar.debug ge 11 then stop
 if redpar.blues then begin
 	order_ind = -1
 	boost_blue_signal, $
-		blue_files = blue_files, $
+		blue_files = bluefnames, $
 		redpar = redpar, $
-		red_files = red_files, $
+		red_files = flatfnames, $
 		red_flat = red_flat, $
 		output_image = output_image
 	stop
