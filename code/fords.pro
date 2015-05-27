@@ -173,7 +173,7 @@ IF debug gt 3 THEN BEGIN
 		endcase
 
 		;create an array of fixed parameters to pass into MPFIT:
-		polyfixed = dblarr(orderdeg)
+		polyfixed = dblarr(orderdeg + 2)
 		; now set the x offset to be fixed
 		; this means the order numbers should not change:
 		polyfixed[-1] = 1
