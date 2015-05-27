@@ -5,7 +5,7 @@ Reduction Code Quality Checks
 This document describes the analysis and quality checks
 of the VUMPS reduction code. Data used for the analysis
 were taken on 150523 and 150524, which were the last two
-days of the initial commissioning period at Yale.
+days of the initial commissioning phase at Yale.
 
 Additional flats
 ================
@@ -39,6 +39,10 @@ Attempts to filter the quartz light were made with several filters; to date the 
 
 This was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get high (and unsaturated) counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by exponentially attenuating the counts in the red for the saturated exposures in software. This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
 The resulting combined image is shown in the figure below.
+
+.. math::
+
+    n_{\mathrm{offset}} = \sum_{k=0}^{N-1} s_k n_k
 
 
 It goes to 11
