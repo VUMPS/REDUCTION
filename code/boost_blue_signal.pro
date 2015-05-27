@@ -55,7 +55,11 @@ if keyword_set(red_files) then begin
 		red_sum += getimage(red_files[idx], redpar, geom=geom)
 	endfor
 	if redpar.debug ge 5 then begin
-		
+		plot, red_sum[2000, *], $
+		xtitle='Cross Dispersion Direction', $
+		ytitle='Counts', $
+		title='Summed counts for red quartz exposures', $
+		/xsty
 	endif;debug ge 5
 endif;KW(red_files)
 
