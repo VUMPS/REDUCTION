@@ -54,10 +54,10 @@ if n_elements(minreq) eq 0 then minreq = 0	;any number of orders will do
 print,'FORDS: Entering routine.'
 ;
 ;Define adjustable parameters. When choosing the degree of the polynomial
-;  (orcdeg) to fit to the order locations, keep in mind that while increasing
-;  orcdeg initially decreases the fit residuals (ome), eventually loss of
+;  (orderdeg) to fit to the order locations, keep in mind that while increasing
+;  orderdeg initially decreases the fit residuals (ome), eventually loss of
 ;  precision begins increasing the errors again. If you decide to increase
-;  orcdeg, check the "ome" return argument to MAKE SURE THAT THE RESIDUALS
+;  orderdeg, check the "ome" return argument to MAKE SURE THAT THE RESIDUALS
 ;  ACTUALLY DECREASE.
 print, 'REDPAR RESOLUTION INDEX IS: ', redpar.resolutionidx
 print, 'WHICH CORRESPONDS TO: ', redpar.resolutionarr[redpar.resolutionidx]
@@ -360,7 +360,7 @@ if redpar.debug ge 4 then begin
   ix = findgen(nord)
   y = redpar.binning[0]*reform(ords(nswa/2,*), nord)
   sel = where(y gt 0)
-  res = poly_fit(ix[sel], y[sel],3)
+  res = poly_fit(ix[sel], y[sel],orderdeg)
   print, 'Central swath polynomial: ',res
   stop
 endif
@@ -371,7 +371,7 @@ endif
 ;  Also compute the mean error in the polynomial fit. If this is too large,
 ;  then return with orc set to scalar zero, flagging error condition.
   if debug gt 0  then print,'FORDS: Fitting polynomials to order peaks.'
-  orc = dblarr(orcdeg+1,nord)			;init order coefficient array
+  orc = dblarr(orderdeg+1,nord)			;init order coefficient array
   ome = orc[0,*]				;init order mean error
   tomiss = 0					;init total missing peak count
 
@@ -398,7 +398,7 @@ endif
 	ind = indgen(nwhr-2) + 1                    ;indices excluding ends (gm)
     xp = x(ind)
     yp = y(ind)
-    orc(*,ior) = poly_fit(xp,yp,orcdeg,fit)       ;fit polynomial to peaks
+    orc(*,ior) = poly_fit(xp,yp,orderdeg,fit)       ;fit polynomial to peaks
     ome(ior) = stddev(yp - fit)
 
 
