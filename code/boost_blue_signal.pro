@@ -60,6 +60,22 @@ if keyword_set(red_files) then begin
 		ytitle='Counts', $
 		title='Summed counts for red quartz exposures', $
 		/xsty
+		stop
+	endif;debug ge 5
+endif;KW(red_files)
+
+if keyword_set(blue_files) then begin
+	blue_sum = getimage(blue_files[0], redpar, geom=geom)
+	for idx=1, n_elements(blue_files)-1 do begin
+		blue_sum += getimage(blue_files[idx], redpar, geom=geom)
+	endfor
+	if redpar.debug ge 5 then begin
+		plot, blue_sum[2000, *], $
+		xtitle='Cross Dispersion Direction', $
+		ytitle='Counts', $
+		title='Summed counts for blue quartz exposures', $
+		/xsty
+		stop
 	endif;debug ge 5
 endif;KW(red_files)
 
