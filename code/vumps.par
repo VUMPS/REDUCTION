@@ -53,10 +53,19 @@ dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels
 swid: 32,        ;the "swath" width used in fords. This is the number of chunks to break the order into (in the dispersion direction) when finding peaks to fit a polynomial to for order locations.
 poff: [10, 10, 10, 10], ;cross-disp half width for order findings (see fords.pro)
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
-debug: 1}                      ; 1 in debug mode, with plots and stops
-
+;`blues` has two options:
+;1. combine exposures for order extraction. This
+;requires taking two sets of quartz exposures with two exposure times.
+;The first, which should be called "quartz" in the logsheet, are
+;exposures that are *not* saturated in the red, but have few counts
+;in the blue. The second set, labeled "blues" in the logsheet, should
+;have plenty of counts in the blue, which will make the red end saturated.
+;0. Only use exposures labeled "quartz" in the logsheet for image extraction
+;and flat-fielding.
+blues: 1,
+debug: 1}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
-;DEBUG MODES1
+;DEBUG MODES:
 ;0. No stops. Prints as little as possible. No plots.
 ;1. No stops. Prints a little more. Poscript and PNG Plots for quality control.
 ;2. Stops in debugging locations. PS and PNG plots. Prints a lot. 
