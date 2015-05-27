@@ -139,6 +139,20 @@ endif else begin
 	print, 'The binning is ', redpar.binning
 endelse
 
+;COMBINE BLUES WITH FLAT FOR ORDER FINDING AND/OR FLAT-FIELDING
+if redpar.debug ge 11 then stop
+if redpar.blues then begin
+	order_ind = -1
+	boost_blue_signal, $
+		blue_files = blue_files, $
+		redpar = redpar, $
+		red_files = red_files, $
+		red_flat = red_flat, $
+		output_image = output_image
+	stop
+endif
+if redpar.debug ge 11 then stop
+
 ;FIND DEFAULT ORDER LOCATIONS.  
 if order_ind ge 0 then begin
 	vumps_dord, ordfname, redpar, orc, ome 
