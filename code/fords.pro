@@ -245,7 +245,8 @@ FOR direction = -1, 1, 2 DO BEGIN
 			oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
 			oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
 		endfor
-		stop
+		if redpar.debug gt 10 then stop
+		if redpar.debug gt 9 then wait, 1
 		endif;plot initial guess and poff
 
 	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
