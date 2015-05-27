@@ -76,7 +76,7 @@ endelse
 
 ;create blues file names if specified:
 if redpar.blues ge 1 then begin
-	bluenums = strt(flatset,f='(I)')  ;convert to strings
+	bluenums = strt(blueset,f='(I)')  ;convert to strings
 	bluefnames = indir + prefix + bluenums + redpar.suffix
 endif
 
@@ -121,6 +121,10 @@ print, order_ind
 print,' '
 print, 'THORIUM/IODINE: '
 print, thspfnames
+if redpar.blues then begin
+print, 'BLUES: '
+print, bluefnames
+endif
 
 if redpar.debug ge 2 then print, 'REDUCE_VUMPS: type ".c" to continue' 
 if redpar.debug ge 2 then stop
