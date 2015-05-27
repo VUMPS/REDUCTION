@@ -82,11 +82,17 @@ endif;KW(red_files)
 im_size = size(blue_sum)
 blue_dec = blue_sum
 ;loop through columns and attenuate the signal in the red:
-decay_function = exp(-1.5d-3*dindgen(im_size[2]))
+decay_function = exp(-2.5d-3*dindgen(im_size[2]))
 for col=0, im_size[1]-1 do blue_dec[col, *] *= decay_function
-oplot, blue_dec[2000, *], col=70
-
+oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
 stop
+
+plot, red_sum[2000, *]/max(red_sum[2000, *]), /xsty
+oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
+stop
+
+output_image = red_sum + blue_dec
+
 if keyword_set(postplot) then begin
    fn = nextnameeps('plot')
    thick, 2
