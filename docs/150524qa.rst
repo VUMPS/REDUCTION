@@ -80,13 +80,9 @@ Zooming in, the peaks for the blue-most orders can be seen, and the ``fords.pro`
 .. image:: figures/peaks_at_edge_zoom.png
   :width: 90%
 
-**Order Width**
-
-Currently, a compromise is made for the echelle order width. On the blue end, a slightly wider order width is desired. However, the orders are much closer together on the red end of the spectrum, putting an upper limit on the extraction width. Having a variable order width might help with this in a future update to the reduction code.
-
 **Bluemost order**
 
-Because of the order curvature the bluemost order currently curves off the chip near the wings. This is a simple fix, and will be adjusted during the second commissioning period of VUMPS at MAO.
+Because of the order curvature, the bluemost order currently curves off the chip near the wings. This is a simple fix, and will be adjusted during the second commissioning period of VUMPS at MAO.
 
 **Peak Locations**
 
@@ -124,14 +120,21 @@ The bottom panel shows a smooth, high SNR quartz spectrum with any signs of CCD 
 Gain Comparison
 ===============
 
+The gain is slightly off, as illustrated in the following figure. This will be tuned prior to the MAO commissioning period in mid-June.
+
+.. image:: figures/gain_vumps150524.1132_Ord9.png
+  :width: 90%
+
+For now, flat-fielding does a good job of removing the discontinuity at the center of the chip due to gain imperfections.
+
 OH Lines
 ========
 
 Blaze Function
 ==============
 
-ThAr Orders
-===========
+ThAr Solution
+=============
 
 Resolutions
 ===========
