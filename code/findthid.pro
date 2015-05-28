@@ -58,13 +58,15 @@ for i=start, lookback ,-1 do begin ; try all nights backwards
    curnight = strmid(logs[i], strlen(logdir))
    curnight = strmid(curnight, 0, strpos(curnight,'.log'))
    crun = 'vumps'+curnight
+   print, curnight
+   stop
 
    if strpos(crun,'.') lt 0 then crun=crun+'.' ; add the point
 
    thidfile =''
    j=0L
    while j le n_elements(sel)-1 and thidfile eq '' do begin ; search thids
-	 fn = redpar.rootdir+redpar.thidfiledir+date+'/'+crun+obnm[sel[j]]+'.thid'
+	 fn = redpar.rootdir+redpar.thidfiledir+curnight+'/'+crun+obnm[sel[j]]+'.thid'
 	 print, fn
 	 print, 'Looking for '+fn
 	 if file_test(fn) then begin 
