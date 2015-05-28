@@ -134,8 +134,8 @@ if debug gt 0  then begin
    xtitle='Cross Dispersion Direction', $
    ytitle='Counts in Central Swath'
    for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
-   for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=50
-   for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=250
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=250
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=50
    if debug gt 2 then stop, 'FORDS DEBUG: FIRST SWATH plot. Press .C to continue'
 endif
 if redpar.debug ge 1 and redpar.debug le 2 then ps_close
@@ -241,7 +241,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 		;BLUE: maximum offset (poff) to find peak over in the blue direction
 		;RED: maximum offset to find peak over in the red direction
 		loadct, 39, /silent
-		plot, swa, /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts', yran=[0,1d6]
+		plot, swa, /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts'
 		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]], [0, max(swa)], col=120
 		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
 		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
@@ -353,9 +353,12 @@ FOR direction = -1, 1, 2 DO BEGIN
    ENDFOR		;end half- swath loop
 ENDFOR          ; end direction loop
 
-; AT Oct 4 2011: find and print quadratic approximation for central swath
+;plot peaks found with + marks:
 if redpar.debug ge 4 then begin 
-  plot, ords[*,0], yr=[0,nrow], psym=1
+  plot, ords[*,0], yr=[0,nrow], psym=1, /xsty, /ysty, $
+  title='Peak locations found', $
+  xtitle='Swath in Dispersion Direction', $
+  ytitle='Cross Dispersion Direction'
   for j=1,nord-1 do oplot, ords[*,j], psym=1
 
   ix = findgen(nord)
@@ -489,7 +492,9 @@ if debug gt 0 then begin
   mm = nord/2
   for k=-poff,poff do for i=0,ncol-1 do prof[k+poff]+=im[i,ys[i]+k+0.5]
   ym = max(prof)
-  plot, indgen(2*poff+1)-poff, prof
+  plot, indgen(2*poff+1)-poff, prof, $
+  xtitle='Pixel in Cross Dispersion Direction', $
+  title='Order Profile', /xsty
   oplot, -poff*[1,1], ym*[0,1], li=1
   oplot, poff*[1,1], ym*[0,1], li=1
   
