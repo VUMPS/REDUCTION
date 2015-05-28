@@ -266,7 +266,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 		 mx = opk - poff + mx(0)			;local max pixel OR edge
 		 if mx lt poff or mx gt nrow-poff-1 then begin
 			pk(ior) = 0				;flag peak off edge
-			stop
+			if redpar.debug gt 1 then stop
 			goto,edge 				;max too near edge,next order
 		 endif
 		 z = swa(mx-poff:mx+poff)			;region around max pixel
