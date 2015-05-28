@@ -120,7 +120,7 @@ output_image = red_sum + blue_dec
 
 if redpar.debug ge 5 then begin
 	if keyword_set(postplot) then begin
-	   fn = nextnameeps('blue_sum')
+	   fn = nextnameeps('output_ord_img')
 	   thick, 2
 	   ps_open, fn, /encaps, /color
 	endif
@@ -129,6 +129,9 @@ if redpar.debug ge 5 then begin
 	ytitle='Normalized Counts', $
 	title='Combined Red + Blue Image for Order Finding', $
 	/xsty
+	if keyword_set(postplot) then begin
+	   ps_close
+	endif
 	stop
 endif;debug ge 5
 
