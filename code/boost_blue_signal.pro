@@ -55,12 +55,20 @@ if keyword_set(red_files) then begin
 		red_sum += getimage(red_files[idx], redpar, geom=geom)
 	endfor
 	if redpar.debug ge 5 then begin
+		if keyword_set(postplot) then begin
+		   fn = nextnameeps('red_sum')
+		   thick, 2
+		   ps_open, fn, /encaps, /color
+		endif
 		plot, red_sum[2000, *], $
 		xtitle='Cross Dispersion Direction', $
 		ytitle='Counts', $
 		title='Summed counts for red quartz exposures', $
 		/xsty
 		stop
+	if keyword_set(postplot) then begin
+	   ps_close
+	endif
 	endif;debug ge 5
 endif;KW(red_files)
 
@@ -69,29 +77,60 @@ if keyword_set(blue_files) then begin
 	for idx=1, n_elements(blue_files)-1 do begin
 		blue_sum += getimage(blue_files[idx], redpar, geom=geom)
 	endfor
+
+	im_size = size(blue_sum)
+	blue_dec = blue_sum
+	;the sigmoid midpoint used for the decay function:
+	sig_midpt = redpar.blues_sig_mid
+	;the sigmoid steepness (how quickly it goes from 1 to zero:
+	sig_stp = 1d-2
+	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(im_size[2]) - sig_midpt)))
+	;loop through columns and attenuate the signal in the red:
+	for col=0, im_size[1]-1 do blue_dec[col, *] *= decay_function
+
 	if redpar.debug ge 5 then begin
+		if keyword_set(postplot) then begin
+		   fn = nextnameeps('blue_sum')
+		   thick, 2
+		   ps_open, fn, /encaps, /color
+		endif
 		plot, blue_sum[2000, *]/max(blue_sum[2000, *]), $
 		xtitle='Cross Dispersion Direction', $
 		ytitle='Normalized Counts', $
 		title='Summed counts for blue quartz exposures', $
 		/xsty
+		oplot, decay_function, col=250
+		oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
+		if keyword_set(postplot) then begin
+		   ps_close
+		endif
+		stop
+
+		plot, red_sum[2000, *]/max(red_sum[2000, *]), /xsty
+		oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
 		stop
 	endif;debug ge 5
-endif;KW(red_files)
-
-im_size = size(blue_sum)
-blue_dec = blue_sum
-;loop through columns and attenuate the signal in the red:
-decay_function = exp(-2.5d-3*dindgen(im_size[2]))
-for col=0, im_size[1]-1 do blue_dec[col, *] *= decay_function
-oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
-stop
-
-plot, red_sum[2000, *]/max(red_sum[2000, *]), /xsty
-oplot, blue_dec[2000, *]/max(blue_dec[2000, *]), col=70
-stop
+endif else begin
+	print, 'You did not pass the filenames for the blues files to'
+	print, 'boost_blue_signal.pro. Returning from all.'
+	retall
+endelse;KW(blue_files)
 
 output_image = red_sum + blue_dec
+
+if redpar.debug ge 5 then begin
+	if keyword_set(postplot) then begin
+	   fn = nextnameeps('blue_sum')
+	   thick, 2
+	   ps_open, fn, /encaps, /color
+	endif
+	plot, output_image[2000, *]/max(output_image[2000, *]), $
+	xtitle='Cross Dispersion Direction', $
+	ytitle='Normalized Counts', $
+	title='Combined Red + Blue Image for Order Finding', $
+	/xsty
+	stop
+endif;debug ge 5
 
 if keyword_set(postplot) then begin
    fn = nextnameeps('plot')
