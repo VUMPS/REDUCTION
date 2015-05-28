@@ -53,7 +53,9 @@ endif
 print, 'Started @: ', systime()
 spawn, 'hostname', host
 
-rawdir = '/raw/vumps/'
+spawn, 'echo $VUMPS_PAR_PATH', vmpsparfn
+redpar = readpar(vmpsparfn)
+rawdir = redpar.rawdir
 lfn = '/tous/vumps/logsheets/20'+strmid(date, 0, 2)+'/'+strt(date)+'.log'
 
 ;This part gets the image prefix:
