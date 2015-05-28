@@ -9,7 +9,7 @@ else
 set IDLDIR='/Applications/itt/idl/idl'
 endif
 
-setenv IDL_STARTUP ~/.idl_startup.pro
+setenv IDL_STARTUP ${HOME}/projects/VUMPS/REDUCTION/.idl_startup.pro
 
 # ADD DEPENDENCIES TO PATH:
 # 1st and 2nd dependencies: IDLAstro Package and the built in IDL lib:
