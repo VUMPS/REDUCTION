@@ -165,7 +165,7 @@ The polynomial fits to the orders (red) agree very well with the counts. However
 .. image:: figures/flats14.png
   :width: 90%
 
-This is because the the polynomial fit to the smoothed counts starts to dip into the fringes. This is an area where the reduction code can still be improved. Aside from these problematic red-most orders, the code does an excellent job of fitting for the blaze function.
+This is because the the polynomial fit to the smoothed counts starts to dip into the fringes. This is an area where the reduction code can still be improved. Aside from these problematic red-most orders, the code does a good job of fitting for the blaze function. One area where the blaze fitting suffers is towards the edges of the orders. The polynomial order used for fitting the blaze function was increased from 6 to 8, which helped in the wings, but is not perfect. An alternative that might improve the blaze function fitting is to use b-splines.
 
 ThAr Solution
 =============
