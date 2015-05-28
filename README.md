@@ -24,3 +24,7 @@ This repository contains a convenience routine that sets up the IDL environment 
     Installation number: 2.
     Licensed for use by: VUMPS1
     IDL> 
+
+##Logsheets
+
+The reduction code requires a logsheet in order to determine the resolution modes, bias frames, flat fielding frames, etc. 
