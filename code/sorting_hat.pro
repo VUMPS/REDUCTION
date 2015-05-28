@@ -148,11 +148,16 @@ if keyword_set(reduce) then begin
 	
 	;IDENTIFY BLUE FRAMES:
 	if redpar.blues ge 1 then begin
-		blueidx = where(objnm1 eq 'blues', num_blues)
+		if redpar.any_res_blues then begin
+			blueidx = where(objnm eq 'blues', num_blues)
+		endif else begin
+			blueidx = where(objnm1 eq 'blues', num_blues)
+		endelse
 		if num_blues then begin
 			blueset = obnm1[blueidx]
 		endif else begin
 			print, 'Sorting-hat: no blues files found. Returning.'
+			if redpar.debug ge 2 then stop
 			return
 		endelse
 	endif;use blues
