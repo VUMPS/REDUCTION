@@ -35,16 +35,31 @@ The tungsten-halogen lamp used for flat-fielding emits very little light in the 
 .. image:: https://www.thorlabs.com/images/TabImages/QTH10_Spectrum_400.gif
   :width: 90%
 
-Attempts to filter the quartz light were made with several filters; to date the KB15 filter provided the best results. However, there are still too few counts in the blue for optimal order tracing.
+Attempts to filter the quartz light were made with several filters with the KB15 filter providing the best results to date. However, there are still too few counts in the blue for optimal order tracing. Below is a projection in the cross-dispersion direction showing the counts near blaze peak for all the echelle orders.
 
-This was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get high (and unsaturated) counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by attenuating the counts in the red for the saturated exposures in software using a sigmoid (logistic) function:
+.. image:: figures/red_sum.png
+  :width: 90%
+
+This blue order tracing problem was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get high (and unsaturated) counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by attenuating the counts in the red for the saturated exposures in software using a sigmoid (logistic) function:
 
   .. math::
 
-      f(x) = \frac{-1}{1 + e^{-\alpha(x - x_0)}}
+      f(x) = 1 - \frac{1}{1 + e^{-\alpha(x - x_0)}}
+
+The below projection shows the normalized counts for the saturated image, the sigmoid variant used for attenuating the signal in the red, and the result summed blue projection in blue.
+
+.. image:: figures/blue_sum.png
+  :width: 90%
+
+The sigmoid function does a good job of attenuating the counts before the orders become saturated. The resulting combined image used for order tracing is shown in the figure below.
+
+.. image:: figures/output_ord_img.png
+  :width: 90%
+
+This combined image will be useful for order tracing, but it should **not** be used for flat fielding. However, with one extra step (described below), combining saturated and unsaturated images to get a more uniform intensity across the chip might actually be feasible.
 
 This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
-The resulting combined image is shown in the figure below.
+
 
 
 
