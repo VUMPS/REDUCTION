@@ -138,8 +138,18 @@ The gain is slightly off, as illustrated in the following figure. This will be t
 
 For now, flat-fielding does a good job of removing the discontinuity at the center of the chip due to gain imperfections.
 
-OH Lines
-========
+Telluric Lines
+==============
+
+Another quality check is to ensure that the OH lines dip completely to zero for the extracted spectra. This is indeed the case, as illustrated in the following figures.
+
+.. image:: figures/OH1_vumps150524.1019_Ord71.png
+  :width: 90%
+
+.. image:: figures/OH2_vumps150524.1019_Ord72.png
+  :width: 90%
+
+
 
 Blaze Function
 ==============
