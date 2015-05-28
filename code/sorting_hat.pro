@@ -229,9 +229,7 @@ if keyword_set(getthid) then begin
 
 	auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
 	;for fiber, narrow and regular slit modes:
-	;thid, t, 64., 64.*[8797d,8898d], wvc, thid, init=initwvc, /orev 
-	;for slicer mode:
-	;thid, t, 65., 65.*[8662.4d,8761.9d], wvc, thid, init=initwvc, /orev 
+	;thid, t, 70., 70.*[8707d,8839d], wvc, thid, init=initwvc, /orev 
 
 	if thid.nlin lt 700d then begin
 	print, 'CRAPPY FIT TO THE THAR! INTERVENTION NEEDED!'
@@ -388,7 +386,7 @@ if keyword_set(iod2fits) then begin
 	endfor  ;  iod2fits
 	endif; num_thar and n_found > 0
 endif ;iod2fits
-stop
+
 ;**************************************************************
 ; ******* END-CHECK *********************
 ;THE END CHECK TO MAKE SURE EVERYTHING HAS BEEN PROCESSED:
