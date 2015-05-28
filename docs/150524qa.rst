@@ -98,9 +98,16 @@ The resulting peak locations for each swath were inspected, and are shown with "
 The absence of any gap in "+" symbols in the above plot shows that ``fords.pro`` successfully found all peaks aside from the blue-most order, which goes off the chip around swath 19.
 
 
-
 SNR Comparison
 ==============
+
+Flats were inspected to ensure that the polynomial fit for normalization and the calculated counts were both as expected. Below is a plot showing the flats, with 8th order polynomial fits for six of the orders.
+
+.. image:: figures/flats4.png
+  :width: 90%
+
+The polynomial fits to the orders (red) agree very well with the counts, and the two methods of calculating the SNR produce consistent results.
+
 
 OH Lines
 ========
