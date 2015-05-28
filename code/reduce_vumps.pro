@@ -162,7 +162,6 @@ if redpar.blues then begin
 		red_flat = red_flat, $
 		output_image = output_image
 	order_image = output_image
-	stop
 endif
 if redpar.debug ge 11 then stop
 
