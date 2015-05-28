@@ -56,7 +56,8 @@ spawn, 'hostname', host
 spawn, 'echo $VUMPS_PAR_PATH', vmpsparfn
 redpar = readpar(vmpsparfn)
 rawdir = redpar.rootdir + redpar.rawdir
-lfn = '/tous/vumps/logsheets/20'+strmid(date, 0, 2)+'/'+strt(date)+'.log'
+logdir = redpar.logdir
+lfn = logdir+'/20'+strmid(date, 0, 2)+'/'+strt(date)+'.log'
 
 ;This part gets the image prefix:
 spawn, 'ls -1 '+rawdir+date+'/', filearr
