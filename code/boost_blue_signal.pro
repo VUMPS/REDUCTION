@@ -135,15 +135,4 @@ if redpar.debug ge 5 then begin
 	stop
 endif;debug ge 5
 
-if keyword_set(postplot) then begin
-   fn = nextnameeps('plot')
-   thick, 2
-   ps_open, fn, /encaps, /color
-endif
-
-if keyword_set(postplot) then begin
-   ps_close
-endif
-
-stop
 end;boost_blue_signal.pro 
