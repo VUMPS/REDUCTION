@@ -11,8 +11,8 @@ function getflat, im, orc, xwid, redpar, im_arr=im_arr
 
 !p.multi=[0, 1, 1]
 
-order = 6 ; polynomial order
-threshold = 1d-3 ; min. signal relative to max in each order
+order = 8 ; polynomial order
+threshold = 1d-4 ; min. signal relative to max in each order
 ;getsky,im,orc,sky = sky   ; subtract scattered light  
 if keyword_set(im_arr) then imarrsz = size(im_arr)  ; imarrsz[3] is the number of observations
 
@@ -78,8 +78,8 @@ for j = 0, nord-1 do begin      ;row by row polynomial
 		xyouts, x1, y1, '(N!dADU!n)!u1/2!n: '+strt(sqrt(max(ss)), f='(F8.1)')
 		
 		;calculate an empirical SNR at blaze peak:
-		xmin = round(n_elements(ix)/2 - 0.25 * n_elements(ix))
-		xmax = round(n_elements(ix)/2 + 0.25 * n_elements(ix))
+		xmin = round(n_elements(ix)/2 - 0.05 * n_elements(ix))
+		xmax = round(n_elements(ix)/2 + 0.05 * n_elements(ix))
 		emp_snr = mean(s[xmin:xmax]/ss[xmin:xmax])/stddev(s[xmin:xmax]/ss[xmin:xmax])
 		xyouts, x2, y2, greek('mu')+'/'+greek('sigma')+': '+strt(emp_snr, f='(F8.1)')
 		if redpar.debug ge 10 then stop
