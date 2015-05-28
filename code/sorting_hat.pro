@@ -44,11 +44,7 @@ flatsonly=flatsonly, $
 tharonly=tharonly
 
 angstrom = '!6!sA!r!u!9 %!6!n'
-vmpsparfn = -1
-spawn, 'pwd', pwddir
-case pwddir of
-   '/Users/matt/projects/VUMPS/REDUCTION/code': vmpsparfn = '/Users/matt/projects/VUMPS/REDUCTION/code/vumps.par'
-endcase
+spawn, 'echo $VUMPS_PAR_PATH', vmpsparfn
 
 ;if the present working directory is not included in the above CASE
 ;statement, and therefore `vmpsparfn` is not defined, alert the user:
@@ -150,16 +146,16 @@ if keyword_set(reduce) then begin
 	if redpar.blues ge 1 then begin
 		if redpar.any_res_blues then begin
 			blueidx = where(objnm eq 'blues', num_blues)
+			if num_blues then blueset = obnm[blueidx]
 		endif else begin
 			blueidx = where(objnm1 eq 'blues', num_blues)
+			if num_blues then blueset = obnm1[blueidx]
 		endelse
-		if num_blues then begin
-			blueset = obnm1[blueidx]
-		endif else begin
+		if num_blues le 0 then begin
 			print, 'Sorting-hat: no blues files found. Returning.'
 			if redpar.debug ge 2 then stop
 			return
-		endelse
+		endif
 	endif;use blues
 
 	;IDENTIFY THAR AND I2 FRAMES
