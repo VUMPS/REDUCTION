@@ -190,6 +190,17 @@ Resolutions
 |   Low    |  44708     |150524.1027|  1434   | 0.22 px|
 +----------+------------+-----------+---------+--------+
 
+H alpha Resolution Comparison
+-----------------------------
+
+The following figure superimposes the Solar H alpha line taken in the three resolution modes.
+
+.. image:: figures/h_alpha_res_comparison.png
+  :width: 90%
+
+The wavelength solution is in good agreement with the wavelength of H alpha, and the line depths as a function of resolution mode are also as expected.
+
+
 It goes to 11
 =============
 
