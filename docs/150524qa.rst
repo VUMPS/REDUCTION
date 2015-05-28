@@ -65,10 +65,37 @@ Order Locations
 
 The combined unsaturated+saturated quartz image was used for order tracing. The following image shows the locations (and widths) of the orders in a projection at the center of the chip.
 
-.. image:: figures/central_swath.png
+.. image:: figures/central_swath30-1.png
   :width: 90%
 
-As can be seen, the order positions are well defined. Towards the edge of the chip, where the echelle grating blaze function reduces diminishes the flux, the order peaks are considerably smaller, particularly in the blue. Nevertheless, the reduction code has no trouble finding the order locations, as shown below.
+The light-blue line shows the center of the order, the red dashed line shows the "red edge" of the order, and the purple dashed line shows the blue edge of the order. As can be seen, the order positions are well defined.
+
+Towards the edge of the chip, where the echelle grating blaze function reduces the flux, the order peaks are considerably smaller, particularly in the blue. This can be seen in the following figure.
+
+.. image:: figures/peaks_at_edge.png
+  :width: 90%
+
+Zooming in, the peaks for the blue-most orders can be seen, and the ``fords.pro`` has no trouble identifying the order locations.
+
+.. image:: figures/peaks_at_edge_zoom.png
+  :width: 90%
+
+**Order Width**
+
+Currently, a compromise is made for the echelle order width. On the blue end, a slightly wider order width is desired. However, the orders are much closer together on the red end of the spectrum, putting an upper limit on the extraction width. Having a variable order width might help with this in a future update to the reduction code.
+
+**Bluemost order**
+
+The bluemost order is currently not completely on the chip. This will need to be adjusted during the second commissioning period of VUMPS at MAO.
+
+**Peak Locations**
+
+The resulting peak locations for each swath were inspected, and are shown with "+" symbols in the following plot.
+
+.. image:: figures/peak_locations.png
+  :width: 90%
+
+The absence of any gap in "+" symbols in the above plot shows that ``fords.pro`` successfully found all peaks aside from the blue-most order, which goes off the chip around swath 19.
 
 
 
