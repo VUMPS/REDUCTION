@@ -66,7 +66,7 @@ for i=start, lookback ,-1 do begin ; try all nights backwards
    thidfile =''
    j=0L
    while j le n_elements(sel)-1 and thidfile eq '' do begin ; search thids
-	 fn = redpar.rootdir+redpar.thidfiledir+curnight+'/'+crun+obnm[sel[j]]+'.thid'
+	 fn = redpar.rootdir+redpar.thidfiledir+curnight+'/'+pfxtg+crun+obnm[sel[j]]+'.thid'
 	 print, fn
 	 print, 'Looking for '+fn
 	 if file_test(fn) then begin 
