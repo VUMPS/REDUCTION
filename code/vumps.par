@@ -48,8 +48,8 @@ pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.854
 ;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;150516 bg7 flats (only 59 orders extracted)
 nords:  84,                    ; number of orders to extract
 resolutionarr: ['low','med','hgh'],  ; observing modes 
-xwids: [18,18,18],             ; extraction width, binned pixels 
-dpks:  [0,-5,0,0,0],             ; peak shift for each mode, binned pixels 
+xwids: [22,22,22],             ; extraction width, binned pixels 
+dpks:  [0,0,0],             ; peak shift for each mode, binned pixels 
 swid: 32,        ;the "swath" width used in fords. This is the number of chunks to break the order into (in the dispersion direction) when finding peaks to fit a polynomial to for order locations.
 poff: [10, 10, 10, 10], ;cross-disp half width for order findings (see fords.pro)
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
