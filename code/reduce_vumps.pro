@@ -175,7 +175,7 @@ orcname = redpar.rootdir+redpar.orderdir+prefix+resolution+'.orc'
 writefits, orcname, orc
 
 print, 'REDUCE_VUMPS: order location is written to '+orcname  
-if redpar.debug then stop, 'Debug stop after order location, .c to continue'
+if redpar.debug gt 1 then stop, 'Debug stop after order location, .c to continue'
 
 ; GET FLAT FIELD
 xwid = redpar.xwids[resolutionidx]
