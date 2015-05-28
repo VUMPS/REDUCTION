@@ -5,10 +5,14 @@ This repository contains the reduction code for the VUMPS Spectrometer.
 ##Dependencies
 
 This code is written in IDL and makes use of the following libraries:
-1. ASTROLib
-2. MPFIT
-3. idlutils
-4. Coyote
+
+1. The built-in [IDL](http://www.exelisvis.com/ProductsServices/IDL.aspx) library
+2. The [IDLAstro](https://github.com/mattgiguere/IDLAstro) package
+3. The [idlutils](https://github.com/mattgiguere/idlutils) package
+4. The [MPFIT](https://www.physics.wisc.edu/~craigm/idl/fitting.html) package
+5. The [coyote](http://www.idlcoyote.com/documents/programs.php) library
+
+
 
 ##Getting Started
 This repository contains a convenience routine that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
