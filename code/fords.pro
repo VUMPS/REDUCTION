@@ -222,7 +222,8 @@ ENDIF;DEBUG>3 => REDO ORDER LOCATIONS FROM SCRATCH
   xfine = findgen(20*poff+1)/10 - poff		;abscissa for fine resmapling
   ix = findgen(2*poff+1)			;indicies for maxima fit below
 
-; AT Oct 12 2011: start at center, move left and right
+; AT Oct 12 2011: start at center, first going left (direction=-1)
+; and then going to the right from center (direction=1):
 FOR direction = -1, 1, 2 DO BEGIN
    pk = pk0
    imin = (direction + 1)/2 ; starting swath
@@ -232,6 +233,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 	  if smbox gt 2 then swa = median(swa,smbox)	 ;smooth swath to reduce noise
 
 		if redpar.debug gt 4 then begin
+		print, 'Swath '+strt(isw1)+' of '+strt(nswa/2-1)
 		;plot initial guess of peaks in each 
 		;order of the current swath
 		;a "swath" is a cut in the cross-dispersion direction
@@ -239,14 +241,14 @@ FOR direction = -1, 1, 2 DO BEGIN
 		;BLUE: maximum offset (poff) to find peak over in the blue direction
 		;RED: maximum offset to find peak over in the red direction
 		loadct, 39, /silent
-		plot, alog10(swa - min(swa)+1), /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts'
+		plot, swa, /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts'
 		for ordidx=0, nord-1 do begin
 			oplot, [pk[ordidx], pk[ordidx]], [0, max(swa)], col=120
 			oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
 			oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
 		endfor
 		if redpar.debug gt 10 then stop
-		if redpar.debug gt 9 then wait, 1
+		if redpar.debug eq 9 then wait, 1
 		endif;plot initial guess and poff
 
 	  FOR ior = 0, nord-1 DO BEGIN ;loop through orders
@@ -327,7 +329,7 @@ FOR direction = -1, 1, 2 DO BEGIN
 	  ; AT Oct 7 2011: diagnostic of swath peaks
 	  if debug gt 1 then begin 
 		 yy = [0,max(swa)]
-		 plot, swa
+		 plot, swa, /xsty
 		 for kk=0,nord-1 do oplot, ords[isw,kk]*[1,1], yy, li=1 
 		 if redpar.debug ge 11 then stop, 'FORDS DEBUG: SWATH plot in swath '+string(isw)
 	  endif
