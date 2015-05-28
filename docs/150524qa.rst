@@ -170,9 +170,16 @@ This is because the the polynomial fit to the smoothed counts starts to dip into
 ThAr Solution
 =============
 
+The spectrometer was wavelength calibrated using several ThAr exposures and the routine ``thid.pro``. The best-fit solution resulted in 1500 lines having an RMS of 0.12 pixels for the high resolution mode.
+
 Resolutions
 ===========
 
++----------+------------+-----------+---------+--------+
+| Res Mode | Resolution | File Used | # Lines |   RMS  |
++==========+============+===========+=========+========+
+|   High   |  74927     |150524.1033|  1500   | 0.12 px|
++----------+------------+-----------+---------+--------+
 
 It goes to 11
 =============
