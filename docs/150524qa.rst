@@ -37,12 +37,15 @@ The tungsten-halogen lamp used for flat-fielding emits very little light in the 
 
 Attempts to filter the quartz light were made with several filters; to date the KB15 filter provided the best results. However, there are still too few counts in the blue for optimal order tracing.
 
-This was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get high (and unsaturated) counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by exponentially attenuating the counts in the red for the saturated exposures in software. This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
+This was solved by combining two sets of exposures taken with different exposure times: shorter exposures were taken to get high (and unsaturated) counts in the red, and longer exposures were taken to get high counts in the blue at the compromise of saturation in the red. These were then combined by attenuating the counts in the red for the saturated exposures in software using a sigmoid (logistic) function:
+
+  .. math::
+
+      f(x) = \frac{-1}{1 + e^{-\alpha(x - x_0)}}
+
+This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
 The resulting combined image is shown in the figure below.
 
-.. math::
-
-    n_{\mathrm{offset}} = \sum_{k=0}^{N-1} s_k n_k
 
 
 It goes to 11
