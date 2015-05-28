@@ -86,7 +86,7 @@ Currently, a compromise is made for the echelle order width. On the blue end, a 
 
 **Bluemost order**
 
-The bluemost order is currently not completely on the chip. This will need to be adjusted during the second commissioning period of VUMPS at MAO.
+Because of the order curvature the bluemost order currently curves off the chip near the wings. This is a simple fix, and will be adjusted during the second commissioning period of VUMPS at MAO.
 
 **Peak Locations**
 
