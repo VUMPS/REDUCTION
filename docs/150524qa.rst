@@ -60,7 +60,38 @@ This combined image will be useful for order tracing, but it should **not** be u
 
 This optional feature of the reduction code can be turned off and on through the `blues` key in the vumps.par file.
 
+Order Locations
+===============
 
+The combined unsaturated+saturated quartz image was used for order tracing. The following image shows the locations (and widths) of the orders in a projection at the center of the chip.
+
+.. image:: figures/central_swath.png
+  :width: 90%
+
+As can be seen, the order positions are well defined. Towards the edge of the chip, where the echelle grating blaze function reduces diminishes the flux, the order peaks are considerably smaller, particularly in the blue. Nevertheless, the reduction code has no trouble finding the order locations, as shown below.
+
+
+
+SNR Comparison
+==============
+
+OH Lines
+========
+
+CCD Fringing
+============
+
+Gain Comparison
+===============
+
+Blaze Function
+==============
+
+ThAr Orders
+===========
+
+Resolutions
+===========
 
 
 It goes to 11
