@@ -172,6 +172,11 @@ ThAr Solution
 
 The spectrometer was wavelength calibrated using several ThAr exposures and the routine ``thid.pro``. The best-fit solution resulted in 1500 lines having an RMS of 0.12 pixels for the high resolution mode.
 
+The best-fit solution for the medium resolution mode made use of 1030 ThAr lines, and also had an RMS of 0.12 pixels. The residuals between the wavelength solution and the observed ThAr lines appeared normally distributed for both the high and medium resolution modes, which is illustrated in the following plot of the medium resolution mode residuals.
+
+.. image:: figures/thid_resid_med.png
+  :width: 90%
+
 Resolutions
 ===========
 
