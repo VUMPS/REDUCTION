@@ -241,12 +241,11 @@ FOR direction = -1, 1, 2 DO BEGIN
 		;BLUE: maximum offset (poff) to find peak over in the blue direction
 		;RED: maximum offset to find peak over in the red direction
 		loadct, 39, /silent
-		plot, swa, /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts'
-		for ordidx=0, nord-1 do begin
-			oplot, [pk[ordidx], pk[ordidx]], [0, max(swa)], col=120
-			oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
-			oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
-		endfor
+		plot, swa, /xsty, xtitl='Cross Dispersion [px]', ytitl='Counts', yran=[0,1d6]
+		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]], [0, max(swa)], col=120
+		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]] - poff, [0, max(swa)], col=70
+		for ordidx=0, nord-1 do oplot, [pk[ordidx], pk[ordidx]] + poff, [0, max(swa)], col=250
+
 		if redpar.debug gt 10 then stop
 		if redpar.debug eq 9 then wait, 1
 		endif;plot initial guess and poff
