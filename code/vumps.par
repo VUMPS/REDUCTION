@@ -1,7 +1,6 @@
 {redpar,                       ; named structure, passed by reference
 rootdir: '/',             ; root directory. All other paths are relative to rootdir
 logdir:  'tous/vumps/logsheets/',         ; log sheets 
-logstdir:  'tous/vumps/logstructs/',         ; log sheets 
 iodspecdir: 'tous/vumps/iodspec/',        ; reduced spectra in RDSK/WRDSK format
 plotsdir: '/Users/matt/Sites/vumps/red/plots/', ; directory to put encapsulated postscript and PNG plots
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
