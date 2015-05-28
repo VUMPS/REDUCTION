@@ -117,6 +117,17 @@ The bottom panel shows a smooth, high SNR quartz spectrum with any signs of CCD 
 .. image:: figures/ccd_fringing2_vumps150524.1132_Ord82.png
   :width: 90%
 
+Ca IRT
+------
+
+Another example showing how CCD fringing is properly treated can be seen in the following figure, which shows two of the Ca IRT lines.
+
+.. image:: figures/cirt_ccdfring_vumps150524.1019_Ord80.png
+  :width: 90%
+
+Without flat-fielding, analysis of the Ca IRT would be futile. However, it can clearly be seen that flat-fielding is working properly, and the final extracted and flat-fielded Ca IRT lines are cleanly extracted.
+
+
 Gain Comparison
 ===============
 
