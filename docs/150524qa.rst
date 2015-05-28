@@ -108,15 +108,24 @@ Flats were inspected to ensure that the polynomial fit for normalization and the
 
 The polynomial fits to the orders (red) agree very well with the counts, and the two methods of calculating the SNR produce consistent results.
 
-
-OH Lines
-========
-
 CCD Fringing
 ============
 
+The code does a good job of removing CCD fringing, as illustrated in the below image. The top panel shows the order 58 extracted from a quartz exposure. The middle panel shows the normalized flat for that same order, and the lower panel shows the flat-fielded order 58 for the quartz seen in the top panel (i.e. (top panel)/(middle panel) = (lower panel)).
+
+.. image:: figures/ccdfringing_vumps150524.1132_Ord58.png
+  :width: 90%
+
+The bottom panel shows a smooth, high SNR quartz spectrum with any signs of CCD fringing removed from the flat field. CCD fringing in the red-most order is a much larger effect, with variations of +/- 30%. Yet the code still does an excellent job of removing this effect, as illustrated in the below figure. However, these large fringing variations cause the continuum to be poorly defined. This is one area where the code could be improved.
+
+.. image:: figures/ccd_fringing2_vumps150524.1132_Ord82.png
+  :width: 90%
+
 Gain Comparison
 ===============
+
+OH Lines
+========
 
 Blaze Function
 ==============
