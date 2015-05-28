@@ -159,6 +159,12 @@ for i=0, nords-1 do begin
 	endelse
 	plot, spec[*,i], title=redpar.prefix+redpar.seqnum+' Order '+strt(i)+' Spec/Flat', /xsty, /ysty, $
 	xtitle='Dispersion Direction [pix]', ytitle='Flux'
+	xmid = where(spec[*,i] eq max(spec[*,i]))
+	spec_center = spec[(xmid - 0.005*specsz[1]):(xmid + 0.005*specsz[1]), i]
+	sqrtcts = sqrt(median(spec_center))
+	xyouts, 0.2, 0.2, '(N!dADU!n)!u1/2!n: '+strt(sqrtcts, f='(F8.1)'), /normal
+	meansig = mean(spec_center)/stddev(spec_center)
+	xyouts, 0.7, 0.2, greek('mu')+'/'+greek('sigma')+': '+strt(meansig, f='(F8.1)'), /normal
   endif
   
   if redpar.debug ge 1 and redpar.debug le 2 then begin

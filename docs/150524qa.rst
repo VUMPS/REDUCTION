@@ -97,12 +97,15 @@ The absence of any gap in "+" symbols in the above plot shows that ``fords.pro``
 SNR Comparison
 ==============
 
-Flats were inspected to ensure that the polynomial fit for normalization and the calculated counts were both as expected. Below is a plot showing the flats, with 8th order polynomial fits for six of the orders.
+The SNR was calculated using two different techniques for two orders near the center of the chip for a quartz exposure. The first technique, which was to approximate the SNR as the square root of the number of photoelectrons, assumes the error is entirely due to photon noise. The second technique, which divides the mean counts of a swath towards the center of the chip by the standard deviation, gives a better estimate of the true SNR. Below are the results for these two orders.
 
-.. image:: figures/flats4.png
+.. image:: figures/snr_comp.png
   :width: 90%
 
-The polynomial fits to the orders (red) agree very well with the counts, and the two methods of calculating the SNR produce consistent results.
+.. image:: figures/snr_comp2.png
+  :width: 90%
+
+The SNR approximated with the square root of the counts near blaze peak is slightly higher, as expected, but the SNR approximated using the mean/sigma technique is comparable, instilling confidence in the reduction code.
 
 CCD Fringing
 ============
@@ -149,10 +152,20 @@ Another quality check is to ensure that the OH lines dip completely to zero for 
 .. image:: figures/OH2_vumps150524.1019_Ord72.png
   :width: 90%
 
-
-
 Blaze Function
 ==============
+
+Flats were inspected to ensure that the polynomial fit for normalization and the calculated counts were both as expected. Below is a plot showing the flats, with 8th order polynomial fits for six of the orders.
+
+.. image:: figures/flats4.png
+  :width: 90%
+
+The polynomial fits to the orders (red) agree very well with the counts. However, the code struggles to fit for the blaze function in the red-most orders, where the fringes are larger in both wavelength and amplitude.
+
+.. image:: figures/flats14.png
+  :width: 90%
+
+This is because the the polynomial fit to the smoothed counts starts to dip into the fringes. This is an area where the reduction code can still be improved. Aside from these problematic red-most orders, the code does an excellent job of fitting for the blaze function.
 
 ThAr Solution
 =============
