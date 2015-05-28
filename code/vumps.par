@@ -63,7 +63,7 @@ binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
 ;0. Only use exposures labeled "quartz" in the logsheet for image extraction
 ;and flat-fielding.
 blues: 1,
-blues_sig_mid: 1400, ;the sigmoid midpoint for combining red and blue flats
+blues_sig_mid: 1150, ;the sigmoid midpoint for combining red and blue flats
 debug: 11}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
