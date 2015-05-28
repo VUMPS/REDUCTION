@@ -59,7 +59,6 @@ for i=start, lookback ,-1 do begin ; try all nights backwards
    curnight = strmid(curnight, 0, strpos(curnight,'.log'))
    crun = 'vumps'+curnight
    print, curnight
-   stop
 
    if strpos(crun,'.') lt 0 then crun=crun+'.' ; add the point
 
