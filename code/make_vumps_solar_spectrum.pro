@@ -43,11 +43,6 @@ usersymbol, 'circle', /fill, size_of_sym = 0.5
 spawn, 'echo $home', mdir
 mdir = mdir+'/'
 
-filename = '/tous/vumps/fitspec/150524/rvumps150524.1020.fits'
-im = readfits(filename)
-wav = reform(im[0,*,*])
-spec = reform(im[1,*,*])
-
 if keyword_set(nad) then begin
 	fnhgh = '/tous/vumps/fitspec/150524/rvumps150524.1018.fits'
 	imhgh = readfits(fnhgh)
@@ -129,7 +124,54 @@ if keyword_set(postplot) then begin
    ps_open, fn, /encaps, /color
 endif
 
-display, spec
+filename = '/tous/vumps/fitspec/150524/rvumps150524.1020.fits'
+im = readfits(filename)
+wav = reform(im[0,*,*])
+spec = reform(im[1,*,*])
+
+;get the dimensions of the spectrum:
+specsz = size(spec)
+
+;number of pixels in the dispersion direction
+ndsprsn = specsz[1]
+
+;number of orders:
+nord = specsz[2]
+
+;now create a window to display the spectrum in:
+window, 1, xpos=900, ypos=400
+
+;get the size of the display window:
+winsz = size(tvrd())
+
+;calculate the height of each order, leaving a space for a buffer:
+padding = 1
+ordhgt = floor((winsz[2] - (nord - padding))/nord)
+
+;now loop through orders plotting to display:
+for ord=0, nord-1 do begin
+
+	;interpolate the spectrum in the x direction to have the same
+	;number of pixels as the display:
+	orderout = interpol(spec[*,ord], winsz[1])
+
+	;now interpolate the wavelengths for color:
+	wavout = interpol(wav[*,ord], winsz[1])
+
+	;now convert this to rgb:
+	rgb = intarr(3, winsz[1])
+	
+
+	for row=0, ordhgt-1 do begin
+		tvscl, orderout, 0, row + ord*(ordhgt + padding)
+	endfor;loop through order height
+	stop
+	stop
+endfor ;loop through orders
+
+
+;loop through orders to create
+;tvscl, spec
 if keyword_set(postplot) then begin
    ps_close
 endif
