@@ -198,8 +198,12 @@ The following figure superimposes the Solar H alpha line taken in the three reso
 .. image:: figures/h_alpha_res_comparison.png
   :width: 90%
 
-The wavelength solution is in good agreement with the wavelength of H alpha, and the line depths as a function of resolution mode are also as expected.
+The wavelength solution is in good agreement with the wavelength of H alpha (6562.8 Angstroms), and the line depths as a function of resolution mode are also as expected.
 
+.. image:: figures/nad_vumps.png
+  :width: 90%
+
+Similar to H alpha, the Na D lines, shown above for all three resolution modes, are at the expected wavelengths (5890.0 and 5895.9 Angstroms) and the lines become deeper as a function of resolution.
 
 It goes to 11
 =============
