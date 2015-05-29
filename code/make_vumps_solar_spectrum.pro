@@ -118,12 +118,6 @@ if keyword_set(halpha) then begin
 	stop
 endif
 
-if keyword_set(postplot) then begin
-   fn = nextnameeps('plot')
-   thick, 2
-   ps_open, fn, /encaps, /color
-endif
-
 filename = '/tous/vumps/fitspec/150524/rvumps150524.1020.fits'
 im = readfits(filename)
 wav = reform(im[0,*,*])
@@ -138,15 +132,39 @@ ndsprsn = specsz[1]
 ;number of orders:
 nord = specsz[2]
 
-;now create a window to display the spectrum in:
-window, 1, xpos=900, ypos=400
+if keyword_set(postplot) then begin
+	fn = nextnameeps('vumps_solar')
+	thick, 2
+	xsize = 4
+	ysize = 4
+	ps_open, fn, /encaps, /color, inxsize=xsize, inysize=ysize, /inches
+endif else begin
+	;now create a window to display the spectrum in:
+	window, 1, xpos=200, ypos=200, xsize=1100, ysize=1100
+endelse
 
-;get the size of the display window:
-winsz = size(tvrd())
+;
+; Use a dummy plot to determine the plot region, establish device variables,
+;	and determine the aspect ratio.
+;
+Plot, [0,1], /NoData, XStyle=4, YStyle=4, /NoErase
 
+dev_x_range = !X.Window * !D.X_VSize	;window range in device
+dev_y_range = !Y.Window * !D.Y_VSize	; coordinates
+dev_x_width = dev_x_range(1) - dev_x_range(0) + 1
+dev_y_width = dev_y_range(1) - dev_y_range(0) + 1
+dev_aspect = dev_x_width / dev_y_width	;device aspect (width/height)
+winsz = [2, !D.X_VSize, !D.Y_VSize]
+
+print, 'x range: ', dev_x_range
+print, 'y range: ', dev_y_range
+print, 'x width: ', dev_x_width
+print, 'y width: ', dev_y_width
+print, 'winsz: ', winsz
 ;calculate the height of each order, leaving a space for a buffer:
-padding = 1
-ordhgt = floor((winsz[2] - (nord - padding))/nord)
+bottom_padding = 20
+order_padding = 1
+ordhgt = floor((winsz[2] - (nord - order_padding) - bottom_padding)/nord)
 
 ;now loop through orders plotting to display:
 for ord=0, nord-1 do begin
@@ -159,19 +177,24 @@ for ord=0, nord-1 do begin
 	wavout = interpol(wav[*,ord], winsz[1])
 
 	;now convert this to rgb:
-	rgb = intarr(3, winsz[1])
+	rgb = intarr(3, winsz[1], 2)
 	
-
+	;now get an rgb value for each pixel in the order:
+	for i=0, winsz[1]-1 do begin
+		rgb[*,i,0] = wavelength_to_rgb(wavout[i] / 10.)*255. * orderout[i]/max(orderout)
+		;stop
+	endfor
+	
 	for row=0, ordhgt-1 do begin
-		tvscl, orderout, 0, row + ord*(ordhgt + padding)
+		tv, rgb, 0, $
+		bottom_padding + row + ord*(ordhgt + order_padding), $
+		xsize = !D.X_VSize, $
+		ysize = 1, $
+		true=1, /device
 	endfor;loop through order height
-	stop
-	stop
+	;stop
 endfor ;loop through orders
 
-
-;loop through orders to create
-;tvscl, spec
 if keyword_set(postplot) then begin
    ps_close
 endif
