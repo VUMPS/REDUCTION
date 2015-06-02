@@ -11,7 +11,7 @@ endif
 
 setenv IDL_STARTUP ${HOME}/projects/VUMPS/REDUCTION/.idl_startup.pro
 
-setenv VUMPS_PAR_PATH ${HOME}'/projects/VUMPS/REDUCTION/code/vumps.par'
+setenv VUMPS_PAR_PATH ${HOME}'/projects/VUMPS/REDUCTION/code/maos.par'
 
 # ADD DEPENDENCIES TO PATH:
 # 1st and 2nd dependencies: IDLAstro Package and the built in IDL lib:
