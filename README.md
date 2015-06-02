@@ -24,6 +24,10 @@ Install the dependencies:
     git clone https://github.com/mattgiguere/idlutils.git
     wget https://www.physics.wisc.edu/~craigm/idl/down/mpfit.tar.gz
     mkdir mpfit; tar -xvf mpfit.tar.gz -C mpfit
+    wget http://www.idlcoyote.com/programs/zip_files/coyoteprograms.zip
+    unzip coyoteprograms.zip -d .
+    
+    
     
 
 
