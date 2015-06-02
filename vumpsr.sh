@@ -18,8 +18,6 @@ setenv IDL_STARTUP ${HOME}/projects/VUMPS/REDUCTION/.idl_startup.pro
 setenv VUMPS_PAR_PATH ${HOME}'/projects/VUMPS/REDUCTION/code/maos.par'
 
 # ADD DEPENDENCIES TO PATH:
-# 1st and 2nd dependencies: IDLAstro Package and the built in IDL lib:
-# https://github.com/wlandsman/IDLAstro
 setenv IDL_PATH +${IDLDIR}/lib
 setenv IDL_PATH +${HOME}/projects/coyote:${IDL_PATH}
 setenv IDL_PATH +${HOME}/projects/IDLAstro/pro:${IDL_PATH}
