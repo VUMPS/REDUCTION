@@ -33,7 +33,8 @@
 pro make_vumps_solar_spectrum, $
 postplot = postplot, $
 halpha = halpha, $
-nad = nad
+nad = nad, $
+removeblaze = removeblaze
 
 angstrom = '!6!sA!r!u!9 %!6!n'
 !p.color=0
@@ -132,6 +133,20 @@ ndsprsn = specsz[1]
 ;number of orders:
 nord = specsz[2]
 
+;divide by the blaze function if set:
+if keyword_set(removeblaze) then begin
+	flatfn = '/tous/vumps/flats/vumps150524.hgh_flat.fits'
+	flat = readfits(flatfn)
+	for ordidx=0, nord-1 do begin
+		scale_factor = max(spec[*,ordidx])/max(flat[*,ordidx,2])
+		;plot, spec[*, ordidx], /xsty
+		;oplot, flat[*,ordidx, 2] * scale_factor, col=250
+		spec[*,ordidx] = spec[*,ordidx] / flat[*,ordidx, 2] * scale_factor
+		;stop
+	endfor
+	;stop
+endif
+
 if keyword_set(postplot) then begin
 	fn = nextnameeps('vumps_solar')
 	thick, 2
@@ -181,7 +196,7 @@ for ord=0, nord-1 do begin
 	
 	;now get an rgb value for each pixel in the order:
 	for i=0, winsz[1]-1 do begin
-		rgb[*,i,0] = wavelength_to_rgb(wavout[i] / 10.)*255. * orderout[i]/max(orderout)
+		rgb[*,i,0] = wavelength_to_rgb(wavout[i] / 10., ir_min_dimming = 0.25)*255. * orderout[i]/max(orderout)
 		;stop
 	endfor
 	
