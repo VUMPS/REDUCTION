@@ -1,10 +1,8 @@
 {redpar,                       ; named structure, passed by reference
 rootdir: '/',             ; root directory. All other paths are relative to rootdir
 logdir:  'tous/vumps/logsheets/',         ; log sheets 
-iodspecdir: 'tous/vumps/iodspec/',        ; reduced spectra in RDSK/WRDSK format
 plotsdir: '/Users/matt/Sites/vumps/red/plots/', ; directory to put encapsulated postscript and PNG plots
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
-thiddir:    'tous/vumps/wavfile/',   ; wav saved in in *.dat files, not used
 thidfiledir: 'tous/vumps/thidfile/', ; thid saved in *.thid files
 rawdir: 'raw/vumps/',                ; raw files
 imdir:   'yymmdd/',            ; yymmdd/ image directory with raw night data (*)
@@ -19,7 +17,6 @@ flatdir:  'tous/vumps/flats/',            ; summed flat fields
 biasdir:  'tous/vumps/medbias/',            ; median bias frames
 biasmode: 0,            ; 0: use median bias frame, 1: use median overscan row
 orderdir: 'tous/vumps/orders/',           ; order locations
-barydir:  'tous/VUMPS/bary/',             ; code for barycentric correction? 
 xdim: 4200,                  ;number of pixels in x dimension
 ydim: 4112,                  ;number of pixels in y dimension
 xtrim: [0,4087],             ; trim along dispersion direction, UNBINNED pixels

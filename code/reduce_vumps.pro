@@ -45,7 +45,7 @@ resolutionidx = redpar.resolutionidx
 indir=redpar.rootdir+redpar.rawdir+redpar.imdir 
 
 ;Output reduced file path
-outdir= redpar.rootdir + redpar.iodspecdir + date + '/'
+outdir= redpar.rootdir + redpar.fitsdir + date + '/'
 if ~file_test(outdir) then spawn, 'mkdir '+outdir
 
 if ~keyword_set (order_ind) then begin

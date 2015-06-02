@@ -21,9 +21,6 @@
 ;				fits files skip=['2268'] thar_soln is the wavelength array
 ;				soln (if a matching thar not taken this night)
 ;
-;  END_CHECK: checks to see that all 3x1 binned observations with input slit have been
-;             reduced (iodspec), fits (fitspec), thar_soln
-;
 ;	EXAMPLES: 
 ;		sorting_hat, '150516', image_prefix='vumps150516', /low, /reduce
 ;  
@@ -87,14 +84,11 @@ logpath = redpar.logdir+'20'+strmid(date, 0, 2)+'/'
 redpar.logdir=logpath
 logsheet = redpar.rootdir+logpath+date+'.log'
 
-iodspec_path = redpar.rootdir+redpar.iodspecdir+redpar.imdir
 fits_path = redpar.rootdir+redpar.fitsdir+redpar.imdir
 
 ; if the nightly fitspec directory does not exist, create it:
 if ~file_test(fits_path) then spawn, 'mkdir '+fits_path
 
-thid_path = redpar.rootdir+redpar.thiddir
-if ~file_test(thid_path+date) then spawn, 'mkdir '+thid_path+date
 thid_path2 = redpar.rootdir+redpar.thidfiledir
 if ~file_test(thid_path2+date) then spawn, 'mkdir '+thid_path2+date
 
@@ -215,7 +209,7 @@ if keyword_set(getthid) then begin
 	print, 'Ready to go into AUTOTHID'   
 	!p.multi=[0,1,1]
 	for i=0,num_thar-1 do begin 
-	isfn = iodspec_path+redpre+image_prefix+thar[i]+'.fits'
+	isfn = fits_path+redpre+image_prefix+thar[i]+'.fits'
 	print, 'ThAr file to fit: ', isfn
 	t = readfits(isfn)
 	t = rotate(t,2)
@@ -238,14 +232,6 @@ if keyword_set(getthid) then begin
 	if file_test(fnm+fsuf) then spawn, $
 	'mv '+fnm+'.thid '+nextname(fnm,fsuf)
 	save, thid, file=fnm+fsuf
-
-	mkwave, w, thid.wvc
-	w = reverse(w,2) ; increase with increasing order numver
-	fnm = thid_path+date+'/'+'vumps_'+redpre+image_prefix+thar[i]
-	fsuf = '.dat'
-	if file_test(fnm+fsuf) then spawn, $
-	'mv '+fnm+'.dat '+nextname(fnm,fsuf)
-	save, w, file=fnm+fsuf
 	endfor
 	endif;n_exps > 0
 endif ; getthid
