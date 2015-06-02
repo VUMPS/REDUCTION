@@ -201,7 +201,7 @@ for ord=0, nord-1 do begin
 	
 	;now get an rgb value for each pixel in the order:
 	for i=0, winsz[1]-1 do begin
-		rgb[*,i,0] = wavelength_to_rgb(wavout[i] / 10., ir_min_dimming = 0.25)*255. * orderout[i]/max(orderout)
+		rgb[*,i,0] = wavelength_to_rgb(wavout[i] / 10., ir_min_dimming = 0.3)*255. * orderout[i]/max(orderout)
 		;stop
 	endfor
 	
