@@ -4,9 +4,13 @@
 # SETUP IDL ENVIRONMENT                                                                                   
 #########################################################                                                
 if (-e /Applications/exelis) then
-set IDLDIR='/Applications/exelis/idl'
-else
-set IDLDIR='/Applications/itt/idl/idl'
+	set IDLDIR='/Applications/exelis/idl'
+else if (-e /Applications/itt) then
+	set IDLDIR='/usr/local/exelis/idl'
+else if (-e /usr/local/exelis) then
+	set IDLDIR='/usr/local/exelis/idl'
+else 
+	set IDLDIR='/usr/local/itt/idl'
 endif
 
 setenv IDL_STARTUP ${HOME}/projects/VUMPS/REDUCTION/.idl_startup.pro
