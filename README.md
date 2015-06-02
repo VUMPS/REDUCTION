@@ -17,7 +17,7 @@ This code is written in [IDL](http://www.exelisvis.com/ProductsServices/IDL.aspx
 
 ##Getting Started
 
-Install the dependencies:
+###Install the dependencies:
 
     cd ~/projects
     git clone https://github.com/mattgiguere/IDLAstro.git
@@ -27,9 +27,7 @@ Install the dependencies:
     wget http://www.idlcoyote.com/programs/zip_files/coyoteprograms.zip
     unzip coyoteprograms.zip -d .
     
-    
-    
-
+###Update the startup script
 
 This repository contains a convenience routine that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
 
@@ -43,4 +41,19 @@ This repository contains a convenience routine that sets up the IDL environment 
 
 ##Logsheets
 
-The reduction code requires a logsheet in order to determine the resolution modes, bias frames, flat fielding frames, etc. 
+The reduction code requires a logsheet in order to determine the resolution modes, bias frames, flat fielding frames, etc. The essential elements in the logsheet are the sequence number, object name, observation mid-time, exposure time, and slit mode. Below is an example of a logsheet used during the commissioning of the spectrometer.
+
+```text
+                VUMPS Spectrograph Observing Log 
+  
+-------------------------------------------------------------------------------------
+Observer: Giguere, Jurgenson, Sawyer, McCracken, Mossman  Telescope: MAO Prefix: vumps150524.
+UT Date: 2015, May 24             Chip: 201 (e2v 4k, 15micron)  Foc:  mm
+Ech: VUMPS     Fixed Cross-disperser position                  Foc FWHM: 
+-------------------------------------------------------------------------------------
+ Obs            Object      Mid-Time     Exp   Slit    Comments
+number           Name         (UT)      time           
+1000              bg38    00:00:00     0.1    low    ~1.2k peaks
+1001              bg38    00:00:00     0.1    low    ~1.2k peaks
+
+```
