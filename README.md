@@ -1,6 +1,8 @@
 # REDUCTION
 
-This repository contains the reduction code for the VUMPS Spectrometer.
+This repository contains the reduction code for the Moletai Astronomical Observatory Spectrometer (MAOS).
+
+![MAOS Solar Spectrum](docs/figures/vumps_spec.png)
 
 ##Dependencies
 
