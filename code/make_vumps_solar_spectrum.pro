@@ -34,7 +34,9 @@ pro make_vumps_solar_spectrum, $
 postplot = postplot, $
 halpha = halpha, $
 nad = nad, $
-removeblaze = removeblaze
+removeblaze = removeblaze, $
+aspect = aspect
+
 
 angstrom = '!6!sA!r!u!9 %!6!n'
 !p.color=0
@@ -155,7 +157,10 @@ if keyword_set(postplot) then begin
 	ps_open, fn, /encaps, /color, inxsize=xsize, inysize=ysize, /inches
 endif else begin
 	;now create a window to display the spectrum in:
-	window, 1, xpos=200, ypos=200, xsize=1100, ysize=1100
+	ysize = 1100
+	if ~keyword_set(aspect) then aspect = 1.
+	xsize = ysize * aspect
+	window, 1, xpos=200, ypos=200, xsize=xsize, ysize=ysize
 endelse
 
 ;
