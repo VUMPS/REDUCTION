@@ -287,7 +287,7 @@ if keyword_set(iod2fits) then begin
 	nxck=0
 	if keyword_set(skip) then xck=where(obnmx1[[i]] eq skip,nxck) 
 	if nxck eq 0 then begin
-	sp = readfits(iodspec_path+redpre+image_prefix+obnm[x1[i]]+'.fits', hd)
+	sp = readfits(fits_path+redpre+image_prefix+obnm[x1[i]]+'.fits', hd)
 
 	sz=size(sp)  &   ncol=sz[1]    &    nord=sz[2]
 	spec=dblarr(2,ncol,nord)
