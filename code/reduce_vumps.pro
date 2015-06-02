@@ -185,8 +185,8 @@ flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
 flatname = redpar.rootdir+redpar.flatdir+prefix+resolution+'_flat.fits'
 ;fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
 
-;wdsk, flat, name, /new
 writefits, flatname, flat
+
 ;rdsk2fits, filename=fitsname, data = flat
 print, 'REDUCE_VUMPS: extracted flat field is written to '+flatname  
 FF = flat[*,*,0] ; the actual flat
