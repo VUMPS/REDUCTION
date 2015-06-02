@@ -6,7 +6,7 @@ This repository contains the reduction code for the Moletai Astronomical Observa
 
 ##Dependencies
 
-This code is written in IDL and makes use of the following libraries:
+This code is written in [IDL](http://www.exelisvis.com/ProductsServices/IDL.aspx) and makes use of the following libraries:
 
 1. The built-in [IDL](http://www.exelisvis.com/ProductsServices/IDL.aspx) library
 2. The [IDLAstro](https://github.com/mattgiguere/IDLAstro) package
@@ -15,8 +15,18 @@ This code is written in IDL and makes use of the following libraries:
 5. The [coyote](http://www.idlcoyote.com/documents/programs.php) library
 
 
-
 ##Getting Started
+
+Install the dependencies:
+
+    cd ~/projects
+    git clone https://github.com/mattgiguere/IDLAstro.git
+    git clone https://github.com/mattgiguere/idlutils.git
+    wget https://www.physics.wisc.edu/~craigm/idl/down/mpfit.tar.gz
+    mkdir mpfit; tar -xvf mpfit.tar.gz -C mpfit
+    
+
+
 This repository contains a convenience routine that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
 
     ./vumpsr.sh
