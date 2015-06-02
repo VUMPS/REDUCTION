@@ -88,7 +88,7 @@ bobsmed = median(bcube, /double, dimen=3)
 
 
 fname = redpar.rootdir+redpar.biasdir+redpar.date+'_bin'+binsz+'_'+rdspd+'_medbias.dat'
-stop
+
 save, bobsmed, filename=fname
 print, 'Median bias frome filename saved as: ', fname
 end;vumps_medianbias.pro
