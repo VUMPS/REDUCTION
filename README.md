@@ -27,19 +27,7 @@ This code is written in [IDL](http://www.exelisvis.com/ProductsServices/IDL.aspx
     wget http://www.idlcoyote.com/programs/zip_files/coyoteprograms.zip
     unzip coyoteprograms.zip -d .
     
-###Update the startup script
-
-This repository contains a convenience routine that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
-
-    ./vumpsr.sh
-    Now setting the path to +/projects/VUMPS/REDUCTION/code:+/idl/mpfit:+projects/idlutils:+/idl:+/projects/IDLAstro/pro:+/projects/coyote:+/Applications/exelis/idl/lib
-    Now changing the directory to: /projects/VUMPS/REDUCTION/code
-    IDL Version 8.2.2, Mac OS X (darwin x86_64 m64). (c) 2012, Exelis Visual Information Solutions, Inc.
-    Installation number: 2.
-    Licensed for use by: VUMPS1
-    IDL> 
-
-##Logsheets
+###Logsheets
 
 The reduction code requires a logsheet in order to determine the resolution modes, bias frames, flat fielding frames, etc. The essential elements in the logsheet are the sequence number, object name, observation mid-time, exposure time, and slit mode. Below is an example of a logsheet used during the commissioning of the spectrometer.
 
@@ -57,3 +45,26 @@ number           Name         (UT)      time
 1001              bg38    00:00:00     0.1    low    ~1.2k peaks
 
 ```
+
+###Parameter file
+
+Lastly, the reduction code uses a global parameter file for specifying the instrument and machine specific information. Initially, this file can be found in `VUMPS/REDUCTION/code/maos.par`. Set the precise path to the parameter file with the VUMPS_PAR_PATH environment variable. This is included in the `vumpsr.sh` startup script (see below).
+
+###Update the startup script
+
+This repository contains a convenience routine, called `vumpsr.sh` that sets up the IDL environment for the VUMPS reduction code. After installing the dependencies, update the vumpsr.sh file with the appropriate path information. Next, simply type `./vumpsr.sh` at the command line to start up the reduction code environment:
+
+    ./vumpsr.sh
+    Now setting the path to +/projects/VUMPS/REDUCTION/code:+/idl/mpfit:+projects/idlutils:+/idl:+/projects/IDLAstro/pro:+/projects/coyote:+/Applications/exelis/idl/lib
+    Now changing the directory to: /projects/VUMPS/REDUCTION/code
+    IDL Version 8.2.2, Mac OS X (darwin x86_64 m64). (c) 2012, Exelis Visual Information Solutions, Inc.
+    Installation number: 2.
+    Licensed for use by: VUMPS1
+    IDL> 
+
+###Running the reduction code
+
+Lastly, to run the reduction code use the `vumps_reduce_all` command. This will extract and wavelength calibrate all the data for the given night, which is specified by passing the date in yymmdd format to `vumps_reduce_all`. For example, to reduce all the data for all 3 resolution modes for data taken on May 24, 2015, use the following command:
+
+    vumps_reduce_all, date='150524'
+
