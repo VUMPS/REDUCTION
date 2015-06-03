@@ -1,8 +1,8 @@
 #!/bin/csh
 
-#########################################################                                                
-# SETUP IDL ENVIRONMENT                                                                                   
-#########################################################                                                
+#########################################################
+# SETUP IDL ENVIRONMENT
+#########################################################
 if (-e /Applications/exelis) then
 	set IDLDIR='/Applications/exelis/idl'
 else if (-e /Applications/itt) then
