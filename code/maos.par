@@ -62,6 +62,7 @@ blues: 1,
 ;use blues from any resolution mode to process the current resolution mode:
 any_res_blues: 1, 
 blues_sig_mid: 1150, ;the sigmoid midpoint for combining red and blue flats
+blues_flat: 1, ;use the blue frames for flat-fielding
 debug: 0}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
