@@ -1,8 +1,47 @@
-pro addflat, flatfiles, sum, redpar, im_arr
-; median-co-adds flat-field files, result in SUM
+;+
+;
+;  NAME: 
+;     addflat
+;
+;  PURPOSE: 
+;   To combine the quartz exposures to make an extracted master
+;	quartz for flat-fielding. Optionally, this routine combines
+;	quartz exposures of difference exposure times to get a higher
+;	SNR in the blue.
+;
+;  CATEGORY:
+;      VUMPS
+;
+;  CALLING SEQUENCE:
+;
+;      addflat
+;
+;  INPUTS:
+;
+;  OPTIONAL INPUTS:
+;		bluefiles: a string array of filenames of the images to be used
+;		for increasing the SNR in the blue.		
+;
+;  OUTPUTS:
+;
+;  OPTIONAL OUTPUTS:
+;
+;  KEYWORD PARAMETERS:
+;    
+;  EXAMPLE:
+;      addflat
+;
+;  MODIFICATION HISTORY:
+;        c. Matt Giguere 2015-06-04T19:10:38
+;		based on CHIRON reduction code
+;
+;-
+pro addflat, flatfiles, sum, redpar, im_arr, $
+bluefiles = bluefiles, orderlocs = orderlocs
+
 compile_opt idl2
 
-numwf=n_elements(flatfiles) & owidefiles = flatfiles
+numwf=n_elements(flatfiles)
 print, "Entering ADDFLAT routine Nflats= ",numwf
 
 sum = 0
@@ -72,4 +111,4 @@ badp = where(sum le 0, nbadp)
 if nbadp gt 0 then sum[badp] = 1.0
 
 print, 'ADDFLAT: Now leaving routine.'
-end
+end;addflat.pro

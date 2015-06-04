@@ -1,12 +1,44 @@
-; Extract flat field, divide by median-smoothed
-; Inputs: summed flat field image, orders, extraction width
-; Output: extracted and normalized flat field [pixels,orders,3]
-; plane 1: flat plane 2: extracted quartz, plane 3: smoothed orders
-; Oct 24, 2011 AT
-;added redpar and plotting options. 20120412~MJG
-;incorporated weighting to get a better smoothed order 20120510~MJG
-;20150518 adapted to VUMPS
+;+
 ;
+;  NAME: 
+;     getflat
+;
+;  PURPOSE: 
+;   To extract the master flat-field and divide by the flat model to
+;	create a normalized flat.
+;
+;  CATEGORY:
+;      VUMPS
+;
+;  CALLING SEQUENCE:
+;      flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
+;
+;  INPUTS:
+;		IM: summed flat-field image
+;		ORC: The order locations
+;		XWID: the extraction width
+;
+;  OPTIONAL INPUTS:
+;
+;  OUTPUTS:
+;		the extracted and normalized flat field [pixels,orders,3]
+;		plane 1: flat plane 2: extracted quartz, plane 3: smoothed orders
+;
+;  OPTIONAL OUTPUTS:
+;
+;  KEYWORD PARAMETERS:
+;    
+;  EXAMPLE:
+;      getflat
+;
+;  MODIFICATION HISTORY:
+;		 -CHIRON version Oct 24, 2011 AT
+;			added redpar and plotting options. 20120412~MJG
+;			incorporated weighting to get a better smoothed order 20120510~MJG
+;			20150518 adapted to VUMPS
+;        - improved docs, added blues MJ Giguere 2015-06-04T19:44:22
+;
+;-
 function getflat, im, orc, xwid, redpar, im_arr=im_arr
 
 !p.multi=[0, 1, 1]
@@ -15,6 +47,13 @@ order = 8 ; polynomial order
 threshold = 1d-4 ; min. signal relative to max in each order
 ;getsky,im,orc,sky = sky   ; subtract scattered light  
 if keyword_set(im_arr) then imarrsz = size(im_arr)  ; imarrsz[3] is the number of observations
+
+;combine blues summed flat with normal summed flat
+;based on the order locations:
+if redpar.blues_flat then begin
+
+endif
+
 
 if redpar.flatnorm le 1 then begin
 	getspec, im, orc, xwid, sp, redpar=redpar   ; extract im to flat [npix,nord]
@@ -103,8 +142,10 @@ if redpar.debug ge 1 and redpar.debug le 2 then begin
 endif;psplot
 endif;flatnorm le 1
 
-if redpar.flatnorm le 1 then tmp = sp/smflt  ;divide my median smoothed flat to remove low frequencies
-j = where(tmp lt 0.1 or tmp gt 10, nneg)     ;don-t let the flat set weird values, they-re prob. cosmics
+;divide by median smoothed flat to remove low frequencies
+if redpar.flatnorm le 1 then tmp = sp/smflt  
+;do not let the flat set weird values; they-re prob. cosmics.
+j = where(tmp lt 0.1 or tmp gt 10, nneg)
 if nneg gt 0 then tmp[j] = 1.              
 flat[*,*,0] = tmp
 flat[*,*,1] = sp
@@ -112,5 +153,4 @@ flat[*,*,2] = smflt
 
 if redpar.debug ge 2 then stop ; debugging 
 return, flat
-end   
-
+end;getflat.pro
