@@ -93,6 +93,29 @@ The resulting peak locations for each swath were inspected, and are shown with "
 
 The absence of any gap in "+" symbols in the above plot shows that ``fords.pro`` successfully found all peaks aside from the blue-most order, which goes off the chip around swath 19.
 
+Flat-fielding in the Blue
+=========================
+
+The quartz exposures that were taken that are saturated in the red,
+but have a high count rate in the blue, can also be used for flat-
+fielding. Similar to order finding, a sigmoid function can be used
+to attenuate the signal in the red. However, we want to make sure
+we have a continuous attenuation along each order. This can be
+accomplished by setting the sigmoid midpoint to be a function of the
+fit to the polynomial order.
+
+Specifically, we take the order location solution and have :math:`x_0`
+be a function of the order location:
+
+.. math::
+
+  f(x, y) = 1 - \frac{1}{1 + e^{-\alpha(x - g(y))}}
+
+
+where :math:`g(y)` is the polynomial solution to the order location,
+and :math:`y` is the column (i.e. position in the dispersion direction).
+
+
 
 SNR Comparison
 ==============
