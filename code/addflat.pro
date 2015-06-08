@@ -17,14 +17,21 @@
 ;      addflat
 ;
 ;  INPUTS:
+;		REDPAR: The parameter structure containing instrument and machine 
+;			specific parameters for the reduction.
+;
+;		FLATFILES: The string array of filenames of the quartz images to 
+;		be used for flat fielding
 ;
 ;  OPTIONAL INPUTS:
-;		bluefiles: a string array of filenames of the images to be used
+;		BLUEFILES: a string array of filenames of the images to be used
 ;		for increasing the SNR in the blue.		
 ;
 ;  OUTPUTS:
+;		SUM: The median flat frame
 ;
 ;  OPTIONAL OUTPUTS:
+;		BLUE_FLAT: The median flat frame for JUST the bluefiles (if provided)
 ;
 ;  KEYWORD PARAMETERS:
 ;    
@@ -37,7 +44,8 @@
 ;
 ;-
 pro addflat, flatfiles, sum, redpar, im_arr, $
-bluefiles = bluefiles, orderlocs = orderlocs
+bluefiles = bluefiles, orderlocs = orderlocs, $
+blue_flat = blue_flat
 
 compile_opt idl2
 
@@ -60,6 +68,9 @@ swidth = 50L
 gdfltidx = dblarr(numwf)
 normvalarr = 0d
 
+;cycle over all input flatfilenames ---
+;restore images, check counts, if good, 
+;add to 3D array of flat images:
 ctwf=0   
 fspot = 0 ;index the im array data cube
 for j = 0, numwf-1 do begin
@@ -82,6 +93,19 @@ for j = 0, numwf-1 do begin
     if normval ge redpar.minflatval then fspot++
 endfor
 
+;combine the images that have a high SNR in the blue:
+if redpar.blues_flat then begin
+	;make a 3D array to house all blues images:
+	blues_arr = dblarr(nc, nr, n_elements(bluefiles))
+
+	;cycle through all blue files reading in images and adding
+	; to 3D array:
+	for j=0, n_elements(bluefiles)-1 do begin
+		blues_im = getimage(bluefiles[j], redpar, header=header, geom=geom)
+		blues_arr[*, *, j] = blues_im
+	endfor;NUM(bluefiles)
+endif
+
 ;now to remove flat exposures that had too few counts:
 if ctwf lt numwf then begin
   print, 'WARNING! You had flats that had too few counts! Now excluding them!'
@@ -101,9 +125,19 @@ print, 'ADDFLAT: calculating median flat...'
 sum = dblarr(nc,nr)
 for ncol=0,nc-1 do begin
   for nrow=0,nr-1 do begin
-	 sum[ncol,nrow]=median(im_arr[ncol,nrow,*])
+	 sum[ncol,nrow]=median(im_arr[ncol,nrow,*], /double)
   endfor
 endfor
+
+;now create a median blues image:
+if redplar.blues_flat then begin
+	blue_flat = dblarr(nc, nr)
+	for ncol=0, nc-1 do begin
+		for nrow=0, nr-1 do begin
+			blue_flat[ncol, nrow] = median(blues_arr[ncol, nrow, *], /double)
+		endfor;row
+	endfor;col
+endif;blues_flat
 
 ;find pixels le 0, and count them
 badp = where(sum le 0, nbadp)
