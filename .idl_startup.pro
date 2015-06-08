@@ -3,6 +3,7 @@ device, retain=2, decomposed=0
 
 plot, findgen(50)
 !p.color=0
+!p.background=255
 winup, /all
 Print, 'Your IDL startup file was executed on ', systime()
    
