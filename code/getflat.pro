@@ -39,7 +39,9 @@
 ;        - improved docs, added blues MJ Giguere 2015-06-04T19:44:22
 ;
 ;-
-function getflat, im, orc, xwid, redpar, im_arr=im_arr
+function getflat, im, orc, xwid, redpar, $
+im_arr=im_arr, $
+blue_flat=blue_flat
 
 !p.multi=[0, 1, 1]
 
@@ -51,6 +53,37 @@ if keyword_set(im_arr) then imarrsz = size(im_arr)  ; imarrsz[3] is the number o
 ;combine blues summed flat with normal summed flat
 ;based on the order locations:
 if redpar.blues_flat then begin
+loadct, 0, /silent
+display, blue_flat, min=1, max=7d4, /log
+;get the dimensions of the order location 2D array:
+orcsz = size(orc)
+bluesz = size(blue_flat)
+imsz = size(im)
+if bluesz[1] ne imsz[1] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
+if bluesz[2] ne imsz[2] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
+;the number of echelle orders extracted:
+nords = orcsz[2]
+xarr = dindgen(bluesz[1])
+yarr = poly(xarr, orc[*,redpar.blues_flat_ord])
+loadct, 39, /silent
+plot, blue_flat[bluesz[1]/2, *], /xsty
+oplot, xarr, yarr, col=250
+combined_flat = im * 0d
+
+
+;the sigmoid steepness (how quickly it goes from 1 to zero:
+sig_stp = 1d-2
+
+for col=0, bluesz[1]-1 do begin
+	sig_midpt = orc[col,redpar.blues_flat_ord]
+	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt)))	
+	combined_flat[col, *] = decay_function * blue_flat[col,*] + im[col,*]
+	plot, combined_flat[col,*], /xsty
+	stop
+endfor
+stop
+
+
 
 endif
 
