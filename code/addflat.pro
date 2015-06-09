@@ -130,7 +130,7 @@ for ncol=0,nc-1 do begin
 endfor
 
 ;now create a median blues image:
-if redplar.blues_flat then begin
+if redpar.blues_flat then begin
 	blue_flat = dblarr(nc, nr)
 	for ncol=0, nc-1 do begin
 		for nrow=0, nr-1 do begin
