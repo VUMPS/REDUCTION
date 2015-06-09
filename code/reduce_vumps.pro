@@ -137,7 +137,9 @@ if keyword_set(flatset) then begin
 	; crunch the flats (if redpar.flatnorm=0 then sum = wtd mean)
 	if redpar.blues_flat then begin
 		;boost signal in the blue
-		ADDFLAT, flatfnames,sum, redpar, im_arr, bluefiles = bluefnames
+		ADDFLAT, flatfnames,sum, redpar, im_arr, $
+			bluefiles = bluefnames, $
+			blue_flat = blue_flat
 	endif else begin
 		ADDFLAT, flatfnames,sum, redpar, im_arr
 	endelse
@@ -186,7 +188,11 @@ if redpar.debug gt 1 then stop, 'Debug stop after order location, .c to continue
 ; GET FLAT FIELD
 xwid = redpar.xwids[resolutionidx]
 if redpar.debug gt 1 then stop, 'REDUCE_VUMPS: debug stop before getting flat' 
-flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
+if redpar.blues_flat then begin
+	flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr, blue_flat=blue_flat)
+endif else begin
+	flat = getflat(sum, orc, xwid, redpar, im_arr=im_arr)
+endelse
 
 flatname = redpar.rootdir+redpar.flatdir+prefix+resolution+'_flat.fits'
 ;fitsname = redpar.rootdir+redpar.flatdir+prefix+mode+'flat.fits'
