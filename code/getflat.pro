@@ -74,12 +74,15 @@ combined_flat = im * 0d
 ;the sigmoid steepness (how quickly it goes from 1 to zero:
 sig_stp = 1d-2
 
+;create array of midpoints:
+sig_midpt = yarr
+
 for col=0, bluesz[1]-1 do begin
-	sig_midpt = orc[col,redpar.blues_flat_ord]
-	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt)))	
+	print, col
+	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt[col])))	
 	combined_flat[col, *] = decay_function * blue_flat[col,*] + im[col,*]
-	plot, combined_flat[col,*], /xsty
-	stop
+	plot, combined_flat[col,*], /xsty, yrange=[0, 5d4]
+	wait, 0.05
 endfor
 stop
 
