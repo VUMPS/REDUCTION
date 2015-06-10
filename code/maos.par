@@ -66,7 +66,7 @@ blues_sig_mid: 1150,
 ;use the blue frames for flat-fielding
 blues_flat: 1, 
 ;the order to use for the sigmoid midpoint when combining flats:
-blues_flat_ord: 12, 
+blues_flat_ord: 14, 
 debug: 0}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
