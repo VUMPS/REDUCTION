@@ -53,42 +53,40 @@ if keyword_set(im_arr) then imarrsz = size(im_arr)  ; imarrsz[3] is the number o
 ;combine blues summed flat with normal summed flat
 ;based on the order locations:
 if redpar.blues_flat then begin
-loadct, 0, /silent
-display, blue_flat, min=1, max=7d4, /log
-;get the dimensions of the order location 2D array:
-orcsz = size(orc)
-bluesz = size(blue_flat)
-imsz = size(im)
-if bluesz[1] ne imsz[1] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
-if bluesz[2] ne imsz[2] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
-;the number of echelle orders extracted:
-nords = orcsz[2]
-xarr = dindgen(bluesz[1])
-yarr = poly(xarr, orc[*,redpar.blues_flat_ord])
-loadct, 39, /silent
-plot, blue_flat[bluesz[1]/2, *], /xsty
-oplot, xarr, yarr, col=250
-combined_flat = im * 0d
+	loadct, 0, /silent
+	display, blue_flat, min=1, max=7d4, /log
+	;get the dimensions of the order location 2D array:
+	orcsz = size(orc)
+	bluesz = size(blue_flat)
+	imsz = size(im)
+	if bluesz[1] ne imsz[1] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
+	if bluesz[2] ne imsz[2] then stop, 'Warning! The red flats and blue flats do not have the same dimensions!'
+	;the number of echelle orders extracted:
+	nords = orcsz[2]
+	xarr = dindgen(bluesz[1])
+	yarr = poly(xarr, orc[*,redpar.blues_flat_ord])
+	loadct, 39, /silent
+	plot, blue_flat[bluesz[1]/2, *], /xsty
+	oplot, xarr, yarr, col=250
+	combined_flat = im * 0d
 
+	;the sigmoid steepness (how quickly it goes from 1 to zero:
+	sig_stp = 1d-2
 
-;the sigmoid steepness (how quickly it goes from 1 to zero:
-sig_stp = 1d-2
+	;create array of midpoints:
+	sig_midpt = yarr
 
-;create array of midpoints:
-sig_midpt = yarr
-
-for col=0, bluesz[1]-1 do begin
-	print, col
-	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt[col])))	
-	combined_flat[col, *] = decay_function * blue_flat[col,*] + im[col,*]
-	plot, combined_flat[col,*], /xsty, yrange=[0, 5d4]
-	wait, 0.05
-endfor
-stop
-
-
-
-endif
+	for col=0, bluesz[1]-1 do begin
+		print, col
+		decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt[col])))	
+		combined_flat[col, *] = decay_function * blue_flat[col,*] + im[col,*]
+		if redpar.debug ge 1 then begin
+			plot, combined_flat[col,*], /xsty, yrange=[0, 6.5d4]
+			wait, 0.05
+		endif;redpar.debug
+	endfor
+	im = combined_flat
+endif;redpar.blues_flat
 
 
 if redpar.flatnorm le 1 then begin
