@@ -46,6 +46,15 @@ number           Name         (UT)      time
 
 ```
 
+### Calibration Images
+
+To run the reduction code in its current configuration, several sets of calibrations images are required: 
+
+- 0 second bias frames in each readout speed
+- quartz exposures in each resolution mode
+- long quartz exposures in each resolution mode to get a good SNR in the blue
+- ThAr exposures in each resolution mode
+
 ###Parameter file
 
 Lastly, the reduction code uses a global parameter file for specifying the instrument and machine specific information. Initially, this file can be found in `VUMPS/REDUCTION/code/maos.par`. Set the precise path to the parameter file with the VUMPS_PAR_PATH environment variable. This is included in the `vumpsr.sh` startup script (see below).
@@ -62,7 +71,7 @@ This repository contains a convenience routine, called `vumpsr.sh` that sets up 
     Licensed for use by: VUMPS1
     IDL> 
 
-###Running the reduction code
+### Running the reduction code
 
 Lastly, to run the reduction code use the `vumps_reduce_all` command. This will extract and wavelength calibrate all the data for the given night, which is specified by passing the date in yymmdd format to `vumps_reduce_all`. For example, to reduce all the data for all 3 resolution modes for data taken on May 24, 2015, use the following command:
 
