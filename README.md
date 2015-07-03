@@ -68,3 +68,9 @@ Lastly, to run the reduction code use the `vumps_reduce_all` command. This will 
 
     vumps_reduce_all, date='150524'
 
+### Running on MARTYNAS
+
+The VUMPS reduction code has been completely setup on the MARTYNAS Data Analysis Computer. Only two lines are needed to get up and running on that machine:
+
+    /data/tous/projects/VUMPS/REDUCTION/vumpsr.sh
+    vumps_reduce_all, date='150524'
