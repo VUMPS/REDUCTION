@@ -114,7 +114,7 @@ number           Name         (UT)      time
 
 ###Parameter file
 
-Lastly, the reduction code uses a global parameter file for specifying the instrument and machine specific information. Initially, this file can be found in `VUMPS/REDUCTION/code/maos.par`. Set the precise path to the parameter file with the VUMPS_PAR_PATH environment variable. This is included in the `vumpsr.sh` startup script (see below).
+The reduction code uses a global parameter file for specifying the instrument and machine specific information. Initially, this file can be found in `VUMPS/REDUCTION/code/maos.par`. Set the precise path to the parameter file with the VUMPS_PAR_PATH environment variable. This is included in the `vumpsr.sh` startup script (see below).
 
 ###Update the startup script
 
@@ -130,7 +130,7 @@ This repository contains a convenience routine, called `vumpsr.sh` that sets up 
 
 ### Running the reduction code
 
-Lastly, to run the reduction code use the `vumps_reduce_all` command. This will extract and wavelength calibrate all the data for the given night, which is specified by passing the date in yymmdd format to `vumps_reduce_all`. For example, to reduce all the data for all 3 resolution modes for data taken on May 24, 2015, use the following command:
+Use the `vumps_reduce_all` command to run the reduction code. This will extract and wavelength calibrate all the data for the given night, which is specified by passing the date in yymmdd format to `vumps_reduce_all`. For example, to reduce all the data for all 3 resolution modes for data taken on May 24, 2015, use the following command:
 
     vumps_reduce_all, date='150524'
 
