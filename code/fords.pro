@@ -121,9 +121,10 @@ pk += dpks ; peak shift
 
 dres = strt(redpar.resolutionarr[redpar.resolutionidx])
 if debug ge 1 and debug le 2 then begin
-   fdir = redpar.plotsdir + 'fords/'
+   fdir = redpar.rootdir + redpar.plotsdir + 'fords/'
+   print, 'Making directory: ', fdir
    spawn, 'mkdir '+fdir
-   fdir = redpar.plotsdir + 'fords/' + redpar.date
+   fdir = redpar.rootdir + redpar.plotsdir + 'fords/' + redpar.date
    spawn, 'mkdir '+fdir
    ps_open, nextnameeps(fdir+'/'+dres+'_centralswath'), /encaps, /color
 endif;debug plots
