@@ -140,10 +140,16 @@ if keyword_set(reduce) then begin
 	if redpar.blues ge 1 then begin
 		if redpar.any_res_blues then begin
 			blueidx = where(objnm eq 'blues', num_blues)
-			if num_blues then blueset = obnm[blueidx]
+			if num_blues gt 0 then begin
+				blueset = obnm[blueidx]
+			endif
+			print, 'blue frames are: ', blueset
 		endif else begin
 			blueidx = where(objnm1 eq 'blues', num_blues)
-			if num_blues then blueset = obnm1[blueidx]
+			if num_blues gt 0 then begin
+				blueset = obnm1[blueidx]
+			endif
+			print, 'blue frames are: ', blueset
 		endelse
 		if num_blues le 0 then begin
 			print, 'Sorting-hat: no blues files found. Returning.'
