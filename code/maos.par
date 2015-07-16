@@ -1,7 +1,7 @@
 {redpar,                       ; named structure, passed by reference
-rootdir: '/',             ; root directory. All other paths are relative to rootdir
+rootdir: '/data/',             ; root directory. All other paths are relative to rootdir
 logdir:  'tous/vumps/logsheets/',         ; log sheets 
-plotsdir: '/Users/matt/Sites/vumps/red/plots/', ; directory to put encapsulated postscript and PNG plots
+plotsdir: 'tous/vumps/plots/', ; directory to put encapsulated postscript and PNG plots
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
 thidfiledir: 'tous/vumps/thidfile/', ; thid saved in *.thid files
 rawdir: 'raw/vumps/',                ; raw files
@@ -11,7 +11,7 @@ seqnum:   'flat',            ; the image sequence number (*)
 versiond:   'date',            ; systime when this file was created (*)
 versionn:   '3.0',            ; version of the reduction code
 red_prefix: 'r',               ; prepend reduced files with this additional prefix
-prefix:  'chiyymmdd.',         ; file prefix (*)
+prefix:  'vumpsyymmdd.',         ; file prefix (*)
 suffix: '.fit',                ; the file suffix (e.g., .fit, .fits, .FITS, .FITZ)
 flatdir:  'tous/vumps/flats/',            ; summed flat fields
 biasdir:  'tous/vumps/medbias/',            ; median bias frames
@@ -22,7 +22,6 @@ ydim: 4112,                  ;number of pixels in y dimension
 xtrim: [0,4087],             ; trim along dispersion direction, UNBINNED pixels
 ytrim: [0,4111],             ; vertical trim in cross-disp., UNBINNED pixels
 readmodes:  ['fast','medium', 'slow'], ; readout modes
-nlc: [[0, 0],[0, 0]], ;non-linearity coefs. [left,right] in fast and normal
 ;order of gains are botleft, botright, upright, upleft
 gains: [[2.07,2.10,2.08,2.16], [1.99,2.00,2.03,2.06], [1.64,1.62,1.67,1.68]], ; gain  [ [4*]fast, [4*]med, [4*]slow], el/ADU  corrected
 ron:   7.,                     ; RON estimate [ADU], to be calculated from bias (*)
@@ -38,7 +37,8 @@ resolutionidx:  0,      ; index of the resolution (low, med, hgh)
 flatnorm:  1,                      
 minflatval: 1d4,       ; minimum acceptable value for flats 
 slicerflat:  1,                      ; set this to 1 to use the narrow slit + shift & width change for order finding
-pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
+pkcoefs: [77.080234, -18.380945, 4.7748226, -0.19179651, 0.0036860003, -3.4447079e-05, 1.2513080e-07], ; test run for 150710, 84 orders extracted
+;pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
 ;pkcoefs: [243.07574,79.002059,-0.54537681,0.0018460401],  ;150522 kb15 flats (85 orders extracted)
 ;pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;150519 kb15 flats (83 orders extracted)
 ;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;150516 bg7 flats (only 59 orders extracted)
@@ -67,7 +67,7 @@ blues_sig_mid: 1150,
 blues_flat: 1, 
 ;the order to use for the sigmoid midpoint when combining flats:
 blues_flat_ord: 14, 
-debug: 0}
+debug: 1}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
 ;0. No stops. Prints as little as possible. No plots.
