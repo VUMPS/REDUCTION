@@ -122,7 +122,6 @@ pk += dpks ; peak shift
 dres = strt(redpar.resolutionarr[redpar.resolutionidx])
 if debug ge 1 and debug le 2 then begin
    fdir = redpar.rootdir + redpar.plotsdir + 'fords/'
-   print, 'Making directory: ', fdir
    spawn, 'mkdir '+fdir
    fdir = redpar.rootdir + redpar.plotsdir + 'fords/' + redpar.date
    spawn, 'mkdir '+fdir
@@ -468,9 +467,9 @@ yy = poly(x,orc(*,1))				;edge of first order
 
 if debug gt 0 then begin 
   if debug ge 1 and debug le 2 then begin
-	 fdir = redpar.plotsdir + 'fords/'
+	 fdir = redpar.rootdir + redpar.plotsdir + 'fords/'
 	 spawn, 'mkdir '+fdir
-	 fdir = redpar.plotsdir + 'fords/' + redpar.date
+	 fdir = redpar.rootdir + redpar.plotsdir + 'fords/' + redpar.date
 	 spawn, 'mkdir '+fdir
 	 ps_open, nextnameeps(fdir+'/'+dres+'_ordertrace'), /encaps, /color
   endif;debug plots
