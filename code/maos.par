@@ -37,6 +37,8 @@ resolutionidx:  0,      ; index of the resolution (low, med, hgh)
 flatnorm:  1,                      
 minflatval: 1d4,       ; minimum acceptable value for flats 
 slicerflat:  1,                      ; set this to 1 to use the narrow slit + shift & width change for order finding
+;pkcoefs: [ 213.03357, 80.356662, -0.70048672, 0.0064285174, -6.2983188e-05, 4.3664597e-07, -1.3355842e-09], ;150818
+;pkcoefs: [211.61396, 81.350356, -0.76796213, 0.0083985481, -9.3219086e-05, 6.8078450e-07,-2.1500871e-09], ; 150805 vikl
 pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
 ;pkcoefs: [243.07574,79.002059,-0.54537681,0.0018460401],  ;150522 kb15 flats (85 orders extracted)
 ;pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;150519 kb15 flats (83 orders extracted)
@@ -66,7 +68,7 @@ blues_sig_mid: 1150,
 blues_flat: 1, 
 ;the order to use for the sigmoid midpoint when combining flats:
 blues_flat_ord: 14, 
-debug: 0}
+debug: 11}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
 ;0. No stops. Prints as little as possible. No plots.
