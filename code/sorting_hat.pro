@@ -140,16 +140,25 @@ if keyword_set(reduce) then begin
 	if redpar.blues ge 1 then begin
 		if redpar.any_res_blues then begin
 			blueidx = where(objnm eq 'blues', num_blues)
-			if num_blues then blueset = obnm[blueidx]
+			if num_blues ge 1 then begin
+				print, 'blues existed'
+				blueset = obnm[blueidx]
+			endif
 		endif else begin
 			blueidx = where(objnm1 eq 'blues', num_blues)
-			if num_blues then blueset = obnm1[blueidx]
+			if num_blues ge 1 then begin
+				print, 'blues existed'
+				blueset = obnm1[blueidx]
+			endif
 		endelse
 		if num_blues le 0 then begin
 			print, 'Sorting-hat: no blues files found. Returning.'
 			if redpar.debug ge 2 then stop
 			return
 		endif
+	print, '******************************'
+	print, 'BLUES TO BE PROCESSED: '
+	print, blueset
 	endif;use blues
 
 	;IDENTIFY THAR AND I2 FRAMES
