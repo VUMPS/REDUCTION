@@ -34,6 +34,8 @@
 ;-
 function getimage, filename, redpar, header=header, geom=geom
 
+if redpar.debug gt 2 then print, filename
+
 if ~file_test(filename) then begin 
 	print, 'File '+filename+' was not found'
 	return, 0
@@ -167,7 +169,8 @@ im = im[xtrim[0]:xtrim[1], ytrim[0]:ytrim[1]]
 ; remember the binning in redpar
 redpar.binning = [geom.bin.row, geom.bin.col]
 
-;im=rotate(im,1) 		
+;im=rotate(im,1) 
+if redpar.debug ge 11 then stop		
 
 return, im
 
