@@ -137,6 +137,13 @@ if debug gt 0  then begin
    for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=250
    for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=50
    if debug gt 2 then stop, 'FORDS DEBUG: FIRST SWATH plot. Press .C to continue'
+   plot, swa, /xsty, /ysty, $
+   xtitle='Cross Dispersion Direction', $
+   ytitle='Counts in Central Swath'
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1], yy, li=2, color=80
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] + smbox, yy, li=2, color=250
+   for kk=0,nord-1 do oplot, pk[kk]*[1,1] - smbox, yy, li=2, color=50
+   if debug gt 2 then stop, 'FORDS DEBUG: FIRST SWATH plot. Press .C to continue'
 endif
 if redpar.debug ge 1 and redpar.debug le 2 then ps_close
 IF debug gt 3 THEN BEGIN
