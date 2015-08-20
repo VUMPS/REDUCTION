@@ -1,7 +1,7 @@
 {redpar,                       ; named structure, passed by reference
-rootdir: '/',             ; root directory. All other paths are relative to rootdir
+rootdir: '/data/',             ; root directory. All other paths are relative to rootdir
 logdir:  'tous/vumps/logsheets/',         ; log sheets 
-plotsdir: '/Users/matt/Sites/vumps/red/plots/', ; directory to put encapsulated postscript and PNG plots
+plotsdir: 'tous/vumps/plots/', ; directory to put encapsulated postscript and PNG plots
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
 thidfiledir: 'tous/vumps/thidfile/', ; thid saved in *.thid files
 rawdir: 'raw/vumps/',                ; raw files
@@ -37,9 +37,11 @@ resolutionidx:  0,      ; index of the resolution (low, med, hgh)
 flatnorm:  1,                      
 minflatval: 1d4,       ; minimum acceptable value for flats 
 slicerflat:  1,                      ; set this to 1 to use the narrow slit + shift & width change for order finding
-;pkcoefs: [ 213.03357, 80.356662, -0.70048672, 0.0064285174, -6.2983188e-05, 4.3664597e-07, -1.3355842e-09], ;150818
+pkcoefs: [ 213.03357, 80.356662, -0.70048672, 0.0064285174, -6.2983188e-05, 4.3664597e-07, -1.3355842e-09], ;150818
 ;pkcoefs: [211.61396, 81.350356, -0.76796213, 0.0083985481, -9.3219086e-05, 6.8078450e-07,-2.1500871e-09], ; 150805 vikl
-pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
+;pkcoefs: [77.080234, -18.380945, 4.7748226, -0.19179651, 0.0036860003, -3.4447079e-05, 1.2513080e-07], ; test run for 150710, 84 orders extracted
+;pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
+;pkcoefs: [150.27240, 83.318230, -0.75447103, 0.0072940427, -7.1697400e-05, 4.8542551e-07, -1.4693739e-09], ;the 150523 sixth order fit
 ;pkcoefs: [243.07574,79.002059,-0.54537681,0.0018460401],  ;150522 kb15 flats (85 orders extracted)
 ;pkcoefs: [164.11762,80.526294,-0.55823471,0.0018907195],  ;150519 kb15 flats (83 orders extracted)
 ;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;150516 bg7 flats (only 59 orders extracted)
