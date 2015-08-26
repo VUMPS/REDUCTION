@@ -82,9 +82,9 @@ if keyword_set(blue_files) then begin
 	blue_dec = blue_sum
 	;the sigmoid midpoint used for the decay function:
 	sig_midpt = redpar.blues_sig_mid
-	;the sigmoid steepness (how quickly it goes from 1 to zero:
-	sig_stp = 1d-2
-	decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(im_size[2]) - sig_midpt)))
+	;the sigmoid steepness (how quickly it goes from 1 to zero):
+	sig_stp = 2d-2
+	decay_function = 1d - 1d /(1d + exp(-sig_stp*(dindgen(im_size[2]) - sig_midpt)))
 	;loop through columns and attenuate the signal in the red:
 	for col=0, im_size[1]-1 do blue_dec[col, *] *= decay_function
 

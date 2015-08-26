@@ -1,5 +1,5 @@
 {redpar,                       ; named structure, passed by reference
-rootdir: '/data/',             ; root directory. All other paths are relative to rootdir
+rootdir: '/',             ; root directory. All other paths are relative to rootdir
 logdir:  'tous/vumps/logsheets/',         ; log sheets 
 plotsdir: 'tous/vumps/plots/', ; directory to put encapsulated postscript and PNG plots
 fitsdir:    'tous/vumps/fitspec/',        ; reduced spectra in FITS format
@@ -47,8 +47,8 @@ pkcoefs: [ 213.03357, 80.356662, -0.70048672, 0.0064285174, -6.2983188e-05, 4.36
 ;pkcoefs: [72.380474,83.400651,-0.63663337,0.0027000054],  ;150516 bg7 flats (only 59 orders extracted)
 nords:  84,                    ; number of orders to extract
 resolutionarr: ['low','med','hgh'],  ; observing modes 
-xwids: [30,30,30],             ; extraction width, binned pixels 
-dpks:  [-1,-1,-1],             ; peak shift for each mode, binned pixels 
+xwids: [26,26,26],             ; extraction width, binned pixels 
+dpks:  [0,0,0],             ; peak shift for each mode, binned pixels 
 swid: 32,        ;the "swath" width used in fords. This is the number of chunks to break the order into (in the dispersion direction) when finding peaks to fit a polynomial to for order locations.
 poff: [10, 10, 10, 10], ;cross-disp half width for order findings (see fords.pro)
 binnings: ['1x1','3x1','4x4'], ; binning in each mode, row x column
@@ -65,12 +65,12 @@ blues: 1,
 ;use blues from any resolution mode to process the current resolution mode:
 any_res_blues: 1, 
 ;the sigmoid midpoint for combining red and blue flats
-blues_sig_mid: 1150, 
+blues_sig_mid: 1250, 
 ;use the blue frames for flat-fielding
 blues_flat: 1, 
 ;the order to use for the sigmoid midpoint when combining flats:
 blues_flat_ord: 14, 
-debug: 11}
+debug: 0}
 ;(*): denotes this value is set in sorting_hat by the options when calling it
 ;DEBUG MODES:
 ;0. No stops. Prints as little as possible. No plots.

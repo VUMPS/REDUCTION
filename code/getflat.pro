@@ -80,7 +80,7 @@ if redpar.blues_flat then begin
 		print, col
 		decay_function = 1d - 1d /(1d + sig_stp * exp(-sig_stp*(dindgen(imsz[2]) - sig_midpt[col])))	
 		combined_flat[col, *] = decay_function * blue_flat[col,*] + im[col,*]
-		if redpar.debug ge 1 then begin
+		if redpar.debug ge 10 then begin
 			plot, combined_flat[col,*], /xsty, yrange=[0, 6.5d4]
 			wait, 0.05
 		endif;redpar.debug

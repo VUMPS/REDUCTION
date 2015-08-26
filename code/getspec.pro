@@ -107,7 +107,7 @@ ybarr = dblarr(imsz[1], orcsz[2])
 ytarr = dblarr(imsz[1], orcsz[2])
 
 ; boxcar extraction
-!p.multi=[1,1,2]
+!p.multi=[0,1,1]
 for onum=1,nord do begin				;loop thru orders
   ;extract counts/pixel
   if keyword_set(redpar) then begin
