@@ -228,7 +228,7 @@ if keyword_set(getthid) then begin
 
 	auto_thid, t, initwvc, 6., 6., .8, thid, awin=10, maxres=4, /orev
 	;for fiber, narrow and regular slit modes:
-	;thid, t, 70., 70.*[8707d,8839d], wvc, thid, init=initwvc, /orev 
+	;thid, t, 70., 70.*[8707d,8839d], wvc, thid, init=initwvc, /orev (vumps 150524 format)
 
 	if thid.nlin lt 700d then begin
 	print, 'CRAPPY FIT TO THE THAR! INTERVENTION NEEDED!'
